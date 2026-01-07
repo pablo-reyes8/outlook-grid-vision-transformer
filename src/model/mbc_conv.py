@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from src.model.outlook_block import *
+from src.model.Outlook_Block import *
 
 class SqueezeExcite(nn.Module):
     def __init__(self, channels: int, se_ratio: float = 0.25, act: str = "silu"):

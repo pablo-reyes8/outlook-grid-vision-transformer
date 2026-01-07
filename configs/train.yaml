@@ -1,0 +1,107 @@
+model:
+  type: model_b
+  num_classes: 100
+  in_ch: 3
+  stem_dim: 64
+  outlooker_front_depth: 2
+  dpr_max: 0.1
+  downsample:
+    kind: conv
+    act: silu
+    use_bn: true
+  stages:
+    - dim: 64
+      depth: 2
+      num_heads: 4
+      grid_size: 4
+      window_size: 8
+      outlook_heads: 4
+      outlook_kernel: 3
+      outlook_mlp_ratio: 2.0
+      mbconv_expand_ratio: 4.0
+      mbconv_se_ratio: 0.25
+      mbconv_act: silu
+      use_bn: true
+      attn_drop: 0.0
+      proj_drop: 0.0
+      ffn_drop: 0.0
+      drop_path: 0.0
+      mlp_ratio: 4.0
+      mlp_act: gelu
+    - dim: 128
+      depth: 2
+      num_heads: 4
+      grid_size: 4
+      window_size: 8
+      outlook_heads: 4
+      outlook_kernel: 3
+      outlook_mlp_ratio: 2.0
+      mbconv_expand_ratio: 4.0
+      mbconv_se_ratio: 0.25
+      mbconv_act: silu
+      use_bn: true
+      attn_drop: 0.0
+      proj_drop: 0.0
+      ffn_drop: 0.0
+      drop_path: 0.0
+      mlp_ratio: 4.0
+      mlp_act: gelu
+    - dim: 256
+      depth: 4
+      num_heads: 8
+      grid_size: 2
+      window_size: 8
+      outlook_heads: 8
+      outlook_kernel: 3
+      outlook_mlp_ratio: 2.0
+      mbconv_expand_ratio: 4.0
+      mbconv_se_ratio: 0.25
+      mbconv_act: silu
+      use_bn: true
+      attn_drop: 0.0
+      proj_drop: 0.0
+      ffn_drop: 0.0
+      drop_path: 0.0
+      mlp_ratio: 4.0
+      mlp_act: gelu
+
+training:
+  epochs: 100
+  lr: 0.0005
+  weight_decay: 0.05
+  autocast_dtype: fp16
+  use_amp: true
+  grad_clip_norm: 1.0
+  warmup_ratio: 0.05
+  min_lr: 0.0
+  label_smoothing: 0.1
+  print_every: 100
+  save_path: best_model.pt
+  last_path: last_model.pt
+  resume_path: null
+  mixup_alpha: 0.0
+  cutmix_alpha: 0.0
+  mix_prob: 1.0
+  channels_last: false
+  early_stop: true
+  early_stop_metric: top1
+  early_stop_patience: 10
+  early_stop_min_delta: 0.0
+  early_stop_require_monotonic: false
+
+data:
+  dataset: cifar100
+  data_dir: ./data
+  batch_size: 128
+  num_workers: 2
+  val_split: 0.0
+  pin_memory: true
+  ra_num_ops: 2
+  ra_magnitude: 7
+  random_erasing_p: 0.25
+  img_size: 32
+
+runtime:
+  device: cuda
+  seed: 7
+  output_dir: outputs

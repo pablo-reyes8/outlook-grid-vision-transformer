@@ -35,6 +35,7 @@ class MaxOutNet(nn.Module):
         self.downs = nn.ModuleList()
 
         for si, scfg in enumerate(stages):
+            
             blocks = nn.ModuleList()
             for _ in range(scfg.depth):
                 bcfg = StageCfg(**{**scfg.__dict__, "drop_path": dprs[idx]})
