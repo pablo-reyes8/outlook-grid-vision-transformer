@@ -8,6 +8,20 @@ from src.training.one_epoch_train import *
 from src.training.chekpoints import * 
 
 
+def _bytes_to_gib(x: int) -> float:
+    return float(x) / (1024 ** 3)
+
+
+@torch.no_grad()
+def _cuda_mem_str() -> str:
+    if not torch.cuda.is_available():
+        return "mem n/a"
+    alloc = _bytes_to_gib(torch.cuda.max_memory_allocated())
+    reserv = _bytes_to_gib(torch.cuda.max_memory_reserved())
+    return f"mem_peak alloc {alloc:.2f} GiB | reserved {reserv:.2f} GiB"
+
+
+
 def train_model(
     model: nn.Module,
     train_loader,
@@ -32,22 +46,11 @@ def train_model(
     num_classes: int = 100,
     channels_last: bool = False,
     early_stop: bool = True,
-    early_stop_metric: str = "top1",          # "top1" or "loss"
+    early_stop_metric: str = "top1",
     early_stop_patience: int = 10,
     early_stop_min_delta: float = 0.0,
     early_stop_require_monotonic: bool = False,) -> Tuple[Dict[str, list], nn.Module]:
 
-    """
-    Single-process trainer (no DDP, no EMA).
-
-    Expects helpers already defined in your file:
-      - build_param_groups_no_wd
-      - WarmupCosineLR
-      - make_grad_scaler
-      - save_checkpoint / load_checkpoint
-      - train_one_epoch (the one above)
-      - evaluate_one_epoch
-    """
     model.to(device)
 
     # Optimizer
@@ -80,7 +83,7 @@ def train_model(
             optimizer=optimizer, scheduler=scheduler, scaler=scaler,
             map_location=device,
             strict=True,)
-
+        
         start_epoch = int(ckpt.get("epoch", 0))
         best_val_top1 = float(ckpt.get("best_top1", best_val_top1))
         extra = ckpt.get("extra", {}) or {}
@@ -91,7 +94,11 @@ def train_model(
     history = {
         "train_loss": [], "train_top1": [], "train_top3": [], "train_top5": [],
         "val_loss": [], "val_top1": [], "val_top3": [], "val_top5": [],
-        "lr": [],}
+        "lr": [],
+        "train_grad_norm": [], "train_clip_frac": [], "train_amp_overflows": [],
+        "train_nonfinite_loss_steps": [], "train_scaler_scale": [],
+        "train_mem_alloc_gib": [], "train_mem_res_gib": [],
+        "val_mem_alloc_gib": [], "val_mem_res_gib": []}
 
     metric = early_stop_metric.lower()
     assert metric in ("top1", "loss")
@@ -113,18 +120,41 @@ def train_model(
         else:
             return all(vals[i] <= vals[i + 1] for i in range(len(vals) - 1))
 
+
+    first_batch = next(iter(train_loader))
+    x0, y0 = first_batch[0], first_batch[1]
+    bs0 = x0.size(0)
+    img_shape = tuple(x0.shape)
+
+    total_steps = epochs * len(train_loader)
+    warmup_steps = int(total_steps * warmup_ratio)
+
+    print("=== Run config ===")
+    print(f"device={device} | amp={use_amp} | autocast_dtype={autocast_dtype} | channels_last={channels_last}")
+    print(f"epochs={epochs} | steps/epoch={len(train_loader)} | total_steps={total_steps} | warmup_steps={warmup_steps}")
+    print(f"batch_size={bs0} | input_shape={img_shape} | num_classes={num_classes}")
+    print(f"opt=AdamW | lr={lr} | wd={weight_decay} | grad_clip_norm={grad_clip_norm}")
+    print(f"aug: mix_prob={mix_prob} | mixup_alpha={mixup_alpha} | cutmix_alpha={cutmix_alpha} | label_smoothing={label_smoothing}")
+    print("==================")
+
+
     for epoch in range(start_epoch + 1, epochs + 1):
         print(f"\n=== Epoch {epoch}/{epochs} ===")
         t_epoch = time.time()
 
-        # If a sampler supports set_epoch, reshuffle deterministically per epoch (works even without DDP)
+        # reshuffle if sampler supports it
         if hasattr(train_loader, "sampler") and hasattr(train_loader.sampler, "set_epoch"):
             train_loader.sampler.set_epoch(epoch)
         if val_loader is not None and hasattr(val_loader, "sampler") and hasattr(val_loader.sampler, "set_epoch"):
             val_loader.sampler.set_epoch(epoch)
 
+        # ---- reset CUDA peak stats (train) ----
+        if torch.cuda.is_available() and ("cuda" in device):
+            torch.cuda.reset_peak_memory_stats()
+            torch.cuda.synchronize()
+
         # --- Train ---
-        tr_loss, tr_m = train_one_epoch(
+        tr_loss, tr_m, tr_extra = train_one_epoch(
             model=model,
             dataloader=train_loader,
             optimizer=optimizer,
@@ -142,15 +172,38 @@ def train_model(
             channels_last=channels_last,
             print_every=print_every,)
 
+        # capture train peak VRAM
+        train_alloc_gib = None
+        train_res_gib = None
+        if torch.cuda.is_available() and ("cuda" in device):
+            train_alloc_gib = _bytes_to_gib(torch.cuda.max_memory_allocated())
+            train_res_gib = _bytes_to_gib(torch.cuda.max_memory_reserved())
+
         history["train_loss"].append(tr_loss)
         history["train_top1"].append(tr_m["top1"])
         history["train_top3"].append(tr_m["top3"])
         history["train_top5"].append(tr_m["top5"])
         history["lr"].append(float(optimizer.param_groups[0]["lr"]))
 
+        history["train_grad_norm"].append(float(tr_extra["grad_norm_avg"]))
+        history["train_clip_frac"].append(float(tr_extra["clip_frac"]))
+        history["train_amp_overflows"].append(float(tr_extra["amp_overflow_steps"]))
+        history["train_nonfinite_loss_steps"].append(float(tr_extra["nonfinite_loss_steps"]))
+        history["train_scaler_scale"].append(float(tr_extra["scaler_scale"]))
+
+        history["train_mem_alloc_gib"].append(float(train_alloc_gib) if train_alloc_gib is not None else float("nan"))
+        history["train_mem_res_gib"].append(float(train_res_gib) if train_res_gib is not None else float("nan"))
+
         print(
-            f"[Train] loss {tr_loss:.4f} | top1 {tr_m['top1']:.2f}% | top3 {tr_m['top3']:.2f}% | "
-            f"top5 {tr_m['top5']:.2f}% | lr {optimizer.param_groups[0]['lr']:.2e}")
+            f"[Train] loss {tr_loss:.4f} | top1 {tr_m['top1']:.2f}% | top3 {tr_m['top3']:.2f}% | top5 {tr_m['top5']:.2f}% | "
+            f"lr {optimizer.param_groups[0]['lr']:.2e} | "
+            f"grad_norm {tr_extra['grad_norm_avg']:.3f} | clip {100*tr_extra['clip_frac']:.1f}% | "
+            f"amp_overflows {int(tr_extra['amp_overflow_steps'])} | "
+            f"nonfinite_loss {int(tr_extra['nonfinite_loss_steps'])} | "
+            f"scale {tr_extra['scaler_scale']:.1f}")
+        
+        if torch.cuda.is_available() and ("cuda" in device):
+            print(f"[Train] {_cuda_mem_str()}")
 
         # Save "last" checkpoint every epoch
         save_checkpoint(
@@ -169,6 +222,11 @@ def train_model(
 
         # --- Val ---
         if val_loader is not None:
+            # reset CUDA peak stats (val) to log val peak separately
+            if torch.cuda.is_available() and ("cuda" in device):
+                torch.cuda.reset_peak_memory_stats()
+                torch.cuda.synchronize()
+
             va_loss, va_m = evaluate_one_epoch(
                 model=model,
                 dataloader=val_loader,
@@ -178,13 +236,24 @@ def train_model(
                 label_smoothing=0.0,
                 channels_last=channels_last,)
 
+            val_alloc_gib = None
+            val_res_gib = None
+            if torch.cuda.is_available() and ("cuda" in device):
+                val_alloc_gib = _bytes_to_gib(torch.cuda.max_memory_allocated())
+                val_res_gib = _bytes_to_gib(torch.cuda.max_memory_reserved())
+
             history["val_loss"].append(va_loss)
             history["val_top1"].append(va_m["top1"])
             history["val_top3"].append(va_m["top3"])
             history["val_top5"].append(va_m["top5"])
+            history["val_mem_alloc_gib"].append(float(val_alloc_gib) if val_alloc_gib is not None else float("nan"))
+            history["val_mem_res_gib"].append(float(val_res_gib) if val_res_gib is not None else float("nan"))
 
             print(
                 f"[Val]   loss {va_loss:.4f} | top1 {va_m['top1']:.2f}% | top3 {va_m['top3']:.2f}% | top5 {va_m['top5']:.2f}%")
+            
+            if torch.cuda.is_available() and ("cuda" in device):
+                print(f"[Val]   {_cuda_mem_str()}")
 
             # Best checkpoint by val_top1
             if va_m["top1"] > best_val_top1:
@@ -200,8 +269,8 @@ def train_model(
                         "autocast_dtype": autocast_dtype,
                         "use_amp": use_amp,
                         "best_val_loss": best_val_loss,
-                        "best_epoch": best_epoch,},)
-
+                        "best_epoch": best_epoch, },)
+                
                 print(f"Best saved to {save_path} (val top1 {best_val_top1:.2f}%)")
 
             # Early stop on chosen metric
