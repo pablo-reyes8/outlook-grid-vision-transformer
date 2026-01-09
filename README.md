@@ -165,6 +165,7 @@ Tests cover:
 ```
 configs/          # YAML configs
 scripts/          # CLI entrypoints
+notebooks/        # Jupyter Showcase 
 src/              # models, blocks, training
 tests/            # pytest suite
 ```
