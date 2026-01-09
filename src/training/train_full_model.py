@@ -21,7 +21,6 @@ def _cuda_mem_str() -> str:
     return f"mem_peak alloc {alloc:.2f} GiB | reserved {reserv:.2f} GiB"
 
 
-
 def train_model(
     model: nn.Module,
     train_loader,
