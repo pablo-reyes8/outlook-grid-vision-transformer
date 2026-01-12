@@ -1,7 +1,7 @@
 import torch
 from torch.utils.data import DataLoader, TensorDataset
 
-from src.Model_B_OutGridNet import MaxOutNet
+from src.Model_A_OutGridNet import MaxOutNet
 from src.stage_config import StageCfg
 from src.training.train_full_model import train_model
 

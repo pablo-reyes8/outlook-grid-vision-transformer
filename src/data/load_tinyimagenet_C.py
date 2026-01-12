@@ -2,7 +2,7 @@ import os
 import tarfile
 import urllib.request
 from pathlib import Path
-from typing import Optional, Dict, List, Tuple
+from typing import Optional, Dict, List, Tuple, Any
 from torchvision.datasets.folder import default_loader
 import torch
 from torch.utils.data import DataLoader, Dataset, Subset

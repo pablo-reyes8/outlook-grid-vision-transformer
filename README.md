@@ -1,32 +1,30 @@
-# Outlook-Grid Vision Transformer
+# Outlook-Grid Vision Transformer (OutGridViT)
 
-A research-grade hybrid vision architecture that fuses **VOLO-style Outlooker** local attention with **MaxViT-style grid attention** and modern convolutional inductive bias (MBConv). The core idea is to inject *Outlooker bias in every stage* (Model B), not only at the front, while retaining grid-based global mixing and efficient convolutional processing.
+A research-grade hybrid vision architecture that fuses **VOLO-style Outlooker** local attention with **MaxViT-style grid attention** and MBConv inductive bias. The main idea is to inject dynamic local aggregation inside *every stage* (Model A) while retaining efficient global mixing through grid attention.
 
-This repo provides two model variants, a reproducible training CLI, and tests that validate both block wiring and the end-to-end training loop.
+This repo includes:
+- Two model variants (A and B)
+- A training CLI driven by YAML configs
+- Multiple dataset loaders (CIFAR-100, SVHN, Tiny-ImageNet-200)
+- Tests for block wiring, model forward, and training smoke
 
-## Highlights
+## Model Variants
 
-- **Outlooker + MBConv + Grid Attention** inside each stage (Model B)
-- **Two architectures**: front-only Outlooker (Model A) and per-block Outlooker (Model B)
-- **CLI training** with YAML configs and overrides
-- **PyTorch** implementation with mixup/cutmix, warmup+cosine LR, early stopping
-- **Tests** for block correctness, model forward, and training smoke
+**Model A (MaxOutNet, main)**
+- Outlooker in every block (strong local bias throughout the network)
+- Block: `Outlooker -> MBConv -> GridAttn -> MLP`
+- File: `src/Model_A_OutGridNet.py`
 
-## Architecture Overview
+**Model B (OutlookerFrontGridNet, baseline)**
+- Outlooker only at the front, then Grid-only blocks
+- Stage: `OutlookerFront -> GridOnlyBlock x depth`
+- File: `src/Model_B_OutGridNet.py`
 
-### Core Block: OutGridBlock (Model B)
+Naming note: **Model A** is the per-block Outlooker variant (MaxOutNet) and **Model B** is the front-only Outlooker baseline, matching the notebooks.
 
-The main block fuses three inductive biases:
-1. **Outlooker**: dynamic local aggregation (VOLO-style)
-2. **MBConv**: local convolutional mixing with SE
-3. **Grid Attention**: global-ish mixing via grid partition (MaxViT-style)
+## Block Forward (OutGridBlock)
 
-In pseudo-form:
-
-- Input/Output: `x in R^{B x C x H x W}`
-- Uses NCHW for outlooker/mbconv, then BHWC for grid attention and MLP
-
-Forward equation (block-level):
+Input/Output: `x in R^{B x C x H x W}`
 
 $$
 \begin{aligned}
@@ -39,79 +37,58 @@ $$
 \end{aligned}
 $$
 
-Where `DP` is stochastic depth and `LN` is layer norm in BHWC.
+`DP` is stochastic depth. `LN` is layer norm in BHWC. The implementation uses NCHW for Outlooker/MBConv and BHWC for GridAttn/MLP.
 
-### Model A: OutlookerFrontGridNet
+### Model Forward (High Level)
 
-**Flow**:
+Model A (MaxOutNet):
 
-`Stem -> OutlookerFront (L blocks) -> GridOnlyBlock stacks (per stage) -> Head`
+$$
+\\begin{aligned}
+ x_0 &= \\mathrm{Stem}(x) \\\\
+ x_{s,i+1} &= \\mathrm{OutGridBlock}(x_{s,i}), \\quad i=0..(d_s-1) \\\\
+ x_{s+1,0} &= \\mathrm{Downsample}_s(x_{s,d_s}) \\\\
+ \\mathrm{logits} &= \\mathrm{Linear}(\\mathrm{GAP}(\\mathrm{BN}(x_{S,d_S})))
+\\end{aligned}
+$$
 
-- Outlooker is only at the front (VOLO-like). 
-- Later stages are GridOnlyBlock: MBConv + GridAttn + MLP.
-- Good as a baseline to isolate the effect of front-only outlook bias.
+Model B (OutlookerFrontGridNet):
 
-### Model B: MaxOutNet (Main Model)
+$$
+\\begin{aligned}
+ x_0 &= \\mathrm{Stem}(x) \\\\
+ x'_0 &= \\mathrm{OutlookerFront}^L(x_0) \\\\
+ x_{s,i+1} &= \\mathrm{GridOnlyBlock}(x_{s,i}) \\\\
+ \\mathrm{logits} &= \\mathrm{Linear}(\\mathrm{GAP}(\\mathrm{BN}(x_{S,d_S})))
+\\end{aligned}
+$$
 
-**Flow**:
+## Reported Results (from notebooks)
 
-`Stem -> [OutGridBlock x depth] -> Downsample -> ... -> Head`
+All numbers below are pulled from notebook logs (single runs). See `notebooks/` for exact settings, seeds, and loaders.
 
-- Each stage uses **OutGridBlock**, injecting the Outlooker inductive bias throughout the network.
-- This is the best-performing variant in this repo.
+| Dataset | Model | Img size | Top-1 (val/test) | Params | Notes |
+| --- | --- | --- | --- | --- | --- |
+| CIFAR-100 | Model A (MaxOutNet) | 32 | 74.7 / 78.4 | - | best test from notebook
+| CIFAR-100 | Model B (OutlookerFront) | 32 | 73.7 / 77.5 | - | front-only baseline
+| CIFAR-100 | Model A (MaxOutNet) | 64 | 78.7 / 81.2 | - | upsampled CIFAR-100
+| Tiny-ImageNet-200 | Model A (MaxOutNet) | 64 | 66.5 / 69.8 | 22.5M | HF Tiny-ImageNet
+| SVHN | Model A (MaxOutNet) | 32 | 96.1 / - | - | val only in log
 
-## Research Motivation
+Highlights you can claim:
+- **Tiny-ImageNet-200**: 66.5 val top-1 with **~22.5M params**
+- **CIFAR-100**: ~81 top-1 (64x64 setup)
 
-- **VOLO** uses Outlooker as a front-end local aggregator.
-- **MaxViT** uses block-wise attention with structured window/grid partitions.
+## Configs
 
-This repo explores a hybrid where *Outlooker bias is present at every stage*, combined with MBConv and grid attention. The intuition is that local dynamic aggregation can keep feature extraction rich and stable while grid attention provides global mixing.
+Prebuilt configs (mirrored from notebooks):
+- `configs/cifar100_model_a.yaml`
+- `configs/cifar100_model_b.yaml`
+- `configs/cifar100_64_model_a.yaml`
+- `configs/svhn_model_a.yaml`
+- `configs/tinyimagenet200_model_a.yaml`
 
-## Configuration
-
-Training is configured via YAML in `configs/train.yaml`.
-
-Key sections:
-- `model`: model type, stages, downsampling
-- `training`: optimizer, LR schedule, mixed precision, early stopping
-- `data`: dataset and augmentation options
-- `runtime`: device, output dir, seed
-
-Minimal example:
-
-```yaml
-model:
-  type: model_b
-  num_classes: 100
-  stages:
-    - dim: 64
-      depth: 2
-      num_heads: 4
-      grid_size: 4
-      window_size: 8
-      outlook_heads: 4
-      outlook_kernel: 3
-      outlook_mlp_ratio: 2.0
-      mbconv_expand_ratio: 4.0
-      mbconv_se_ratio: 0.25
-      mbconv_act: silu
-      use_bn: true
-      attn_drop: 0.0
-      proj_drop: 0.0
-      ffn_drop: 0.0
-      drop_path: 0.0
-      mlp_ratio: 4.0
-      mlp_act: gelu
-
-training:
-  epochs: 100
-  lr: 0.0005
-  weight_decay: 0.05
-  use_amp: true
-
-runtime:
-  device: cuda
-```
+`configs/train.yaml` is a default alias of `cifar100_model_a.yaml`.
 
 ## Training CLI
 
@@ -121,32 +98,30 @@ Install requirements:
 pip install -r requirements.txt
 ```
 
-Run with the default config:
+Run a config:
 
 ```bash
-python scripts/train.py --config configs/train.yaml
+python scripts/train.py --config configs/cifar100_model_a.yaml
+python scripts/train.py --config configs/cifar100_model_b.yaml
+python scripts/train.py --config configs/tinyimagenet200_model_a.yaml
 ```
 
-Switch models or override settings:
+Override common settings:
 
 ```bash
-python scripts/train.py --config configs/train.yaml --model b
-python scripts/train.py --config configs/train.yaml --model a --epochs 50
-python scripts/train.py --config configs/train.yaml --batch-size 256 --img-size 64
+python scripts/train.py --config configs/cifar100_model_a.yaml --epochs 100
+python scripts/train.py --config configs/cifar100_64_model_a.yaml --batch-size 128
 ```
 
-Quick CPU smoke run with synthetic data:
+## Datasets
 
-```bash
-python scripts/train.py --config configs/train.yaml --device cpu --epochs 1 --batch-size 8 --val-split 0 --data-dir ./data --model b
-```
+Supported loaders:
+- **CIFAR-100**: `data.dataset: cifar100`
+- **SVHN**: `data.dataset: svhn`
+- **Tiny-ImageNet-200 (HF)**: `data.dataset: tinyimagenet200`, `data.hf_name: zh-plus/tiny-imagenet`
 
-## Docker
-
-```bash
-docker build -t outlook-grid-vit .
-docker run --rm -it outlook-grid-vit
-```
+Tiny-ImageNet uses the HuggingFace `datasets` package, cached under `data/hf_cache`.
+Tiny-ImageNet-C helpers are in `src/data/load_tinyimagenet_C.py` and used in the notebooks.
 
 ## Tests
 
@@ -163,30 +138,19 @@ Tests cover:
 ## Project Structure
 
 ```
-configs/          # YAML configs
+configs/          # YAML configs for datasets and model variants
 scripts/          # CLI entrypoints
-notebooks/        # Jupyter Showcase 
-src/              # models, blocks, training
+notebooks/        # experiments + logs
+src/              # models, blocks, training, data
 tests/            # pytest suite
 ```
 
-## Notes on Block Compatibility
+## Notes
 
 - Grid attention requires `H` and `W` divisible by `grid_size`.
 - Outlooker kernel size must be odd and > 0.
-- The implementation uses NCHW for conv/outlook and BHWC for grid attention.
-
-## Future Research Ideas
-
-- Ablations: remove Outlooker or MBConv to quantify contributions.
-- Try larger grid sizes or add window attention for local-global mix.
-- Benchmark on ImageNet or larger CIFAR variants.
-- Explore token mixing alternatives (e.g., axial or windowed attention).
+- NCHW for conv/outlook, BHWC for grid attention.
 
 ## Citation
 
 If you use this code or ideas, cite VOLO and MaxViT.
-
----
-
-If you want, I can add ablation configs, training curves logging, or a more formal experiment table next.

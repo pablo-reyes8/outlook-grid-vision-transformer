@@ -9,9 +9,11 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from src.Model_A_OutGridNet import OutlookerFrontGridNet
-from src.Model_B_OutGridNet import MaxOutNet
+from src.Model_A_OutGridNet import MaxOutNet
+from src.Model_B_OutGridNet import OutlookerFrontGridNet
 from src.data.load_cifrar100 import get_cifar100_dataloaders
+from src.data.load_svhn import get_svhn_dataloaders
+from src.data.load_tinyimagenet import get_tinyimagenet200_hf_dataloaders
 from src.model.downsampling import DownsampleConfig
 from src.stage_config import StageCfg
 from src.training.autocast import seed_everything
@@ -29,7 +31,7 @@ def build_stages(stage_cfgs: list[dict]) -> list[StageCfg]:
 
 
 def build_model(model_cfg: dict) -> torch.nn.Module:
-    model_type = str(model_cfg.get("type", "model_b")).lower()
+    model_type = str(model_cfg.get("type", "model_a")).lower()
     stages = build_stages(model_cfg.get("stages", []))
     if not stages:
         raise ValueError("model.stages must have at least one stage config")
@@ -45,15 +47,17 @@ def build_model(model_cfg: dict) -> torch.nn.Module:
         down_cfg=down_cfg,
     )
 
-    if model_type in ("a", "model_a", "outlooker_front"):
+    if model_type in ("a", "model_a", "maxout", "outgrid"):
+        return MaxOutNet(**common)
+    if model_type in ("b", "model_b", "outlooker_front", "front"):
         return OutlookerFrontGridNet(
             outlooker_front_depth=int(model_cfg.get("outlooker_front_depth", 2)),
             **common,
         )
-    if model_type in ("b", "model_b", "outgrid"):
-        return MaxOutNet(**common)
 
-    raise ValueError(f"Unknown model.type '{model_type}'. Use 'model_a' or 'model_b'.")
+    raise ValueError(
+        f"Unknown model.type '{model_type}'. Use 'model_a' (MaxOutNet) or 'model_b' (OutlookerFrontGridNet)".strip()
+    )
 
 
 def build_dataloaders(data_cfg: dict, num_classes: int):
@@ -75,6 +79,34 @@ def build_dataloaders(data_cfg: dict, num_classes: int):
             img_size=int(data_cfg.get("img_size", 32)),
         )
 
+    if dataset == "svhn":
+        return get_svhn_dataloaders(
+            batch_size=batch_size,
+            data_dir=str(data_cfg.get("data_dir", "./data")),
+            num_workers=num_workers,
+            val_split=float(data_cfg.get("val_split", 0.0)),
+            pin_memory=pin_memory,
+            ra_num_ops=int(data_cfg.get("ra_num_ops", 2)),
+            ra_magnitude=int(data_cfg.get("ra_magnitude", 7)),
+            random_erasing_p=float(data_cfg.get("random_erasing_p", 0.25)),
+            img_size=int(data_cfg.get("img_size", 32)),
+        )
+
+    if dataset in ("tinyimagenet200", "tinyimagenet", "tiny-imagenet"):
+        return get_tinyimagenet200_hf_dataloaders(
+            batch_size=batch_size,
+            data_dir=str(data_cfg.get("data_dir", "./data")),
+            hf_name=str(data_cfg.get("hf_name", "zh-plus/tiny-imagenet")),
+            num_workers=num_workers,
+            val_split=float(data_cfg.get("val_split", 0.0)),
+            pin_memory=pin_memory,
+            ra_num_ops=int(data_cfg.get("ra_num_ops", 2)),
+            ra_magnitude=int(data_cfg.get("ra_magnitude", 7)),
+            random_erasing_p=float(data_cfg.get("random_erasing_p", 0.25)),
+            img_size=int(data_cfg.get("img_size", 64)),
+            drop_last=bool(data_cfg.get("drop_last", True)),
+        )
+
     if dataset == "synthetic":
         num_samples = int(data_cfg.get("num_samples", 256))
         img_size = int(data_cfg.get("img_size", 32))
@@ -90,7 +122,7 @@ def build_dataloaders(data_cfg: dict, num_classes: int):
         )
         return loader, None, None
 
-    raise ValueError("data.dataset must be 'cifar100' or 'synthetic'")
+    raise ValueError("data.dataset must be 'cifar100', 'svhn', 'tinyimagenet200', or 'synthetic'")
 
 
 def parse_args() -> argparse.Namespace:

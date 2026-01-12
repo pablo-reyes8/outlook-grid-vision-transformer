@@ -1,8 +1,8 @@
 import torch
 
 from src.stage_config import StageCfg
-from src.Model_A_OutGridNet import OutlookerFrontGridNet
-from src.Model_B_OutGridNet import MaxOutNet
+from src.Model_A_OutGridNet import MaxOutNet
+from src.Model_B_OutGridNet import OutlookerFrontGridNet
 
 
 def _make_stages():
@@ -57,11 +57,10 @@ def _assert_logits(logits: torch.Tensor, batch: int, num_classes: int):
 
 def test_model_a_forward():
     stages = _make_stages()
-    model = OutlookerFrontGridNet(
+    model = MaxOutNet(
         num_classes=10,
         stages=stages,
         stem_dim=16,
-        outlooker_front_depth=1,
         dpr_max=0.0,
     )
 
@@ -72,10 +71,11 @@ def test_model_a_forward():
 
 def test_model_b_forward():
     stages = _make_stages()
-    model = MaxOutNet(
+    model = OutlookerFrontGridNet(
         num_classes=10,
         stages=stages,
         stem_dim=16,
+        outlooker_front_depth=1,
         dpr_max=0.0,
     )
 

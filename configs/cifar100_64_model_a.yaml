@@ -3,28 +3,28 @@ model:
   num_classes: 100
   in_ch: 3
   stem_dim: 64
-  dpr_max: 0.12
+  dpr_max: 0.1
   stages:
-    - dim: 80
+    - dim: 64
       depth: 2
       num_heads: 2
-      grid_size: 4
+      grid_size: 8
       outlook_heads: 2
-    - dim: 160
-      depth: 3
-      num_heads: 5
-      grid_size: 4
-      outlook_heads: 5
-    - dim: 320
-      depth: 4
-      num_heads: 10
-      grid_size: 2
-      outlook_heads: 10
-    - dim: 448
+    - dim: 128
       depth: 2
+      num_heads: 4
+      grid_size: 8
+      outlook_heads: 4
+    - dim: 256
+      depth: 3
       num_heads: 8
-      grid_size: 1
+      grid_size: 4
       outlook_heads: 8
+    - dim: 384
+      depth: 1
+      num_heads: 6
+      grid_size: 2
+      outlook_heads: 6
 
 training:
   epochs: 50
@@ -37,8 +37,8 @@ training:
   min_lr: 0.000001
   label_smoothing: 0.0
   print_every: 100
-  save_path: best_cifar100_model_a.pt
-  last_path: last_cifar100_model_a.pt
+  save_path: best_cifar100_64_model_a.pt
+  last_path: last_cifar100_64_model_a.pt
   resume_path: null
   mixup_alpha: 0.0
   cutmix_alpha: 1.0
@@ -60,7 +60,7 @@ data:
   ra_num_ops: 2
   ra_magnitude: 7
   random_erasing_p: 0.25
-  img_size: 32
+  img_size: 64
 
 runtime:
   device: cuda

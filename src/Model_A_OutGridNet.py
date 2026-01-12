@@ -8,8 +8,8 @@ from src.stage_config import *
 
 class MaxOutNet(nn.Module):
     """
-    Modelo B:
-      Stem -> (Stage: MaxOutBlock x depth + Downsample) -> Head
+    Modelo A:
+      Stem -> (Stage: OutGridBlock x depth + Downsample) -> Head
     """
     def __init__(
         self,

@@ -10,7 +10,7 @@ from src.stage_config import *
 
 class OutlookerFrontGridNet(nn.Module):
     """
-    Modelo A:
+    Modelo B:
       Stem -> OutlookerFront (L bloques) -> (Stage: GridOnlyBlock x depth + Downsample) -> Head
     """
     def __init__(

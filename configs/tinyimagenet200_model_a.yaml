@@ -1,30 +1,30 @@
 model:
   type: model_a
-  num_classes: 100
+  num_classes: 200
   in_ch: 3
   stem_dim: 64
-  dpr_max: 0.12
+  dpr_max: 0.11
   stages:
-    - dim: 80
+    - dim: 64
       depth: 2
       num_heads: 2
-      grid_size: 4
+      grid_size: 8
       outlook_heads: 2
-    - dim: 160
+    - dim: 128
       depth: 3
-      num_heads: 5
-      grid_size: 4
-      outlook_heads: 5
-    - dim: 320
+      num_heads: 4
+      grid_size: 8
+      outlook_heads: 4
+    - dim: 256
       depth: 4
-      num_heads: 10
-      grid_size: 2
-      outlook_heads: 10
-    - dim: 448
-      depth: 2
       num_heads: 8
-      grid_size: 1
+      grid_size: 4
       outlook_heads: 8
+    - dim: 384
+      depth: 2
+      num_heads: 6
+      grid_size: 2
+      outlook_heads: 6
 
 training:
   epochs: 50
@@ -36,9 +36,9 @@ training:
   warmup_ratio: 0.05
   min_lr: 0.000001
   label_smoothing: 0.0
-  print_every: 100
-  save_path: best_cifar100_model_a.pt
-  last_path: last_cifar100_model_a.pt
+  print_every: 300
+  save_path: best_tinyimagenet200_model_a.pt
+  last_path: last_tinyimagenet200_model_a.pt
   resume_path: null
   mixup_alpha: 0.0
   cutmix_alpha: 1.0
@@ -51,8 +51,9 @@ training:
   early_stop_require_monotonic: false
 
 data:
-  dataset: cifar100
-  data_dir: ./data/cifar100
+  dataset: tinyimagenet200
+  hf_name: zh-plus/tiny-imagenet
+  data_dir: ./data
   batch_size: 64
   num_workers: 2
   val_split: 0.1
@@ -60,7 +61,8 @@ data:
   ra_num_ops: 2
   ra_magnitude: 7
   random_erasing_p: 0.25
-  img_size: 32
+  img_size: 64
+  drop_last: true
 
 runtime:
   device: cuda
