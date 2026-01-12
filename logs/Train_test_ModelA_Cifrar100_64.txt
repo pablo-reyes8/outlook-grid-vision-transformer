@@ -633,3 +633,6 @@ Epoch time: 10.16 min
 [Train] loss 0.9642 | top1 84.47% | top3 93.28% | top5 95.57% | lr 1.00e-06
 [Val]   loss 0.7696 | top1 78.26% | top3 92.10% | top5 95.34%
 Epoch time: 10.17 min
+
+(0.6719321002960205, {'top1': 81.15, 'top3': 93.29, 'top5': 95.8})
+

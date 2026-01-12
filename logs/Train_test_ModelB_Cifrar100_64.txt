@@ -1,3 +1,4 @@
+
 === Epoch 1/50 ===
 [train step 100/352] loss 4.4824 | top1 3.52% | top3 8.54% | top5 12.80% | 116.3 img/s | lr 5.68e-05
 [train step 200/352] loss 4.3496 | top1 5.12% | top3 12.41% | top5 18.10% | 120.4 img/s | lr 1.14e-04

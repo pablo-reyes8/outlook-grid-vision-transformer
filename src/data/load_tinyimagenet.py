@@ -9,7 +9,7 @@ from torchvision.transforms import RandAugment
 from datasets import load_dataset
 from PIL import Image
 
-
+from src.data.load_tinyimagenet_C import *
 IMAGENET_MEAN = (0.485, 0.456, 0.406)
 IMAGENET_STD  = (0.229, 0.224, 0.225)
 
@@ -197,3 +197,76 @@ def get_tinyimagenet200_hf_dataloaders(
             persistent_workers=(num_workers > 0))
 
     return train_loader, val_loader, test_loader
+
+
+def _unwrap_dataset(ds: Dataset) -> Dataset:
+    while isinstance(ds, Subset):
+        ds = ds.dataset
+    return ds
+
+
+def get_clean_test_loader_intersection_182(
+    test_loader_clean: DataLoader,
+    reference_train_loader: DataLoader,   # para obtener class_names (wnids)
+    data_dir: str = "./data",
+    corruption_name: str = "motion_blur",
+    corruption_level: int = 3,
+    batch_size: int = 128,
+    num_workers: int = 2,
+    pin_memory: bool = True,
+    drop_last: bool = False,
+):
+    """
+    Devuelve un loader del test clean filtrado a las clases que están en TinyImageNet-C (182 en tu caso).
+    - test_loader_clean: tu loader clean (val/test)
+    - reference_train_loader: tu train_loader clean (para obtener wnids ordenados)
+    """
+
+    base_train = _unwrap_dataset(reference_train_loader.dataset)
+    train_wnids = list(base_train.class_names)  
+
+    root = find_tinyimagenet_c_root(Path(data_dir))
+    if root is None:
+        root = download_and_extract_tiny_imagenet_c(data_dir=data_dir)
+
+    split_dir = Path(root) / corruption_name / str(int(corruption_level))
+    if not split_dir.exists():
+        raise FileNotFoundError(f"No existe: {split_dir}")
+
+    c_wnids = sorted([p.name for p in split_dir.iterdir() if p.is_dir()])
+    c_set = set(c_wnids)
+
+    # Intersección de wnids
+    keep_wnids = [w for w in train_wnids if w in c_set]
+    keep_set = set(keep_wnids)
+
+    print(f"[clean∩C] keep_classes={len(keep_wnids)} | drop_classes={len(train_wnids)-len(keep_wnids)}")
+
+    labels_keep = {i for i, w in enumerate(train_wnids) if w in keep_set}
+
+    base_test = _unwrap_dataset(test_loader_clean.dataset)
+
+    hf_ds = getattr(base_test, "ds", None)
+    if hf_ds is None:
+        raise RuntimeError("No encuentro base_test.ds (HF dataset).")
+
+    keep_indices = []
+    for i in range(len(hf_ds)):
+        y = int(hf_ds[i]["label"])   
+        if y in labels_keep:
+            keep_indices.append(i)
+
+    print(f"[clean∩C] keep_samples={len(keep_indices)} / total={len(hf_ds)}")
+
+    filtered_ds = Subset(base_test, keep_indices)
+
+    filtered_loader = DataLoader(
+        filtered_ds,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        pin_memory=pin_memory,
+        persistent_workers=(num_workers > 0),
+        drop_last=drop_last,
+    )
+    return filtered_loader

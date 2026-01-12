@@ -1,0 +1,793 @@
+=== Run config ===
+device=cuda | amp=True | autocast_dtype=fp16 | channels_last=True
+epochs=50 | steps/epoch=704 | total_steps=35200 | warmup_steps=1760
+batch_size=64 | input_shape=(64, 3, 32, 32) | num_classes=100
+opt=AdamW | lr=0.0005 | wd=0.05 | grad_clip_norm=1.0
+aug: mix_prob=0.5 | mixup_alpha=0.0 | cutmix_alpha=1.0 | label_smoothing=0.0
+==================
+
+=== Epoch 1/50 ===
+[train step 100/704] loss 4.5838 | top1 2.02% | top3 5.58% | top5 8.81% | 257.6 img/s | lr 2.84e-05 | gnorm 5.982 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 4.4982 | top1 3.07% | top3 7.79% | top5 12.09% | 295.7 img/s | lr 5.68e-05 | gnorm 5.716 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 4.4169 | top1 4.05% | top3 9.98% | top5 14.98% | 310.4 img/s | lr 8.52e-05 | gnorm 5.535 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 4.3643 | top1 4.83% | top3 11.59% | top5 17.12% | 317.3 img/s | lr 1.14e-04 | gnorm 5.336 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 4.3138 | top1 5.60% | top3 13.10% | top5 18.98% | 321.0 img/s | lr 1.42e-04 | gnorm 5.160 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 4.2767 | top1 6.12% | top3 14.26% | top5 20.45% | 323.3 img/s | lr 1.70e-04 | gnorm 5.008 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 4.2292 | top1 6.73% | top3 15.57% | top5 22.18% | 324.3 img/s | lr 1.99e-04 | gnorm 4.906 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 4.2270 | top1 6.76% | top3 15.64% | top5 22.25% | 322.3 img/s | lr 2.00e-04 | gnorm 4.907 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 4.2270 | top1 6.76% | top3 15.64% | top5 22.25% | lr 2.00e-04 | grad_norm 4.907 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.65 GiB | reserved 2.70 GiB
+[Val]   loss 3.7995 | top1 12.60% | top3 26.58% | top5 34.76%
+[Val]   mem_peak alloc 0.47 GiB | reserved 0.59 GiB
+Best saved to best_maxout_medium.pt (val top1 12.60%)
+Epoch time: 2.43 min
+
+=== Epoch 2/50 ===
+[train step 100/704] loss 3.9058 | top1 12.08% | top3 25.53% | top5 34.20% | 322.5 img/s | lr 2.28e-04 | gnorm 3.936 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 3.8515 | top1 13.03% | top3 27.03% | top5 35.81% | 325.4 img/s | lr 2.57e-04 | gnorm 3.953 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 3.8231 | top1 13.36% | top3 27.68% | top5 36.80% | 327.2 img/s | lr 2.85e-04 | gnorm 3.852 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 3.7723 | top1 14.09% | top3 28.97% | top5 38.41% | 327.9 img/s | lr 3.14e-04 | gnorm 3.835 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 3.7497 | top1 14.57% | top3 29.76% | top5 39.18% | 327.6 img/s | lr 3.42e-04 | gnorm 3.773 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 3.7284 | top1 14.98% | top3 30.45% | top5 39.98% | 327.3 img/s | lr 3.70e-04 | gnorm 3.706 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 3.7029 | top1 15.50% | top3 31.17% | top5 40.68% | 327.1 img/s | lr 3.99e-04 | gnorm 3.648 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 3.7015 | top1 15.55% | top3 31.22% | top5 40.73% | 327.0 img/s | lr 4.00e-04 | gnorm 3.649 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 3.7015 | top1 15.55% | top3 31.22% | top5 40.73% | lr 4.00e-04 | grad_norm 3.649 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 3.3553 | top1 18.50% | top3 36.34% | top5 47.50%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 18.50%)
+Epoch time: 2.40 min
+
+=== Epoch 3/50 ===
+[train step 100/704] loss 3.3721 | top1 20.95% | top3 39.16% | top5 49.31% | 325.7 img/s | lr 4.28e-04 | gnorm 3.365 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 3.3848 | top1 20.97% | top3 39.72% | top5 49.77% | 326.1 img/s | lr 4.57e-04 | gnorm 3.307 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 3.4132 | top1 20.76% | top3 38.91% | top5 48.79% | 326.2 img/s | lr 4.85e-04 | gnorm 3.189 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 3.3951 | top1 21.25% | top3 39.52% | top5 49.55% | 326.7 img/s | lr 5.00e-04 | gnorm 3.144 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 3.3659 | top1 21.87% | top3 40.28% | top5 50.31% | 327.0 img/s | lr 5.00e-04 | gnorm 3.122 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 3.3517 | top1 22.20% | top3 40.79% | top5 50.79% | 327.1 img/s | lr 5.00e-04 | gnorm 3.079 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 700/704] loss 3.3302 | top1 22.72% | top3 41.46% | top5 51.51% | 327.2 img/s | lr 5.00e-04 | gnorm 3.048 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 704/704] loss 3.3291 | top1 22.75% | top3 41.47% | top5 51.51% | 327.1 img/s | lr 5.00e-04 | gnorm 3.054 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[Train] loss 3.3291 | top1 22.75% | top3 41.47% | top5 51.51% | lr 5.00e-04 | grad_norm 3.054 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 131072.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 2.7348 | top1 31.40% | top3 53.00% | top5 62.92%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 31.40%)
+Epoch time: 2.40 min
+
+=== Epoch 4/50 ===
+[train step 100/704] loss 3.1380 | top1 26.45% | top3 46.25% | top5 56.84% | 327.1 img/s | lr 5.00e-04 | gnorm 2.915 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 200/704] loss 3.1062 | top1 27.30% | top3 47.10% | top5 57.14% | 327.6 img/s | lr 5.00e-04 | gnorm 2.902 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 300/704] loss 3.0620 | top1 28.14% | top3 48.28% | top5 58.38% | 327.5 img/s | lr 5.00e-04 | gnorm 2.929 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 400/704] loss 3.0386 | top1 28.60% | top3 48.88% | top5 58.84% | 327.6 img/s | lr 4.99e-04 | gnorm 2.939 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 500/704] loss 3.0516 | top1 28.53% | top3 48.66% | top5 58.63% | 327.7 img/s | lr 4.99e-04 | gnorm 2.897 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 600/704] loss 3.0448 | top1 28.84% | top3 48.88% | top5 58.84% | 327.8 img/s | lr 4.99e-04 | gnorm 2.879 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 700/704] loss 3.0311 | top1 29.28% | top3 49.35% | top5 59.25% | 327.9 img/s | lr 4.99e-04 | gnorm 2.864 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 704/704] loss 3.0311 | top1 29.27% | top3 49.33% | top5 59.25% | 327.9 img/s | lr 4.99e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[Train] loss 3.0311 | top1 29.27% | top3 49.33% | top5 59.25% | lr 4.99e-04 | grad_norm inf | clip 100.0% | amp_overflows 1 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 2.3747 | top1 38.20% | top3 60.74% | top5 71.48%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 38.20%)
+Epoch time: 2.39 min
+
+=== Epoch 5/50 ===
+[train step 100/704] loss 2.9361 | top1 31.39% | top3 51.69% | top5 61.56% | 327.6 img/s | lr 4.99e-04 | gnorm 2.753 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 2.8902 | top1 32.09% | top3 52.70% | top5 62.59% | 328.2 img/s | lr 4.98e-04 | gnorm 2.797 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 2.8859 | top1 32.47% | top3 52.95% | top5 62.64% | 328.2 img/s | lr 4.98e-04 | gnorm 2.816 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 2.8466 | top1 33.14% | top3 53.89% | top5 63.58% | 328.2 img/s | lr 4.98e-04 | gnorm 2.815 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 2.8515 | top1 33.33% | top3 54.07% | top5 63.68% | 328.2 img/s | lr 4.97e-04 | gnorm 2.799 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 2.8259 | top1 33.83% | top3 54.65% | top5 64.25% | 328.1 img/s | lr 4.97e-04 | gnorm 2.800 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 2.7990 | top1 34.44% | top3 55.29% | top5 64.89% | 328.1 img/s | lr 4.97e-04 | gnorm 2.816 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 2.7986 | top1 34.43% | top3 55.28% | top5 64.88% | 328.0 img/s | lr 4.97e-04 | gnorm 2.821 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 2.7986 | top1 34.43% | top3 55.28% | top5 64.88% | lr 4.97e-04 | grad_norm 2.821 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 2.1365 | top1 43.36% | top3 66.14% | top5 75.10%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 43.36%)
+Epoch time: 2.39 min
+
+=== Epoch 6/50 ===
+[train step 100/704] loss 2.5478 | top1 40.34% | top3 61.17% | top5 70.30% | 327.0 img/s | lr 4.96e-04 | gnorm 2.937 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 2.5785 | top1 39.55% | top3 60.38% | top5 69.53% | 327.6 img/s | lr 4.96e-04 | gnorm 2.885 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 2.5863 | top1 39.09% | top3 59.74% | top5 69.15% | 327.8 img/s | lr 4.95e-04 | gnorm 2.869 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 2.5882 | top1 39.21% | top3 59.93% | top5 69.37% | 327.8 img/s | lr 4.95e-04 | gnorm 2.867 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 2.5870 | top1 39.30% | top3 60.27% | top5 69.62% | 327.8 img/s | lr 4.94e-04 | gnorm 2.854 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 2.5774 | top1 39.50% | top3 60.49% | top5 69.82% | 327.7 img/s | lr 4.94e-04 | gnorm 2.851 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 2.5797 | top1 39.45% | top3 60.38% | top5 69.68% | 327.7 img/s | lr 4.93e-04 | gnorm 2.843 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 2.5805 | top1 39.45% | top3 60.40% | top5 69.70% | 327.7 img/s | lr 4.93e-04 | gnorm 2.849 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 2.5805 | top1 39.45% | top3 60.40% | top5 69.70% | lr 4.93e-04 | grad_norm 2.849 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.9536 | top1 48.06% | top3 70.20% | top5 78.48%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 48.06%)
+Epoch time: 2.39 min
+
+=== Epoch 7/50 ===
+[train step 100/704] loss 2.5197 | top1 40.17% | top3 61.91% | top5 71.22% | 327.3 img/s | lr 4.93e-04 | gnorm 2.812 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 2.5290 | top1 40.87% | top3 62.18% | top5 71.23% | 327.6 img/s | lr 4.92e-04 | gnorm 2.809 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 2.4478 | top1 42.01% | top3 63.34% | top5 72.29% | 327.6 img/s | lr 4.92e-04 | gnorm 2.837 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 2.4355 | top1 42.32% | top3 63.30% | top5 72.29% | 327.7 img/s | lr 4.91e-04 | gnorm 2.853 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 2.4328 | top1 42.52% | top3 63.43% | top5 72.27% | 327.8 img/s | lr 4.90e-04 | gnorm 2.857 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 2.4636 | top1 42.36% | top3 63.29% | top5 72.06% | 327.8 img/s | lr 4.90e-04 | gnorm 2.837 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 700/704] loss 2.4512 | top1 42.68% | top3 63.60% | top5 72.35% | 327.8 img/s | lr 4.89e-04 | gnorm 2.837 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 704/704] loss 2.4500 | top1 42.70% | top3 63.61% | top5 72.37% | 327.7 img/s | lr 4.89e-04 | gnorm 2.845 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[Train] loss 2.4500 | top1 42.70% | top3 63.61% | top5 72.37% | lr 4.89e-04 | grad_norm 2.845 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 131072.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.8974 | top1 49.64% | top3 70.84% | top5 79.82%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 49.64%)
+Epoch time: 2.39 min
+
+=== Epoch 8/50 ===
+[train step 100/704] loss 2.5331 | top1 42.59% | top3 63.58% | top5 72.30% | 327.7 img/s | lr 4.88e-04 | gnorm 2.724 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 200/704] loss 2.4843 | top1 43.62% | top3 64.49% | top5 72.95% | 328.2 img/s | lr 4.88e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 2.4499 | top1 43.92% | top3 64.79% | top5 73.26% | 328.3 img/s | lr 4.87e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 2.4532 | top1 43.73% | top3 64.58% | top5 73.10% | 328.4 img/s | lr 4.86e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 2.4499 | top1 43.77% | top3 64.62% | top5 73.17% | 328.5 img/s | lr 4.85e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 2.4164 | top1 44.35% | top3 65.15% | top5 73.65% | 328.6 img/s | lr 4.85e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 2.4212 | top1 44.27% | top3 65.06% | top5 73.50% | 328.6 img/s | lr 4.84e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 2.4198 | top1 44.30% | top3 65.09% | top5 73.50% | 328.5 img/s | lr 4.84e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[Train] loss 2.4198 | top1 44.30% | top3 65.09% | top5 73.50% | lr 4.84e-04 | grad_norm inf | clip 100.0% | amp_overflows 1 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.8141 | top1 50.72% | top3 72.94% | top5 81.26%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 50.72%)
+Epoch time: 2.39 min
+
+=== Epoch 9/50 ===
+[train step 100/704] loss 2.2976 | top1 48.30% | top3 69.16% | top5 77.38% | 327.4 img/s | lr 4.83e-04 | gnorm 2.763 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 2.2433 | top1 48.66% | top3 69.48% | top5 77.73% | 327.8 img/s | lr 4.82e-04 | gnorm 2.792 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 2.2582 | top1 48.10% | top3 68.91% | top5 77.22% | 328.0 img/s | lr 4.81e-04 | gnorm 2.812 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 2.2676 | top1 47.93% | top3 68.55% | top5 76.88% | 328.0 img/s | lr 4.80e-04 | gnorm 2.798 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 2.2624 | top1 47.80% | top3 68.37% | top5 76.73% | 328.1 img/s | lr 4.79e-04 | gnorm 2.788 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 2.2836 | top1 47.37% | top3 67.86% | top5 76.16% | 328.0 img/s | lr 4.78e-04 | gnorm 2.780 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 2.2748 | top1 47.52% | top3 68.01% | top5 76.32% | 328.0 img/s | lr 4.77e-04 | gnorm 2.785 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 2.2741 | top1 47.52% | top3 68.01% | top5 76.31% | 327.9 img/s | lr 4.77e-04 | gnorm 2.791 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 2.2741 | top1 47.52% | top3 68.01% | top5 76.31% | lr 4.77e-04 | grad_norm 2.791 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.7172 | top1 53.88% | top3 75.44% | top5 83.22%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 53.88%)
+Epoch time: 2.39 min
+
+=== Epoch 10/50 ===
+[train step 100/704] loss 2.1183 | top1 51.27% | top3 70.62% | top5 78.23% | 327.5 img/s | lr 4.76e-04 | gnorm 2.798 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 2.1664 | top1 50.77% | top3 70.53% | top5 78.11% | 327.8 img/s | lr 4.75e-04 | gnorm 2.796 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 2.2262 | top1 49.48% | top3 69.59% | top5 77.31% | 327.8 img/s | lr 4.74e-04 | gnorm 2.776 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 2.2134 | top1 49.78% | top3 69.84% | top5 77.48% | 327.9 img/s | lr 4.73e-04 | gnorm 2.767 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 2.2489 | top1 49.29% | top3 69.26% | top5 77.06% | 327.9 img/s | lr 4.72e-04 | gnorm 2.759 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 2.2346 | top1 49.46% | top3 69.48% | top5 77.32% | 327.8 img/s | lr 4.71e-04 | gnorm 2.756 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 2.2495 | top1 49.29% | top3 69.33% | top5 77.13% | 327.8 img/s | lr 4.70e-04 | gnorm 2.748 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 2.2483 | top1 49.32% | top3 69.36% | top5 77.16% | 327.7 img/s | lr 4.70e-04 | gnorm 2.754 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 2.2483 | top1 49.32% | top3 69.36% | top5 77.16% | lr 4.70e-04 | grad_norm 2.754 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.6272 | top1 56.84% | top3 77.14% | top5 84.30%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 56.84%)
+Epoch time: 2.39 min
+
+=== Epoch 11/50 ===
+[train step 100/704] loss 2.1963 | top1 50.77% | top3 70.38% | top5 77.84% | 326.0 img/s | lr 4.69e-04 | gnorm 2.728 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 200/704] loss 2.1210 | top1 51.48% | top3 71.34% | top5 79.16% | 326.8 img/s | lr 4.68e-04 | gnorm 2.808 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 300/704] loss 2.0863 | top1 51.46% | top3 71.44% | top5 78.99% | 327.1 img/s | lr 4.66e-04 | gnorm 2.850 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 400/704] loss 2.1326 | top1 50.47% | top3 70.64% | top5 78.26% | 327.3 img/s | lr 4.65e-04 | gnorm 2.821 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 500/704] loss 2.1291 | top1 50.74% | top3 70.97% | top5 78.55% | 327.4 img/s | lr 4.64e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 2.1282 | top1 50.80% | top3 70.96% | top5 78.57% | 327.5 img/s | lr 4.63e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 2.1189 | top1 50.95% | top3 71.17% | top5 78.73% | 327.5 img/s | lr 4.62e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 2.1171 | top1 50.99% | top3 71.21% | top5 78.77% | 327.4 img/s | lr 4.62e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[Train] loss 2.1171 | top1 50.99% | top3 71.21% | top5 78.77% | lr 4.62e-04 | grad_norm inf | clip 100.0% | amp_overflows 1 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.5317 | top1 58.26% | top3 78.54% | top5 85.46%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 58.26%)
+Epoch time: 2.39 min
+
+=== Epoch 12/50 ===
+[train step 100/704] loss 1.9502 | top1 55.00% | top3 75.94% | top5 82.95% | 326.5 img/s | lr 4.60e-04 | gnorm 2.787 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.9669 | top1 54.88% | top3 75.16% | top5 82.16% | 326.9 img/s | lr 4.59e-04 | gnorm 2.831 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 2.0460 | top1 53.45% | top3 73.55% | top5 80.88% | 327.0 img/s | lr 4.58e-04 | gnorm 2.826 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 2.0421 | top1 53.63% | top3 73.59% | top5 80.83% | 327.1 img/s | lr 4.56e-04 | gnorm 2.829 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 2.0526 | top1 53.26% | top3 73.24% | top5 80.51% | 327.3 img/s | lr 4.55e-04 | gnorm 2.825 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 2.0534 | top1 53.28% | top3 73.17% | top5 80.54% | 327.4 img/s | lr 4.54e-04 | gnorm 2.822 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 2.0489 | top1 53.39% | top3 73.21% | top5 80.48% | 327.5 img/s | lr 4.52e-04 | gnorm 2.825 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 2.0505 | top1 53.39% | top3 73.20% | top5 80.47% | 327.4 img/s | lr 4.52e-04 | gnorm 2.833 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 2.0505 | top1 53.39% | top3 73.20% | top5 80.47% | lr 4.52e-04 | grad_norm 2.833 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.5637 | top1 58.04% | top3 78.48% | top5 85.42%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Epoch time: 2.39 min
+
+=== Epoch 13/50 ===
+[train step 100/704] loss 1.9546 | top1 55.38% | top3 75.41% | top5 82.66% | 327.1 img/s | lr 4.51e-04 | gnorm 2.755 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.8994 | top1 56.06% | top3 76.30% | top5 83.08% | 327.4 img/s | lr 4.50e-04 | gnorm 2.831 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.9200 | top1 55.64% | top3 75.71% | top5 82.55% | 327.6 img/s | lr 4.48e-04 | gnorm 2.850 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.9639 | top1 54.68% | top3 74.50% | top5 81.46% | 327.7 img/s | lr 4.47e-04 | gnorm 2.830 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.9609 | top1 54.69% | top3 74.61% | top5 81.48% | 327.8 img/s | lr 4.45e-04 | gnorm 2.846 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.9733 | top1 54.72% | top3 74.58% | top5 81.38% | 327.7 img/s | lr 4.44e-04 | gnorm 2.846 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.9752 | top1 54.73% | top3 74.42% | top5 81.30% | 327.6 img/s | lr 4.42e-04 | gnorm 2.844 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.9723 | top1 54.75% | top3 74.47% | top5 81.35% | 327.5 img/s | lr 4.42e-04 | gnorm 2.851 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 1.9723 | top1 54.75% | top3 74.47% | top5 81.35% | lr 4.42e-04 | grad_norm 2.851 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.4969 | top1 60.64% | top3 79.66% | top5 86.54%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 60.64%)
+Epoch time: 2.39 min
+
+=== Epoch 14/50 ===
+[train step 100/704] loss 1.8433 | top1 57.50% | top3 77.06% | top5 83.52% | 327.5 img/s | lr 4.41e-04 | gnorm 2.904 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.9268 | top1 56.27% | top3 75.65% | top5 82.55% | 327.5 img/s | lr 4.39e-04 | gnorm 2.860 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.9358 | top1 56.06% | top3 75.52% | top5 82.60% | 327.0 img/s | lr 4.38e-04 | gnorm 2.849 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.9342 | top1 56.22% | top3 75.62% | top5 82.70% | 327.1 img/s | lr 4.36e-04 | gnorm 2.840 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 500/704] loss 1.9587 | top1 55.95% | top3 75.19% | top5 82.31% | 327.2 img/s | lr 4.35e-04 | gnorm 2.822 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 600/704] loss 1.9635 | top1 55.81% | top3 75.12% | top5 82.21% | 327.3 img/s | lr 4.33e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.9611 | top1 56.03% | top3 75.32% | top5 82.28% | 327.3 img/s | lr 4.31e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.9576 | top1 56.08% | top3 75.37% | top5 82.33% | 327.2 img/s | lr 4.31e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[Train] loss 1.9576 | top1 56.08% | top3 75.37% | top5 82.33% | lr 4.31e-04 | grad_norm inf | clip 100.0% | amp_overflows 1 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.4304 | top1 60.30% | top3 80.78% | top5 87.50%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Epoch time: 2.39 min
+
+=== Epoch 15/50 ===
+[train step 100/704] loss 1.9453 | top1 57.27% | top3 76.91% | top5 83.58% | 325.9 img/s | lr 4.30e-04 | gnorm 2.807 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.8850 | top1 58.08% | top3 77.23% | top5 83.86% | 326.5 img/s | lr 4.28e-04 | gnorm 2.839 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.8818 | top1 58.22% | top3 77.17% | top5 83.82% | 326.7 img/s | lr 4.26e-04 | gnorm 2.857 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.8707 | top1 57.93% | top3 77.15% | top5 83.62% | 327.1 img/s | lr 4.25e-04 | gnorm 2.876 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.8867 | top1 57.35% | top3 76.53% | top5 83.10% | 327.3 img/s | lr 4.23e-04 | gnorm 2.880 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.8979 | top1 57.34% | top3 76.61% | top5 83.18% | 327.5 img/s | lr 4.21e-04 | gnorm 2.864 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.8767 | top1 57.60% | top3 76.84% | top5 83.39% | 327.7 img/s | lr 4.20e-04 | gnorm 2.885 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.8736 | top1 57.63% | top3 76.88% | top5 83.42% | 327.6 img/s | lr 4.19e-04 | gnorm 2.888 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 1.8736 | top1 57.63% | top3 76.88% | top5 83.42% | lr 4.19e-04 | grad_norm 2.888 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.3221 | top1 63.32% | top3 82.76% | top5 88.90%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 63.32%)
+Epoch time: 2.39 min
+
+=== Epoch 16/50 ===
+[train step 100/704] loss 1.9507 | top1 57.34% | top3 76.06% | top5 82.67% | 327.9 img/s | lr 4.18e-04 | gnorm 2.759 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.8797 | top1 58.61% | top3 76.95% | top5 83.48% | 328.0 img/s | lr 4.16e-04 | gnorm 2.839 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.9171 | top1 58.04% | top3 76.61% | top5 83.26% | 328.1 img/s | lr 4.14e-04 | gnorm 2.860 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.8616 | top1 58.70% | top3 77.12% | top5 83.59% | 328.3 img/s | lr 4.12e-04 | gnorm 2.879 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.8518 | top1 59.19% | top3 77.71% | top5 84.04% | 328.4 img/s | lr 4.11e-04 | gnorm 2.872 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.8885 | top1 58.54% | top3 77.09% | top5 83.55% | 328.2 img/s | lr 4.09e-04 | gnorm 2.855 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.8776 | top1 58.56% | top3 77.18% | top5 83.65% | 328.0 img/s | lr 4.07e-04 | gnorm 2.856 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.8769 | top1 58.58% | top3 77.18% | top5 83.66% | 327.9 img/s | lr 4.07e-04 | gnorm 2.859 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 1.8769 | top1 58.58% | top3 77.18% | top5 83.66% | lr 4.07e-04 | grad_norm 2.859 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.3955 | top1 61.98% | top3 81.58% | top5 88.04%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Epoch time: 2.38 min
+
+=== Epoch 17/50 ===
+[train step 100/704] loss 1.8372 | top1 59.44% | top3 77.39% | top5 83.84% | 327.2 img/s | lr 4.05e-04 | gnorm 2.784 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.7703 | top1 60.63% | top3 78.66% | top5 84.92% | 327.8 img/s | lr 4.03e-04 | gnorm 2.825 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.7425 | top1 61.04% | top3 79.12% | top5 85.46% | 327.8 img/s | lr 4.01e-04 | gnorm 2.865 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.7164 | top1 61.21% | top3 79.45% | top5 85.54% | 327.5 img/s | lr 4.00e-04 | gnorm 2.902 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.7322 | top1 61.01% | top3 79.41% | top5 85.43% | 327.7 img/s | lr 3.98e-04 | gnorm 2.917 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 600/704] loss 1.7367 | top1 61.12% | top3 79.34% | top5 85.36% | 327.8 img/s | lr 3.96e-04 | gnorm 2.916 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 700/704] loss 1.7476 | top1 60.86% | top3 79.04% | top5 85.12% | 327.9 img/s | lr 3.94e-04 | gnorm 2.912 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 704/704] loss 1.7468 | top1 60.88% | top3 79.07% | top5 85.15% | 327.8 img/s | lr 3.94e-04 | gnorm 2.917 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[Train] loss 1.7468 | top1 60.88% | top3 79.07% | top5 85.15% | lr 3.94e-04 | grad_norm 2.917 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 131072.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.3676 | top1 63.18% | top3 82.40% | top5 88.28%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Epoch time: 2.38 min
+
+=== Epoch 18/50 ===
+[train step 100/704] loss 1.7440 | top1 61.20% | top3 79.31% | top5 84.50% | 327.1 img/s | lr 3.92e-04 | gnorm 2.881 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 200/704] loss 1.6978 | top1 62.20% | top3 80.41% | top5 85.89% | 327.5 img/s | lr 3.90e-04 | gnorm 2.928 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 300/704] loss 1.7400 | top1 61.62% | top3 79.83% | top5 85.64% | 327.7 img/s | lr 3.88e-04 | gnorm 2.913 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 400/704] loss 1.7571 | top1 61.27% | top3 79.22% | top5 85.18% | 327.3 img/s | lr 3.86e-04 | gnorm 2.906 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 500/704] loss 1.7538 | top1 61.48% | top3 79.48% | top5 85.39% | 327.3 img/s | lr 3.84e-04 | gnorm 2.906 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 600/704] loss 1.7358 | top1 61.74% | top3 79.79% | top5 85.62% | 327.2 img/s | lr 3.82e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.7284 | top1 61.71% | top3 79.88% | top5 85.68% | 327.4 img/s | lr 3.80e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.7313 | top1 61.66% | top3 79.85% | top5 85.65% | 327.3 img/s | lr 3.80e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[Train] loss 1.7313 | top1 61.66% | top3 79.85% | top5 85.65% | lr 3.80e-04 | grad_norm inf | clip 100.0% | amp_overflows 1 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.3167 | top1 63.98% | top3 82.90% | top5 89.14%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 63.98%)
+Epoch time: 2.39 min
+
+=== Epoch 19/50 ===
+[train step 100/704] loss 1.6253 | top1 64.28% | top3 82.70% | top5 88.27% | 326.7 img/s | lr 3.78e-04 | gnorm 2.931 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.7345 | top1 61.84% | top3 80.40% | top5 86.29% | 327.2 img/s | lr 3.76e-04 | gnorm 2.904 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.7463 | top1 61.43% | top3 79.62% | top5 85.46% | 327.7 img/s | lr 3.74e-04 | gnorm 2.911 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.7852 | top1 60.41% | top3 78.75% | top5 84.62% | 327.8 img/s | lr 3.72e-04 | gnorm 2.889 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.7635 | top1 60.76% | top3 79.02% | top5 84.84% | 328.0 img/s | lr 3.70e-04 | gnorm 2.919 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.7935 | top1 60.40% | top3 78.53% | top5 84.42% | 328.0 img/s | lr 3.68e-04 | gnorm 2.904 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.8023 | top1 60.28% | top3 78.42% | top5 84.37% | 328.1 img/s | lr 3.66e-04 | gnorm 2.892 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.8025 | top1 60.29% | top3 78.45% | top5 84.40% | 328.1 img/s | lr 3.66e-04 | gnorm 2.896 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 1.8025 | top1 60.29% | top3 78.45% | top5 84.40% | lr 3.66e-04 | grad_norm 2.896 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.3066 | top1 64.34% | top3 83.48% | top5 89.34%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 64.34%)
+Epoch time: 2.39 min
+
+=== Epoch 20/50 ===
+[train step 100/704] loss 1.8104 | top1 61.73% | top3 79.53% | top5 85.31% | 328.0 img/s | lr 3.64e-04 | gnorm 2.882 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.7328 | top1 62.91% | top3 80.37% | top5 86.10% | 328.3 img/s | lr 3.61e-04 | gnorm 2.941 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.7163 | top1 62.54% | top3 79.89% | top5 85.81% | 328.3 img/s | lr 3.59e-04 | gnorm 2.946 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.6882 | top1 63.20% | top3 80.43% | top5 86.14% | 328.3 img/s | lr 3.57e-04 | gnorm 2.926 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.6729 | top1 63.33% | top3 80.61% | top5 86.34% | 328.2 img/s | lr 3.55e-04 | gnorm 2.927 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.6527 | top1 63.71% | top3 80.88% | top5 86.46% | 328.2 img/s | lr 3.53e-04 | gnorm 2.940 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.6613 | top1 63.49% | top3 80.74% | top5 86.38% | 328.1 img/s | lr 3.51e-04 | gnorm 2.935 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.6625 | top1 63.49% | top3 80.73% | top5 86.36% | 328.0 img/s | lr 3.51e-04 | gnorm 2.939 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 1.6625 | top1 63.49% | top3 80.73% | top5 86.36% | lr 3.51e-04 | grad_norm 2.939 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.2318 | top1 65.96% | top3 84.30% | top5 90.22%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 65.96%)
+Epoch time: 2.39 min
+
+=== Epoch 21/50 ===
+[train step 100/704] loss 1.9111 | top1 60.73% | top3 78.91% | top5 85.05% | 327.0 img/s | lr 3.49e-04 | gnorm 2.860 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.7810 | top1 62.40% | top3 80.33% | top5 85.95% | 327.8 img/s | lr 3.46e-04 | gnorm 2.918 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.7879 | top1 62.35% | top3 80.03% | top5 85.71% | 328.0 img/s | lr 3.44e-04 | gnorm 2.919 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.7270 | top1 63.26% | top3 80.68% | top5 86.17% | 328.0 img/s | lr 3.42e-04 | gnorm 2.934 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.6989 | top1 63.78% | top3 81.18% | top5 86.55% | 328.0 img/s | lr 3.40e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.7000 | top1 63.40% | top3 80.82% | top5 86.18% | 328.1 img/s | lr 3.38e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.6688 | top1 63.97% | top3 81.23% | top5 86.53% | 328.2 img/s | lr 3.35e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.6685 | top1 64.00% | top3 81.23% | top5 86.53% | 328.1 img/s | lr 3.35e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[Train] loss 1.6685 | top1 64.00% | top3 81.23% | top5 86.53% | lr 3.35e-04 | grad_norm inf | clip 100.0% | amp_overflows 1 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.2243 | top1 66.30% | top3 84.46% | top5 90.32%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 66.30%)
+Epoch time: 2.39 min
+
+=== Epoch 22/50 ===
+[train step 100/704] loss 1.4233 | top1 68.61% | top3 85.42% | top5 90.09% | 328.6 img/s | lr 3.33e-04 | gnorm 2.949 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.4916 | top1 67.34% | top3 84.05% | top5 88.98% | 328.9 img/s | lr 3.31e-04 | gnorm 2.955 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.5300 | top1 66.77% | top3 83.29% | top5 88.42% | 328.9 img/s | lr 3.29e-04 | gnorm 2.988 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.5473 | top1 66.68% | top3 83.19% | top5 88.34% | 328.7 img/s | lr 3.27e-04 | gnorm 2.993 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.5761 | top1 66.18% | top3 82.91% | top5 88.08% | 328.5 img/s | lr 3.24e-04 | gnorm 3.009 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.5762 | top1 66.02% | top3 82.54% | top5 87.68% | 328.4 img/s | lr 3.22e-04 | gnorm 3.025 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.5681 | top1 66.03% | top3 82.68% | top5 87.84% | 328.5 img/s | lr 3.20e-04 | gnorm 3.025 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.5674 | top1 66.06% | top3 82.70% | top5 87.85% | 328.5 img/s | lr 3.20e-04 | gnorm 3.031 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 1.5674 | top1 66.06% | top3 82.70% | top5 87.85% | lr 3.20e-04 | grad_norm 3.031 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.2223 | top1 66.76% | top3 84.20% | top5 90.00%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 66.76%)
+Epoch time: 2.39 min
+
+=== Epoch 23/50 ===
+[train step 100/704] loss 1.6039 | top1 65.84% | top3 82.47% | top5 87.97% | 328.3 img/s | lr 3.17e-04 | gnorm 2.954 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.5450 | top1 67.35% | top3 83.39% | top5 88.49% | 328.3 img/s | lr 3.15e-04 | gnorm 2.962 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.5619 | top1 66.61% | top3 82.73% | top5 87.96% | 327.9 img/s | lr 3.13e-04 | gnorm 2.960 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.5306 | top1 66.98% | top3 83.21% | top5 88.28% | 327.8 img/s | lr 3.11e-04 | gnorm 2.979 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.5456 | top1 66.57% | top3 82.90% | top5 88.06% | 327.9 img/s | lr 3.08e-04 | gnorm 2.999 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.5617 | top1 66.17% | top3 82.65% | top5 87.82% | 328.0 img/s | lr 3.06e-04 | gnorm 3.010 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.5663 | top1 66.10% | top3 82.66% | top5 87.83% | 328.0 img/s | lr 3.04e-04 | gnorm 3.011 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.5658 | top1 66.13% | top3 82.69% | top5 87.87% | 327.9 img/s | lr 3.04e-04 | gnorm 3.016 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 1.5658 | top1 66.13% | top3 82.69% | top5 87.87% | lr 3.04e-04 | grad_norm 3.016 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.2056 | top1 66.86% | top3 84.80% | top5 90.16%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 66.86%)
+Epoch time: 2.39 min
+
+=== Epoch 24/50 ===
+[train step 100/704] loss 1.6201 | top1 65.91% | top3 81.75% | top5 86.92% | 328.1 img/s | lr 3.01e-04 | gnorm 2.998 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.5336 | top1 68.41% | top3 84.08% | top5 88.62% | 328.3 img/s | lr 2.99e-04 | gnorm 2.967 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.5612 | top1 67.78% | top3 83.55% | top5 88.38% | 328.2 img/s | lr 2.97e-04 | gnorm 2.988 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.5345 | top1 67.92% | top3 83.67% | top5 88.53% | 328.3 img/s | lr 2.95e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.5529 | top1 67.35% | top3 83.28% | top5 88.35% | 328.4 img/s | lr 2.92e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.5561 | top1 67.22% | top3 83.30% | top5 88.36% | 328.4 img/s | lr 2.90e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.5648 | top1 66.95% | top3 83.11% | top5 88.23% | 328.3 img/s | lr 2.88e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.5645 | top1 66.98% | top3 83.14% | top5 88.26% | 328.2 img/s | lr 2.87e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[Train] loss 1.5645 | top1 66.98% | top3 83.14% | top5 88.26% | lr 2.87e-04 | grad_norm inf | clip 100.0% | amp_overflows 1 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.1833 | top1 67.96% | top3 85.32% | top5 90.90%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 67.96%)
+Epoch time: 2.39 min
+
+=== Epoch 25/50 ===
+[train step 100/704] loss 1.5344 | top1 68.23% | top3 83.59% | top5 88.78% | 327.7 img/s | lr 2.85e-04 | gnorm 2.928 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.5301 | top1 68.27% | top3 83.67% | top5 88.77% | 328.3 img/s | lr 2.83e-04 | gnorm 2.934 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.5431 | top1 68.30% | top3 83.90% | top5 88.73% | 328.2 img/s | lr 2.81e-04 | gnorm 2.939 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.5305 | top1 68.48% | top3 84.21% | top5 89.01% | 328.1 img/s | lr 2.78e-04 | gnorm 2.974 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.5432 | top1 68.13% | top3 83.86% | top5 88.82% | 328.2 img/s | lr 2.76e-04 | gnorm 2.987 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.5094 | top1 68.34% | top3 84.00% | top5 88.82% | 328.2 img/s | lr 2.74e-04 | gnorm 3.010 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.5136 | top1 67.99% | top3 83.67% | top5 88.55% | 328.2 img/s | lr 2.71e-04 | gnorm 3.032 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.5134 | top1 67.97% | top3 83.65% | top5 88.54% | 328.2 img/s | lr 2.71e-04 | gnorm 3.043 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 1.5134 | top1 67.97% | top3 83.65% | top5 88.54% | lr 2.71e-04 | grad_norm 3.043 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.1971 | top1 67.74% | top3 85.78% | top5 90.76%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Epoch time: 2.38 min
+
+=== Epoch 26/50 ===
+[train step 100/704] loss 1.4613 | top1 70.67% | top3 85.50% | top5 89.88% | 327.8 img/s | lr 2.69e-04 | gnorm 2.983 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.4146 | top1 70.35% | top3 85.29% | top5 89.72% | 328.2 img/s | lr 2.66e-04 | gnorm 3.004 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.4288 | top1 70.19% | top3 85.08% | top5 89.69% | 328.3 img/s | lr 2.64e-04 | gnorm 3.026 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.3895 | top1 70.56% | top3 85.33% | top5 89.85% | 328.3 img/s | lr 2.62e-04 | gnorm 3.057 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.4262 | top1 70.10% | top3 85.05% | top5 89.67% | 328.3 img/s | lr 2.59e-04 | gnorm 3.053 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.4529 | top1 69.57% | top3 84.73% | top5 89.33% | 328.3 img/s | lr 2.57e-04 | gnorm 3.049 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.4651 | top1 69.42% | top3 84.58% | top5 89.17% | 328.3 img/s | lr 2.55e-04 | gnorm 3.051 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.4643 | top1 69.40% | top3 84.58% | top5 89.17% | 328.2 img/s | lr 2.55e-04 | gnorm 3.058 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 1.4643 | top1 69.40% | top3 84.58% | top5 89.17% | lr 2.55e-04 | grad_norm 3.058 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.1413 | top1 69.14% | top3 86.14% | top5 90.98%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 69.14%)
+Epoch time: 2.39 min
+
+=== Epoch 27/50 ===
+[train step 100/704] loss 1.3831 | top1 69.48% | top3 84.12% | top5 88.97% | 327.8 img/s | lr 2.52e-04 | gnorm 3.006 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.3525 | top1 71.09% | top3 85.88% | top5 90.08% | 328.0 img/s | lr 2.50e-04 | gnorm 2.973 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.3773 | top1 71.19% | top3 86.17% | top5 90.40% | 328.1 img/s | lr 2.48e-04 | gnorm 2.983 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 400/704] loss 1.4187 | top1 70.41% | top3 85.56% | top5 89.91% | 328.1 img/s | lr 2.45e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.4352 | top1 70.18% | top3 85.32% | top5 89.71% | 328.1 img/s | lr 2.43e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.4215 | top1 70.51% | top3 85.53% | top5 89.87% | 328.1 img/s | lr 2.41e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.4026 | top1 70.61% | top3 85.58% | top5 89.93% | 328.1 img/s | lr 2.38e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.4051 | top1 70.58% | top3 85.54% | top5 89.90% | 328.0 img/s | lr 2.38e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[Train] loss 1.4051 | top1 70.58% | top3 85.54% | top5 89.90% | lr 2.38e-04 | grad_norm inf | clip 100.0% | amp_overflows 1 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.1246 | top1 68.88% | top3 86.70% | top5 91.54%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Epoch time: 2.38 min
+
+=== Epoch 28/50 ===
+[train step 100/704] loss 1.3386 | top1 72.56% | top3 86.75% | top5 90.70% | 327.4 img/s | lr 2.36e-04 | gnorm 2.986 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.4365 | top1 70.34% | top3 85.17% | top5 89.30% | 327.6 img/s | lr 2.33e-04 | gnorm 2.981 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.3956 | top1 71.23% | top3 85.73% | top5 89.80% | 327.9 img/s | lr 2.31e-04 | gnorm 2.984 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.3650 | top1 71.44% | top3 85.94% | top5 90.06% | 327.9 img/s | lr 2.29e-04 | gnorm 3.045 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.3449 | top1 71.78% | top3 86.14% | top5 90.23% | 327.9 img/s | lr 2.26e-04 | gnorm 3.045 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.3891 | top1 70.90% | top3 85.50% | top5 89.74% | 327.8 img/s | lr 2.24e-04 | gnorm 3.045 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.3754 | top1 71.15% | top3 85.76% | top5 89.97% | 327.9 img/s | lr 2.22e-04 | gnorm 3.059 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.3715 | top1 71.22% | top3 85.81% | top5 90.01% | 327.8 img/s | lr 2.22e-04 | gnorm 3.063 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 1.3715 | top1 71.22% | top3 85.81% | top5 90.01% | lr 2.22e-04 | grad_norm 3.063 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.0919 | top1 70.44% | top3 86.58% | top5 91.56%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 70.44%)
+Epoch time: 2.39 min
+
+=== Epoch 29/50 ===
+[train step 100/704] loss 1.3846 | top1 72.38% | top3 87.06% | top5 90.97% | 327.2 img/s | lr 2.19e-04 | gnorm 3.007 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.4905 | top1 70.62% | top3 85.44% | top5 89.55% | 327.5 img/s | lr 2.17e-04 | gnorm 2.984 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.4736 | top1 70.64% | top3 85.51% | top5 89.66% | 327.7 img/s | lr 2.15e-04 | gnorm 2.997 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.4648 | top1 70.74% | top3 85.51% | top5 89.73% | 327.8 img/s | lr 2.12e-04 | gnorm 3.026 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.4798 | top1 70.38% | top3 85.39% | top5 89.63% | 327.8 img/s | lr 2.10e-04 | gnorm 3.037 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.4943 | top1 70.10% | top3 85.14% | top5 89.47% | 327.9 img/s | lr 2.08e-04 | gnorm 3.044 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.4754 | top1 70.38% | top3 85.33% | top5 89.59% | 327.9 img/s | lr 2.05e-04 | gnorm 3.051 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.4723 | top1 70.42% | top3 85.37% | top5 89.62% | 327.8 img/s | lr 2.05e-04 | gnorm 3.059 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 1.4723 | top1 70.42% | top3 85.37% | top5 89.62% | lr 2.05e-04 | grad_norm 3.059 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.0477 | top1 70.86% | top3 87.30% | top5 92.24%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 70.86%)
+Epoch time: 2.39 min
+
+=== Epoch 30/50 ===
+[train step 100/704] loss 1.3867 | top1 71.77% | top3 86.44% | top5 90.50% | 327.3 img/s | lr 2.03e-04 | gnorm 3.026 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.2884 | top1 73.52% | top3 87.52% | top5 91.28% | 327.8 img/s | lr 2.01e-04 | gnorm 3.056 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.3297 | top1 72.11% | top3 86.42% | top5 90.31% | 328.0 img/s | lr 1.98e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.3116 | top1 72.73% | top3 86.91% | top5 90.73% | 328.1 img/s | lr 1.96e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.3031 | top1 73.21% | top3 87.07% | top5 90.84% | 328.2 img/s | lr 1.94e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.3192 | top1 72.98% | top3 86.89% | top5 90.68% | 328.2 img/s | lr 1.92e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.3473 | top1 72.56% | top3 86.59% | top5 90.44% | 328.2 img/s | lr 1.89e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.3529 | top1 72.42% | top3 86.47% | top5 90.34% | 328.1 img/s | lr 1.89e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[Train] loss 1.3529 | top1 72.42% | top3 86.47% | top5 90.34% | lr 1.89e-04 | grad_norm inf | clip 100.0% | amp_overflows 1 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.1431 | top1 70.28% | top3 86.60% | top5 91.34%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Epoch time: 2.38 min
+
+=== Epoch 31/50 ===
+[train step 100/704] loss 1.4338 | top1 69.75% | top3 83.67% | top5 88.27% | 326.8 img/s | lr 1.87e-04 | gnorm 3.016 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.2862 | top1 73.47% | top3 86.66% | top5 90.71% | 327.5 img/s | lr 1.85e-04 | gnorm 3.050 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.3264 | top1 73.76% | top3 87.32% | top5 91.11% | 327.8 img/s | lr 1.82e-04 | gnorm 3.048 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.3300 | top1 73.70% | top3 87.38% | top5 91.09% | 327.9 img/s | lr 1.80e-04 | gnorm 3.034 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.3015 | top1 74.19% | top3 87.82% | top5 91.44% | 328.0 img/s | lr 1.78e-04 | gnorm 3.052 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.3084 | top1 74.06% | top3 87.71% | top5 91.37% | 328.0 img/s | lr 1.76e-04 | gnorm 3.051 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.3010 | top1 74.31% | top3 87.93% | top5 91.56% | 328.1 img/s | lr 1.73e-04 | gnorm 3.049 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.3006 | top1 74.34% | top3 87.95% | top5 91.58% | 328.0 img/s | lr 1.73e-04 | gnorm 3.057 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 1.3006 | top1 74.34% | top3 87.95% | top5 91.58% | lr 1.73e-04 | grad_norm 3.057 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.0588 | top1 70.94% | top3 87.38% | top5 91.72%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 70.94%)
+Epoch time: 2.39 min
+
+=== Epoch 32/50 ===
+[train step 100/704] loss 1.3172 | top1 74.23% | top3 86.86% | top5 90.70% | 327.5 img/s | lr 1.71e-04 | gnorm 2.969 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.2717 | top1 75.45% | top3 87.70% | top5 91.32% | 327.9 img/s | lr 1.69e-04 | gnorm 2.960 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.2374 | top1 75.84% | top3 88.28% | top5 91.78% | 328.3 img/s | lr 1.67e-04 | gnorm 3.001 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.2726 | top1 75.18% | top3 88.05% | top5 91.69% | 328.3 img/s | lr 1.65e-04 | gnorm 3.008 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.2659 | top1 75.26% | top3 88.14% | top5 91.77% | 328.4 img/s | lr 1.62e-04 | gnorm 3.024 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.2712 | top1 75.17% | top3 88.16% | top5 91.79% | 328.5 img/s | lr 1.60e-04 | gnorm 3.044 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.2773 | top1 74.87% | top3 87.90% | top5 91.59% | 328.3 img/s | lr 1.58e-04 | gnorm 3.050 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.2800 | top1 74.83% | top3 87.87% | top5 91.57% | 328.2 img/s | lr 1.58e-04 | gnorm 3.055 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 1.2800 | top1 74.83% | top3 87.87% | top5 91.57% | lr 1.58e-04 | grad_norm 3.055 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.0677 | top1 70.98% | top3 86.96% | top5 91.92%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 70.98%)
+Epoch time: 2.39 min
+
+=== Epoch 33/50 ===
+[train step 100/704] loss 1.2208 | top1 76.22% | top3 88.33% | top5 91.83% | 325.2 img/s | lr 1.56e-04 | gnorm 2.934 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.2311 | top1 76.11% | top3 88.31% | top5 91.86% | 325.8 img/s | lr 1.54e-04 | gnorm 2.988 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 300/704] loss 1.2573 | top1 75.51% | top3 87.95% | top5 91.66% | 326.5 img/s | lr 1.51e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.2890 | top1 74.90% | top3 87.71% | top5 91.48% | 326.5 img/s | lr 1.49e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.3008 | top1 74.56% | top3 87.58% | top5 91.36% | 326.4 img/s | lr 1.47e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.3060 | top1 74.35% | top3 87.33% | top5 91.11% | 326.4 img/s | lr 1.45e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.3033 | top1 74.42% | top3 87.37% | top5 91.13% | 326.4 img/s | lr 1.43e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.3091 | top1 74.31% | top3 87.29% | top5 91.08% | 326.3 img/s | lr 1.43e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[Train] loss 1.3091 | top1 74.31% | top3 87.29% | top5 91.08% | lr 1.43e-04 | grad_norm inf | clip 100.0% | amp_overflows 1 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.0874 | top1 71.36% | top3 87.38% | top5 91.92%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 71.36%)
+Epoch time: 2.40 min
+
+=== Epoch 34/50 ===
+[train step 100/704] loss 1.4810 | top1 71.73% | top3 85.17% | top5 89.11% | 325.2 img/s | lr 1.41e-04 | gnorm 3.073 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.3714 | top1 73.82% | top3 86.83% | top5 90.60% | 325.9 img/s | lr 1.39e-04 | gnorm 3.048 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.3148 | top1 74.70% | top3 87.38% | top5 91.11% | 326.5 img/s | lr 1.36e-04 | gnorm 3.038 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.2760 | top1 75.15% | top3 87.69% | top5 91.34% | 326.6 img/s | lr 1.34e-04 | gnorm 3.036 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.2816 | top1 75.09% | top3 87.78% | top5 91.42% | 326.7 img/s | lr 1.32e-04 | gnorm 3.040 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.2796 | top1 75.09% | top3 87.74% | top5 91.33% | 326.8 img/s | lr 1.30e-04 | gnorm 3.032 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.2752 | top1 75.04% | top3 87.74% | top5 91.32% | 326.9 img/s | lr 1.28e-04 | gnorm 3.036 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.2738 | top1 75.08% | top3 87.77% | top5 91.34% | 326.8 img/s | lr 1.28e-04 | gnorm 3.040 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 1.2738 | top1 75.08% | top3 87.77% | top5 91.34% | lr 1.28e-04 | grad_norm 3.040 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.0226 | top1 72.20% | top3 87.92% | top5 92.58%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 72.20%)
+Epoch time: 2.40 min
+
+=== Epoch 35/50 ===
+[train step 100/704] loss 1.1780 | top1 78.61% | top3 89.97% | top5 93.25% | 326.8 img/s | lr 1.26e-04 | gnorm 2.997 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.2951 | top1 75.78% | top3 88.16% | top5 91.75% | 327.4 img/s | lr 1.24e-04 | gnorm 3.052 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.2702 | top1 76.22% | top3 88.44% | top5 91.96% | 327.6 img/s | lr 1.22e-04 | gnorm 3.066 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.2945 | top1 75.76% | top3 88.18% | top5 91.78% | 327.7 img/s | lr 1.20e-04 | gnorm 3.066 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.3185 | top1 75.63% | top3 88.09% | top5 91.75% | 327.7 img/s | lr 1.18e-04 | gnorm 3.075 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.3027 | top1 75.76% | top3 88.20% | top5 91.78% | 327.7 img/s | lr 1.16e-04 | gnorm 3.070 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.2880 | top1 76.10% | top3 88.40% | top5 91.97% | 327.7 img/s | lr 1.14e-04 | gnorm 3.070 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.2844 | top1 76.14% | top3 88.43% | top5 92.00% | 327.6 img/s | lr 1.14e-04 | gnorm 3.078 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 1.2844 | top1 76.14% | top3 88.43% | top5 92.00% | lr 1.14e-04 | grad_norm 3.078 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.0236 | top1 72.46% | top3 87.48% | top5 92.30%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 72.46%)
+Epoch time: 2.39 min
+
+=== Epoch 36/50 ===
+[train step 100/704] loss 1.3339 | top1 74.02% | top3 86.83% | top5 90.48% | 327.6 img/s | lr 1.12e-04 | gnorm 2.941 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.2337 | top1 75.95% | top3 88.23% | top5 91.66% | 327.9 img/s | lr 1.10e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.1886 | top1 76.76% | top3 88.66% | top5 91.98% | 327.9 img/s | lr 1.08e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.1751 | top1 77.12% | top3 88.86% | top5 92.13% | 328.0 img/s | lr 1.06e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.1933 | top1 76.80% | top3 88.82% | top5 92.10% | 328.1 img/s | lr 1.04e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.2116 | top1 76.48% | top3 88.52% | top5 91.88% | 328.2 img/s | lr 1.02e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.2074 | top1 76.53% | top3 88.64% | top5 91.98% | 328.3 img/s | lr 1.01e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.2050 | top1 76.58% | top3 88.68% | top5 92.01% | 328.3 img/s | lr 1.01e-04 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[Train] loss 1.2050 | top1 76.58% | top3 88.68% | top5 92.01% | lr 1.01e-04 | grad_norm inf | clip 100.0% | amp_overflows 1 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.0116 | top1 73.08% | top3 88.36% | top5 92.88%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 73.08%)
+Epoch time: 2.39 min
+
+=== Epoch 37/50 ===
+[train step 100/704] loss 1.2009 | top1 78.02% | top3 89.36% | top5 92.62% | 327.4 img/s | lr 9.87e-05 | gnorm 2.965 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.2526 | top1 76.14% | top3 88.06% | top5 91.39% | 327.4 img/s | lr 9.68e-05 | gnorm 2.943 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.2475 | top1 75.66% | top3 87.76% | top5 91.15% | 327.7 img/s | lr 9.50e-05 | gnorm 2.996 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.2475 | top1 75.71% | top3 87.92% | top5 91.35% | 327.9 img/s | lr 9.31e-05 | gnorm 3.022 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.2265 | top1 76.42% | top3 88.42% | top5 91.72% | 328.1 img/s | lr 9.13e-05 | gnorm 3.010 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.2242 | top1 76.81% | top3 88.77% | top5 92.03% | 328.1 img/s | lr 8.95e-05 | gnorm 3.025 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.2087 | top1 77.30% | top3 89.13% | top5 92.37% | 328.0 img/s | lr 8.78e-05 | gnorm 3.034 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.2111 | top1 77.28% | top3 89.10% | top5 92.34% | 327.9 img/s | lr 8.77e-05 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 32768.0
+[Train] loss 1.2111 | top1 77.28% | top3 89.10% | top5 92.34% | lr 8.77e-05 | grad_norm inf | clip 100.0% | amp_overflows 1 | nonfinite_loss 0 | scale 32768.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.0044 | top1 72.52% | top3 88.66% | top5 92.94%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Epoch time: 2.38 min
+
+=== Epoch 38/50 ===
+[train step 100/704] loss 1.1806 | top1 78.92% | top3 89.47% | top5 92.84% | 327.7 img/s | lr 8.59e-05 | gnorm 2.923 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 200/704] loss 1.1337 | top1 79.69% | top3 90.11% | top5 93.21% | 328.0 img/s | lr 8.42e-05 | gnorm 2.959 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 300/704] loss 1.2155 | top1 78.49% | top3 89.44% | top5 92.71% | 328.0 img/s | lr 8.24e-05 | gnorm 2.977 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 400/704] loss 1.1989 | top1 78.39% | top3 89.51% | top5 92.76% | 328.1 img/s | lr 8.07e-05 | gnorm 3.019 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 500/704] loss 1.1707 | top1 78.58% | top3 89.72% | top5 92.88% | 328.1 img/s | lr 7.90e-05 | gnorm 3.032 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 600/704] loss 1.1812 | top1 78.33% | top3 89.62% | top5 92.77% | 328.1 img/s | lr 7.73e-05 | gnorm 3.040 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 700/704] loss 1.1848 | top1 78.26% | top3 89.44% | top5 92.58% | 328.1 img/s | lr 7.56e-05 | gnorm 3.044 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 704/704] loss 1.1861 | top1 78.25% | top3 89.43% | top5 92.58% | 328.0 img/s | lr 7.55e-05 | gnorm 3.051 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[Train] loss 1.1861 | top1 78.25% | top3 89.43% | top5 92.58% | lr 7.55e-05 | grad_norm 3.051 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 32768.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.0248 | top1 72.38% | top3 88.26% | top5 92.54%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Epoch time: 2.38 min
+
+=== Epoch 39/50 ===
+[train step 100/704] loss 1.0999 | top1 80.05% | top3 90.48% | top5 93.53% | 327.4 img/s | lr 7.39e-05 | gnorm 2.974 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 200/704] loss 1.1210 | top1 78.63% | top3 89.62% | top5 92.70% | 327.6 img/s | lr 7.22e-05 | gnorm 3.032 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 300/704] loss 1.1574 | top1 78.48% | top3 89.61% | top5 92.73% | 327.7 img/s | lr 7.06e-05 | gnorm 3.044 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 400/704] loss 1.1571 | top1 78.48% | top3 89.71% | top5 92.91% | 327.8 img/s | lr 6.90e-05 | gnorm 3.061 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 500/704] loss 1.1650 | top1 78.38% | top3 89.50% | top5 92.72% | 327.9 img/s | lr 6.74e-05 | gnorm 3.057 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 600/704] loss 1.1912 | top1 77.98% | top3 89.34% | top5 92.59% | 327.9 img/s | lr 6.58e-05 | gnorm 3.068 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 700/704] loss 1.1868 | top1 78.05% | top3 89.37% | top5 92.65% | 327.8 img/s | lr 6.42e-05 | gnorm 3.058 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 704/704] loss 1.1886 | top1 78.02% | top3 89.34% | top5 92.63% | 327.7 img/s | lr 6.42e-05 | gnorm 3.075 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[Train] loss 1.1886 | top1 78.02% | top3 89.34% | top5 92.63% | lr 6.42e-05 | grad_norm 3.075 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 32768.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.0113 | top1 73.30% | top3 88.12% | top5 92.22%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 73.30%)
+Epoch time: 2.39 min
+
+=== Epoch 40/50 ===
+[train step 100/704] loss 1.1488 | top1 77.89% | top3 89.39% | top5 92.12% | 327.1 img/s | lr 6.26e-05 | gnorm 3.004 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 200/704] loss 1.0980 | top1 80.02% | top3 90.63% | top5 93.26% | 327.7 img/s | lr 6.11e-05 | gnorm 2.965 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 300/704] loss 1.1460 | top1 78.94% | top3 89.97% | top5 92.84% | 327.7 img/s | lr 5.96e-05 | gnorm 2.978 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 400/704] loss 1.1914 | top1 77.76% | top3 89.23% | top5 92.31% | 327.8 img/s | lr 5.81e-05 | gnorm 3.016 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 500/704] loss 1.2273 | top1 77.07% | top3 88.69% | top5 91.94% | 327.8 img/s | lr 5.66e-05 | gnorm 3.013 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 600/704] loss 1.2191 | top1 77.03% | top3 88.53% | top5 91.87% | 327.8 img/s | lr 5.51e-05 | gnorm 3.017 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.1860 | top1 77.56% | top3 88.93% | top5 92.12% | 327.8 img/s | lr 5.37e-05 | gnorm 3.034 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.1849 | top1 77.58% | top3 88.94% | top5 92.14% | 327.7 img/s | lr 5.36e-05 | gnorm 3.037 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 1.1849 | top1 77.58% | top3 88.94% | top5 92.14% | lr 5.36e-05 | grad_norm 3.037 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 0.9871 | top1 72.46% | top3 88.72% | top5 92.66%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Epoch time: 2.39 min
+
+=== Epoch 41/50 ===
+[train step 100/704] loss 1.1563 | top1 79.64% | top3 89.97% | top5 92.91% | 327.3 img/s | lr 5.22e-05 | gnorm 3.046 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.1341 | top1 79.17% | top3 89.71% | top5 92.70% | 327.2 img/s | lr 5.08e-05 | gnorm 2.971 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.1498 | top1 79.25% | top3 90.03% | top5 92.92% | 327.2 img/s | lr 4.94e-05 | gnorm 3.009 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.1508 | top1 79.09% | top3 90.09% | top5 93.03% | 327.6 img/s | lr 4.80e-05 | gnorm 3.034 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.1378 | top1 78.98% | top3 89.92% | top5 92.83% | 327.7 img/s | lr 4.66e-05 | gnorm 3.042 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.1413 | top1 79.06% | top3 90.07% | top5 93.00% | 327.9 img/s | lr 4.53e-05 | gnorm 3.044 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.1349 | top1 79.24% | top3 90.20% | top5 93.08% | 328.0 img/s | lr 4.40e-05 | gnorm 3.033 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.1322 | top1 79.30% | top3 90.23% | top5 93.10% | 327.9 img/s | lr 4.39e-05 | gnorm 3.040 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 1.1322 | top1 79.30% | top3 90.23% | top5 93.10% | lr 4.39e-05 | grad_norm 3.040 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 0.9726 | top1 73.62% | top3 88.70% | top5 92.76%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 73.62%)
+Epoch time: 2.39 min
+
+=== Epoch 42/50 ===
+[train step 100/704] loss 0.9690 | top1 81.39% | top3 91.14% | top5 93.56% | 327.1 img/s | lr 4.26e-05 | gnorm 2.894 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.0355 | top1 80.38% | top3 90.70% | top5 93.47% | 327.5 img/s | lr 4.13e-05 | gnorm 2.938 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.1010 | top1 79.52% | top3 90.12% | top5 93.09% | 327.4 img/s | lr 4.01e-05 | gnorm 2.952 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.1282 | top1 79.10% | top3 89.85% | top5 92.82% | 327.7 img/s | lr 3.88e-05 | gnorm 2.962 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.1434 | top1 79.06% | top3 89.83% | top5 92.90% | 327.9 img/s | lr 3.76e-05 | gnorm 2.958 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.1224 | top1 79.58% | top3 90.09% | top5 93.04% | 328.0 img/s | lr 3.64e-05 | gnorm 2.942 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.1415 | top1 78.95% | top3 89.67% | top5 92.71% | 328.2 img/s | lr 3.52e-05 | gnorm 2.961 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.1440 | top1 78.89% | top3 89.61% | top5 92.65% | 328.1 img/s | lr 3.51e-05 | gnorm 2.966 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 1.1440 | top1 78.89% | top3 89.61% | top5 92.65% | lr 3.51e-05 | grad_norm 2.966 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 0.9955 | top1 73.00% | top3 87.88% | top5 92.34%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Epoch time: 2.38 min
+
+=== Epoch 43/50 ===
+[train step 100/704] loss 1.1875 | top1 79.09% | top3 89.25% | top5 92.22% | 327.7 img/s | lr 3.39e-05 | gnorm 3.040 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.2432 | top1 77.97% | top3 88.70% | top5 91.81% | 327.6 img/s | lr 3.28e-05 | gnorm 2.989 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.2067 | top1 78.43% | top3 88.91% | top5 91.93% | 327.5 img/s | lr 3.17e-05 | gnorm 2.971 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.1354 | top1 79.69% | top3 89.84% | top5 92.69% | 327.7 img/s | lr 3.05e-05 | gnorm 2.982 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.1270 | top1 80.27% | top3 90.24% | top5 93.07% | 327.8 img/s | lr 2.94e-05 | gnorm 2.978 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 600/704] loss 1.1383 | top1 80.00% | top3 90.17% | top5 93.00% | 327.8 img/s | lr 2.84e-05 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.1031 | top1 80.54% | top3 90.56% | top5 93.26% | 327.9 img/s | lr 2.73e-05 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.1041 | top1 80.56% | top3 90.58% | top5 93.28% | 327.8 img/s | lr 2.73e-05 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[Train] loss 1.1041 | top1 80.56% | top3 90.58% | top5 93.28% | lr 2.73e-05 | grad_norm inf | clip 100.0% | amp_overflows 1 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 0.9576 | top1 73.94% | top3 89.16% | top5 93.12%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 73.94%)
+Epoch time: 2.39 min
+
+=== Epoch 44/50 ===
+[train step 100/704] loss 1.0519 | top1 80.42% | top3 90.61% | top5 93.48% | 327.6 img/s | lr 2.62e-05 | gnorm 2.945 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.1882 | top1 78.80% | top3 89.56% | top5 93.01% | 327.8 img/s | lr 2.52e-05 | gnorm 2.917 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.1355 | top1 79.34% | top3 89.80% | top5 92.96% | 327.9 img/s | lr 2.42e-05 | gnorm 2.906 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.1315 | top1 79.64% | top3 89.96% | top5 93.05% | 327.9 img/s | lr 2.32e-05 | gnorm 2.921 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.1117 | top1 79.71% | top3 90.03% | top5 93.09% | 328.0 img/s | lr 2.23e-05 | gnorm 2.927 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.0846 | top1 80.27% | top3 90.47% | top5 93.42% | 328.0 img/s | lr 2.13e-05 | gnorm 2.920 | clip 99.8% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.0892 | top1 80.34% | top3 90.40% | top5 93.40% | 327.9 img/s | lr 2.04e-05 | gnorm 2.911 | clip 99.9% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.0923 | top1 80.28% | top3 90.37% | top5 93.37% | 327.8 img/s | lr 2.04e-05 | gnorm 2.919 | clip 99.9% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 1.0923 | top1 80.28% | top3 90.37% | top5 93.37% | lr 2.04e-05 | grad_norm 2.919 | clip 99.9% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.0060 | top1 73.44% | top3 88.68% | top5 92.76%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Epoch time: 2.38 min
+
+=== Epoch 45/50 ===
+[train step 100/704] loss 1.1949 | top1 77.22% | top3 88.48% | top5 91.73% | 327.5 img/s | lr 1.95e-05 | gnorm 2.908 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.1086 | top1 79.91% | top3 89.98% | top5 93.00% | 327.7 img/s | lr 1.86e-05 | gnorm 2.924 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.0839 | top1 80.76% | top3 90.69% | top5 93.53% | 327.6 img/s | lr 1.78e-05 | gnorm 2.874 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.0482 | top1 81.49% | top3 91.23% | top5 93.93% | 327.8 img/s | lr 1.69e-05 | gnorm 2.875 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.0626 | top1 81.22% | top3 91.09% | top5 93.88% | 327.8 img/s | lr 1.61e-05 | gnorm 2.887 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.1085 | top1 80.10% | top3 90.30% | top5 93.32% | 327.9 img/s | lr 1.53e-05 | gnorm 2.906 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.1117 | top1 80.10% | top3 90.34% | top5 93.34% | 327.9 img/s | lr 1.45e-05 | gnorm 2.918 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.1101 | top1 80.14% | top3 90.38% | top5 93.37% | 327.8 img/s | lr 1.45e-05 | gnorm 2.927 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 1.1101 | top1 80.14% | top3 90.38% | top5 93.37% | lr 1.45e-05 | grad_norm 2.927 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 0.9721 | top1 73.26% | top3 88.86% | top5 92.84%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Epoch time: 2.38 min
+
+=== Epoch 46/50 ===
+[train step 100/704] loss 1.0590 | top1 82.62% | top3 92.62% | top5 94.88% | 327.3 img/s | lr 1.38e-05 | gnorm 2.867 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.0366 | top1 83.30% | top3 92.86% | top5 95.12% | 327.7 img/s | lr 1.30e-05 | gnorm 2.820 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.0665 | top1 82.32% | top3 92.04% | top5 94.59% | 327.7 img/s | lr 1.23e-05 | gnorm 2.840 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.0818 | top1 81.91% | top3 91.78% | top5 94.42% | 327.9 img/s | lr 1.16e-05 | gnorm 2.871 | clip 100.0% | oflow 0 | nonfinite 0 | scale 131072.0
+[train step 500/704] loss 1.1034 | top1 81.41% | top3 91.38% | top5 94.10% | 328.1 img/s | lr 1.10e-05 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.0977 | top1 81.36% | top3 91.27% | top5 94.02% | 328.2 img/s | lr 1.03e-05 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.0969 | top1 81.40% | top3 91.32% | top5 94.02% | 328.4 img/s | lr 9.70e-06 | gnorm inf | clip 100.0% | oflow 1 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.0965 | top1 81.41% | top3 91.33% | top5 94.03% | 328.3 img/s | lr 9.68e-06 | gnorm inf | clip 100.0% | oflow 2 | nonfinite 0 | scale 32768.0
+[Train] loss 1.0965 | top1 81.41% | top3 91.33% | top5 94.03% | lr 9.68e-06 | grad_norm inf | clip 100.0% | amp_overflows 2 | nonfinite_loss 0 | scale 32768.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 0.9663 | top1 74.14% | top3 89.26% | top5 93.10%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Best saved to best_maxout_medium.pt (val top1 74.14%)
+Epoch time: 2.39 min
+
+=== Epoch 47/50 ===
+[train step 100/704] loss 1.2577 | top1 78.44% | top3 89.67% | top5 92.83% | 327.9 img/s | lr 9.08e-06 | gnorm 2.913 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 200/704] loss 1.2279 | top1 77.74% | top3 88.92% | top5 92.24% | 327.9 img/s | lr 8.50e-06 | gnorm 2.939 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 300/704] loss 1.1677 | top1 78.88% | top3 89.46% | top5 92.63% | 327.9 img/s | lr 7.94e-06 | gnorm 2.910 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 400/704] loss 1.1050 | top1 80.18% | top3 90.38% | top5 93.41% | 328.1 img/s | lr 7.40e-06 | gnorm 2.905 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 500/704] loss 1.0962 | top1 80.49% | top3 90.59% | top5 93.52% | 328.3 img/s | lr 6.88e-06 | gnorm 2.915 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 600/704] loss 1.1318 | top1 79.86% | top3 90.16% | top5 93.10% | 328.5 img/s | lr 6.39e-06 | gnorm 2.930 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 700/704] loss 1.1398 | top1 79.96% | top3 90.31% | top5 93.18% | 328.4 img/s | lr 5.91e-06 | gnorm 2.929 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 704/704] loss 1.1376 | top1 80.01% | top3 90.34% | top5 93.20% | 328.3 img/s | lr 5.90e-06 | gnorm 2.935 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[Train] loss 1.1376 | top1 80.01% | top3 90.34% | top5 93.20% | lr 5.90e-06 | grad_norm 2.935 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 32768.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 0.9911 | top1 73.10% | top3 88.42% | top5 92.80%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Epoch time: 2.38 min
+
+=== Epoch 48/50 ===
+[train step 100/704] loss 0.9349 | top1 83.64% | top3 92.55% | top5 94.66% | 327.1 img/s | lr 5.44e-06 | gnorm 2.921 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 200/704] loss 0.9495 | top1 83.53% | top3 92.66% | top5 94.66% | 327.6 img/s | lr 5.01e-06 | gnorm 2.852 | clip 99.5% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 300/704] loss 0.9932 | top1 82.83% | top3 92.16% | top5 94.46% | 327.9 img/s | lr 4.61e-06 | gnorm 2.892 | clip 99.7% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 400/704] loss 1.0048 | top1 82.73% | top3 91.98% | top5 94.32% | 328.2 img/s | lr 4.22e-06 | gnorm 2.891 | clip 99.8% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 500/704] loss 1.0066 | top1 82.88% | top3 92.08% | top5 94.41% | 328.4 img/s | lr 3.86e-06 | gnorm 2.877 | clip 99.8% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 600/704] loss 1.0365 | top1 82.18% | top3 91.60% | top5 94.08% | 328.4 img/s | lr 3.51e-06 | gnorm 2.889 | clip 99.8% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 700/704] loss 1.0494 | top1 81.97% | top3 91.46% | top5 93.98% | 328.3 img/s | lr 3.19e-06 | gnorm 2.876 | clip 99.9% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 704/704] loss 1.0518 | top1 81.94% | top3 91.44% | top5 93.96% | 328.3 img/s | lr 3.18e-06 | gnorm 2.883 | clip 99.9% | oflow 0 | nonfinite 0 | scale 32768.0
+[Train] loss 1.0518 | top1 81.94% | top3 91.44% | top5 93.96% | lr 3.18e-06 | grad_norm 2.883 | clip 99.9% | amp_overflows 0 | nonfinite_loss 0 | scale 32768.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 1.0492 | top1 73.02% | top3 89.14% | top5 92.96%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Epoch time: 2.38 min
+
+=== Epoch 49/50 ===
+[train step 100/704] loss 1.1786 | top1 79.56% | top3 89.95% | top5 92.70% | 326.8 img/s | lr 2.88e-06 | gnorm 2.823 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 200/704] loss 1.1773 | top1 79.97% | top3 90.33% | top5 93.12% | 327.9 img/s | lr 2.61e-06 | gnorm 2.851 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 300/704] loss 1.2051 | top1 79.28% | top3 89.86% | top5 92.92% | 328.1 img/s | lr 2.35e-06 | gnorm 2.875 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 400/704] loss 1.1876 | top1 79.86% | top3 90.27% | top5 93.23% | 328.3 img/s | lr 2.12e-06 | gnorm 2.867 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 500/704] loss 1.1746 | top1 79.69% | top3 90.03% | top5 92.96% | 328.5 img/s | lr 1.91e-06 | gnorm 2.865 | clip 100.0% | oflow 0 | nonfinite 0 | scale 32768.0
+[train step 600/704] loss 1.1425 | top1 80.23% | top3 90.34% | top5 93.22% | 328.7 img/s | lr 1.72e-06 | gnorm 2.871 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.1141 | top1 80.62% | top3 90.56% | top5 93.40% | 328.5 img/s | lr 1.55e-06 | gnorm 2.862 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.1212 | top1 80.42% | top3 90.41% | top5 93.28% | 328.5 img/s | lr 1.55e-06 | gnorm 2.878 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 1.1212 | top1 80.42% | top3 90.41% | top5 93.28% | lr 1.55e-06 | grad_norm 2.878 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 0.9819 | top1 73.32% | top3 89.08% | top5 93.16%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Epoch time: 2.38 min
+
+=== Epoch 50/50 ===
+[train step 100/704] loss 1.1874 | top1 79.23% | top3 89.98% | top5 92.83% | 326.8 img/s | lr 1.40e-06 | gnorm 2.928 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 200/704] loss 1.1151 | top1 80.59% | top3 90.79% | top5 93.37% | 327.7 img/s | lr 1.28e-06 | gnorm 2.903 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 300/704] loss 1.0966 | top1 80.82% | top3 90.70% | top5 93.47% | 328.0 img/s | lr 1.18e-06 | gnorm 2.900 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 400/704] loss 1.0895 | top1 81.08% | top3 90.95% | top5 93.68% | 328.1 img/s | lr 1.10e-06 | gnorm 2.883 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 500/704] loss 1.1047 | top1 80.81% | top3 90.81% | top5 93.59% | 328.3 img/s | lr 1.05e-06 | gnorm 2.888 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 600/704] loss 1.0949 | top1 80.84% | top3 90.73% | top5 93.53% | 328.5 img/s | lr 1.01e-06 | gnorm 2.892 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 700/704] loss 1.0907 | top1 80.75% | top3 90.61% | top5 93.41% | 328.4 img/s | lr 1.00e-06 | gnorm 2.880 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[train step 704/704] loss 1.0927 | top1 80.72% | top3 90.59% | top5 93.40% | 328.3 img/s | lr 1.00e-06 | gnorm 2.885 | clip 100.0% | oflow 0 | nonfinite 0 | scale 65536.0
+[Train] loss 1.0927 | top1 80.72% | top3 90.59% | top5 93.40% | lr 1.00e-06 | grad_norm 2.885 | clip 100.0% | amp_overflows 0 | nonfinite_loss 0 | scale 65536.0
+[Train] mem_peak alloc 2.22 GiB | reserved 2.56 GiB
+[Val]   loss 0.9950 | top1 73.72% | top3 89.02% | top5 93.16%
+[Val]   mem_peak alloc 0.46 GiB | reserved 2.56 GiB
+Epoch time: 2.38 min
+
+
+(0.8313404968261718, {'top1': 77.47, 'top3': 91.75, 'top5': 94.69})
