@@ -73,7 +73,14 @@ class MultiHeadSelfAttention(nn.Module):
         # attention: [B, heads, N, N]
         attn = (q @ k.transpose(-2, -1)) * self.scale
         attn = attn.softmax(dim=-1)
+
+        if getattr(self, "capture_attn", False):
+          self.last_attn = attn.detach() 
+
         attn = self.attn_drop(attn)
+
+        if getattr(self, "capture_attn", False):
+          self.last_attn_postdrop = attn.detach()
 
         # out: [B, heads, N, head_dim] -> [B, N, C]
         out = (attn @ v).transpose(1, 2).reshape(B, N, C)
@@ -111,6 +118,11 @@ class GridAttention2D(nn.Module):
 
         g = self.cfg.grid_size
         grids, meta = grid_partition(x, g)         # [B*g*g, Hg, Wg, C]
+
+        self._last_meta = meta
+        self._last_grid_hw = (grids.shape[1], grids.shape[2])
+        self._last_g = g
+
         Bgrp, Hg, Wg, _ = grids.shape
         tokens = grids.view(Bgrp, Hg * Wg, C)      # [Bgrp, N, C]
         tokens = self.mhsa(tokens)

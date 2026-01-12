@@ -10,8 +10,20 @@ from datasets import load_dataset
 from PIL import Image
 
 from src.data.load_tinyimagenet_C import *
+import numpy as np 
+import random 
+
 IMAGENET_MEAN = (0.485, 0.456, 0.406)
 IMAGENET_STD  = (0.229, 0.224, 0.225)
+
+
+def seed_worker(worker_id: int):
+    """
+    Hace reproducible el RNG dentro de cada worker.
+    """
+    worker_seed = torch.initial_seed() % 2**32
+    np.random.seed(worker_seed)
+    random.seed(worker_seed)
 
 
 class HFTorchImageDataset(Dataset):
@@ -68,28 +80,23 @@ def get_tinyimagenet200_hf_datasets(
     random_erasing_p: float = 0.25,
     erasing_scale=(0.02, 0.20),
     erasing_ratio=(0.3, 3.3),
-    img_size: int = 64):
-
+    img_size: int = 64,
+    seed: int = 7,   
+):
     """
     Tiny ImageNet-200 desde HuggingFace.
-    Default img_size=64 (nativo). Si subes, hace Resize.
-
-    Retorna:
-      train_dataset, val_dataset, test_dataset
+    Retorna: train_dataset, val_dataset, test_dataset
     """
     if img_size < 64:
         raise ValueError(f"img_size must be >= 64 for Tiny ImageNet. Got {img_size}.")
 
     cache_dir = str(Path(data_dir) / "hf_cache")
-
-    # descarga y cachea automáticamente
     ds = load_dataset(hf_name, cache_dir=cache_dir)
 
     train_split = _pick_split(ds, "train")
     if train_split is None:
         raise RuntimeError(f"No train split found for dataset: {hf_name}. Available: {list(ds.keys())}")
 
-    # muchos repos usan "validation" o "valid"
     official_val_split = _pick_split(ds, "validation", "valid", "val")
     test_split = _pick_split(ds, "test")
 
@@ -108,8 +115,9 @@ def get_tinyimagenet200_hf_datasets(
             p=random_erasing_p,
             scale=erasing_scale,
             ratio=erasing_ratio,
-            value="random",),]
-
+            value="random",
+        ),
+    ]
     train_transform = transforms.Compose(train_ops)
 
     test_ops = []
@@ -117,21 +125,24 @@ def get_tinyimagenet200_hf_datasets(
         test_ops.append(transforms.Resize(img_size, interpolation=transforms.InterpolationMode.BICUBIC))
     test_ops += [
         transforms.ToTensor(),
-        transforms.Normalize(IMAGENET_MEAN, IMAGENET_STD),]
-
+        transforms.Normalize(IMAGENET_MEAN, IMAGENET_STD),
+    ]
     test_transform = transforms.Compose(test_ops)
 
     train_full = HFTorchImageDataset(train_split, transform=train_transform)
 
-    # Caso A: haces split interno del train
     if val_split > 0.0:
         n_total = len(train_full)
         n_val = int(n_total * val_split)
         n_train = n_total - n_val
+
+        g_split = torch.Generator().manual_seed(seed) 
+
         train_ds, val_ds = random_split(
             train_full,
             [n_train, n_val],
-            generator=torch.Generator().manual_seed(7))
+            generator=g_split,
+        )
 
         if official_val_split is not None:
             test_ds = HFTorchImageDataset(official_val_split, transform=test_transform)
@@ -145,6 +156,7 @@ def get_tinyimagenet200_hf_datasets(
     return train_full, val_ds, test_ds
 
 
+
 def get_tinyimagenet200_hf_dataloaders(
     batch_size: int = 128,
     data_dir: str = "./data",
@@ -156,8 +168,9 @@ def get_tinyimagenet200_hf_dataloaders(
     ra_magnitude: int = 7,
     random_erasing_p: float = 0.25,
     img_size: int = 64,
-    drop_last: bool = True):
-
+    drop_last: bool = True,
+    seed: int = 7,):
+  
     train_ds, val_ds, test_ds = get_tinyimagenet200_hf_datasets(
         data_dir=data_dir,
         hf_name=hf_name,
@@ -165,16 +178,24 @@ def get_tinyimagenet200_hf_dataloaders(
         ra_num_ops=ra_num_ops,
         ra_magnitude=ra_magnitude,
         random_erasing_p=random_erasing_p,
-        img_size=img_size,)
+        img_size=img_size,
+        seed=seed)
+
+    g_loader = torch.Generator().manual_seed(seed + 1) 
+
+    common_loader_kwargs = dict(
+        num_workers=num_workers,
+        pin_memory=pin_memory,
+        persistent_workers=(num_workers > 0),
+        worker_init_fn=seed_worker,  
+        generator=g_loader,)
 
     train_loader = DataLoader(
         train_ds,
         batch_size=batch_size,
         shuffle=True,
-        num_workers=num_workers,
-        pin_memory=pin_memory,
-        persistent_workers=(num_workers > 0),
-        drop_last=drop_last)
+        drop_last=drop_last,
+        **common_loader_kwargs,)
 
     val_loader = None
     if val_ds is not None:
@@ -182,9 +203,7 @@ def get_tinyimagenet200_hf_dataloaders(
             val_ds,
             batch_size=batch_size,
             shuffle=False,
-            num_workers=num_workers,
-            pin_memory=pin_memory,
-            persistent_workers=(num_workers > 0))
+            **common_loader_kwargs)
 
     test_loader = None
     if test_ds is not None:
@@ -192,81 +211,6 @@ def get_tinyimagenet200_hf_dataloaders(
             test_ds,
             batch_size=batch_size,
             shuffle=False,
-            num_workers=num_workers,
-            pin_memory=pin_memory,
-            persistent_workers=(num_workers > 0))
+            **common_loader_kwargs,)
 
     return train_loader, val_loader, test_loader
-
-
-def _unwrap_dataset(ds: Dataset) -> Dataset:
-    while isinstance(ds, Subset):
-        ds = ds.dataset
-    return ds
-
-
-def get_clean_test_loader_intersection_182(
-    test_loader_clean: DataLoader,
-    reference_train_loader: DataLoader,   # para obtener class_names (wnids)
-    data_dir: str = "./data",
-    corruption_name: str = "motion_blur",
-    corruption_level: int = 3,
-    batch_size: int = 128,
-    num_workers: int = 2,
-    pin_memory: bool = True,
-    drop_last: bool = False,
-):
-    """
-    Devuelve un loader del test clean filtrado a las clases que están en TinyImageNet-C (182 en tu caso).
-    - test_loader_clean: tu loader clean (val/test)
-    - reference_train_loader: tu train_loader clean (para obtener wnids ordenados)
-    """
-
-    base_train = _unwrap_dataset(reference_train_loader.dataset)
-    train_wnids = list(base_train.class_names)  
-
-    root = find_tinyimagenet_c_root(Path(data_dir))
-    if root is None:
-        root = download_and_extract_tiny_imagenet_c(data_dir=data_dir)
-
-    split_dir = Path(root) / corruption_name / str(int(corruption_level))
-    if not split_dir.exists():
-        raise FileNotFoundError(f"No existe: {split_dir}")
-
-    c_wnids = sorted([p.name for p in split_dir.iterdir() if p.is_dir()])
-    c_set = set(c_wnids)
-
-    # Intersección de wnids
-    keep_wnids = [w for w in train_wnids if w in c_set]
-    keep_set = set(keep_wnids)
-
-    print(f"[clean∩C] keep_classes={len(keep_wnids)} | drop_classes={len(train_wnids)-len(keep_wnids)}")
-
-    labels_keep = {i for i, w in enumerate(train_wnids) if w in keep_set}
-
-    base_test = _unwrap_dataset(test_loader_clean.dataset)
-
-    hf_ds = getattr(base_test, "ds", None)
-    if hf_ds is None:
-        raise RuntimeError("No encuentro base_test.ds (HF dataset).")
-
-    keep_indices = []
-    for i in range(len(hf_ds)):
-        y = int(hf_ds[i]["label"])   
-        if y in labels_keep:
-            keep_indices.append(i)
-
-    print(f"[clean∩C] keep_samples={len(keep_indices)} / total={len(hf_ds)}")
-
-    filtered_ds = Subset(base_test, keep_indices)
-
-    filtered_loader = DataLoader(
-        filtered_ds,
-        batch_size=batch_size,
-        shuffle=False,
-        num_workers=num_workers,
-        pin_memory=pin_memory,
-        persistent_workers=(num_workers > 0),
-        drop_last=drop_last,
-    )
-    return filtered_loader
