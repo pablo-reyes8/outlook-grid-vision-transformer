@@ -116,8 +116,8 @@ def get_tinyimagenet200_hf_datasets(
             scale=erasing_scale,
             ratio=erasing_ratio,
             value="random",
-        ),
-    ]
+        ),]
+    
     train_transform = transforms.Compose(train_ops)
 
     test_ops = []
