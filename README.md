@@ -7,6 +7,7 @@ This repo includes:
 - A training CLI driven by YAML configs
 - Multiple dataset loaders (CIFAR-100, SVHN, Tiny-ImageNet-200)
 - Tests for block wiring, model forward, and training smoke
+- Model Comparisons
 
 ## Model Variants
 
