@@ -7,6 +7,7 @@ This repo includes:
 - A training CLI driven by YAML configs
 - Multiple dataset loaders (CIFAR-100, SVHN, Tiny-ImageNet-200)
 - Tests for block wiring, model forward, and training smoke
+- Model Comparisons
 
 ## Model Variants
 
@@ -69,11 +70,11 @@ All numbers below are pulled from notebook logs (single runs). See `notebooks/` 
 
 | Dataset | Model | Img size | Top-1 (val/test) | Params | Notes |
 | --- | --- | --- | --- | --- | --- |
-| CIFAR-100 | Model A (MaxOutNet) | 32 | 74.7 / 78.4 | - | best test from notebook
-| CIFAR-100 | Model B (OutlookerFront) | 32 | 73.7 / 77.5 | - | front-only baseline
-| CIFAR-100 | Model A (MaxOutNet) | 64 | 78.7 / 81.2 | - | upsampled CIFAR-100
+| CIFAR-100 | Model A (MaxOutNet) | 32 | 74.7 / 78.4 | 14.7M | best test from notebook
+| CIFAR-100 | Model B (OutlookerFront) | 32 | 73.7 / 77.5 | 12.1M | front-only baseline
+| CIFAR-100 | Model A (MaxOutNet) | 64 | 78.7 / 81.2 | 16.5M | upsampled CIFAR-100
 | Tiny-ImageNet-200 | Model A (MaxOutNet) | 64 | 66.5 / 69.8 | 22.5M | HF Tiny-ImageNet
-| SVHN | Model A (MaxOutNet) | 32 | 96.1 / - | - | val only in log
+| SVHN | Model A (MaxOutNet) | 32 | 96.1 / - | 9.5M | val only in log
 
 Highlights you can claim:
 - **Tiny-ImageNet-200**: 66.5 val top-1 with **~22.5M params**
