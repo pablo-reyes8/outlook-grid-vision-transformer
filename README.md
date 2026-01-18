@@ -1,31 +1,19 @@
-# Outlook-Grid Vision Transformer (OutGridViT)
+# OutGridViT: Outlook-Grid Vision Transformer
 
-A research-grade hybrid vision architecture that fuses **VOLO-style Outlooker** local attention with **MaxViT-style grid attention** and MBConv inductive bias. The main idea is to inject dynamic local aggregation inside *every stage* (Model A) while retaining efficient global mixing through grid attention.
+OutGridViT is a research-focused hybrid vision architecture that fuses **Outlooker** local attention (VOLO-style), **MBConv** inductive bias, and **Grid Attention** (MaxViT-style). The core design is Model A, where *every block* injects dynamic local aggregation before global mixing.
 
-This repo includes:
-- Two model variants (A and B)
-- A training CLI driven by YAML configs
-- Multiple dataset loaders (CIFAR-100, SVHN, Tiny-ImageNet-200)
-- Tests for block wiring, model forward, and training smoke
-- Model Comparisons
+This repo contains the full training stack, ablations, baseline comparisons, and analysis tools (MAD metrics + attention visualizations).
 
-## Model Variants
+## Model A (Main Architecture)
 
-**Model A (MaxOutNet, main)**
-- Outlooker in every block (strong local bias throughout the network)
-- Block: `Outlooker -> MBConv -> GridAttn -> MLP`
-- File: `src/Model_A_OutGridNet.py`
+**Block composition (OutGridBlock):**
+`Outlooker -> MBConv -> GridAttn -> MLP`
 
-**Model B (OutlookerFrontGridNet, baseline)**
-- Outlooker only at the front, then Grid-only blocks
-- Stage: `OutlookerFront -> GridOnlyBlock x depth`
-- File: `src/Model_B_OutGridNet.py`
+Input/output stays in 2D feature maps (NCHW). Only the GridAttn path temporarily uses BHWC and tokenized grids.
 
-Naming note: **Model A** is the per-block Outlooker variant (MaxOutNet) and **Model B** is the front-only Outlooker baseline, matching the notebooks.
+### Block Forward (tensor form)
 
-## Block Forward (OutGridBlock)
-
-Input/Output: `x in R^{B x C x H x W}`
+Input: `x in R^{B x C x H x W}`
 
 $$
 \begin{aligned}
@@ -38,111 +26,89 @@ $$
 \end{aligned}
 $$
 
-`DP` is stochastic depth. `LN` is layer norm in BHWC. The implementation uses NCHW for Outlooker/MBConv and BHWC for GridAttn/MLP.
+`DP` is stochastic depth. `LN` is LayerNorm in BHWC.
 
-### Model Forward (High Level)
-
-Model A (MaxOutNet):
+### Model Forward (high level)
 
 $$
-\\begin{aligned}
- x_0 &= \\mathrm{Stem}(x) \\\\
- x_{s,i+1} &= \\mathrm{OutGridBlock}(x_{s,i}), \\quad i=0..(d_s-1) \\\\
- x_{s+1,0} &= \\mathrm{Downsample}_s(x_{s,d_s}) \\\\
- \\mathrm{logits} &= \\mathrm{Linear}(\\mathrm{GAP}(\\mathrm{BN}(x_{S,d_S})))
-\\end{aligned}
-$$
-
-Model B (OutlookerFrontGridNet):
-
-$$
-\\begin{aligned}
- x_0 &= \\mathrm{Stem}(x) \\\\
- x'_0 &= \\mathrm{OutlookerFront}^L(x_0) \\\\
- x_{s,i+1} &= \\mathrm{GridOnlyBlock}(x_{s,i}) \\\\
- \\mathrm{logits} &= \\mathrm{Linear}(\\mathrm{GAP}(\\mathrm{BN}(x_{S,d_S})))
-\\end{aligned}
+\begin{aligned}
+ x_0 &= \mathrm{Stem}(x) \\ 
+ x_{s,i+1} &= \mathrm{OutGridBlock}(x_{s,i}), \quad i=0..(d_s-1) \\ 
+ x_{s+1,0} &= \mathrm{Downsample}_s(x_{s,d_s}) \\ 
+ \mathrm{logits} &= \mathrm{Linear}(\mathrm{GAP}(\mathrm{BN}(x_{S,d_S})))
+\end{aligned}
 $$
 
 ## Reported Results (from notebooks)
 
-All numbers below are pulled from notebook logs (single runs). See `notebooks/` for exact settings, seeds, and loaders.
-
-| Dataset | Model | Img size | Top-1 (val/test) | Params | Notes |
-| --- | --- | --- | --- | --- | --- |
-| CIFAR-100 | Model A (MaxOutNet) | 32 | 74.7 / 78.4 | 14.7M | best test from notebook
-| CIFAR-100 | Model B (OutlookerFront) | 32 | 73.7 / 77.5 | 12.1M | front-only baseline
-| CIFAR-100 | Model A (MaxOutNet) | 64 | 78.7 / 81.2 | 16.5M | upsampled CIFAR-100
-| Tiny-ImageNet-200 | Model A (MaxOutNet) | 64 | 66.5 / 69.8 | 22.5M | HF Tiny-ImageNet
-| SVHN | Model A (MaxOutNet) | 32 | 96.1 / - | 9.5M | val only in log
-
-Highlights you can claim:
-- **Tiny-ImageNet-200**: 66.5 val top-1 with **~22.5M params**
-- **CIFAR-100**: ~81 top-1 (64x64 setup)
+| Dataset | Img size | Top-1 (val/test) | Params | Notes |
+| --- | --- | --- | --- | --- |
+| CIFAR-100 | 32 | 74.7 / 78.4 | - | Model A, CIFAR-32
+| CIFAR-100 | 64 | 78.7 / 81.2 | - | Upsampled CIFAR-100
+| Tiny-ImageNet-200 | 64 | 66.5 / 69.8 | 22.5M | Competitive for 22M params
+| SVHN | 32 | 96.1 / - | - | Val reported in logs
 
 ## Configs
 
-Prebuilt configs (mirrored from notebooks):
+Prebuilt configs:
 - `configs/cifar100_model_a.yaml`
-- `configs/cifar100_model_b.yaml`
 - `configs/cifar100_64_model_a.yaml`
 - `configs/svhn_model_a.yaml`
 - `configs/tinyimagenet200_model_a.yaml`
 
-`configs/train.yaml` is a default alias of `cifar100_model_a.yaml`.
+`configs/train.yaml` is an alias of the CIFAR-100 Model A config.
 
-## Training CLI
-
-Install requirements:
+## Training (Model A)
 
 ```bash
 pip install -r requirements.txt
-```
-
-Run a config:
-
-```bash
 python scripts/train.py --config configs/cifar100_model_a.yaml
-python scripts/train.py --config configs/cifar100_model_b.yaml
-python scripts/train.py --config configs/tinyimagenet200_model_a.yaml
 ```
 
-Override common settings:
+## Baseline Comparisons (CIFAR-32)
+
+Use the baseline runner to train timm models with a shared training recipe:
 
 ```bash
-python scripts/train.py --config configs/cifar100_model_a.yaml --epochs 100
-python scripts/train.py --config configs/cifar100_64_model_a.yaml --batch-size 128
+python scripts/train_cifar32_baselines.py --device cuda
 ```
 
-## Datasets
+Baselines included:
+- DeiT Tiny (patch4)
+- DeiT Small (patch4)
+- Swin Tiny (patch2)
+- MaxViT Tiny
+- MaxViT Nano (surgery)
 
-Supported loaders:
-- **CIFAR-100**: `data.dataset: cifar100`
-- **SVHN**: `data.dataset: svhn`
-- **Tiny-ImageNet-200 (HF)**: `data.dataset: tinyimagenet200`, `data.hf_name: zh-plus/tiny-imagenet`
+## Attention Analysis and MAD Metrics
 
-Tiny-ImageNet uses the HuggingFace `datasets` package, cached under `data/hf_cache`.
-Tiny-ImageNet-C helpers are in `src/data/load_tinyimagenet_C.py` and used in the notebooks.
-
-## Tests
+The analysis CLI generates:
+- Outlooker locality visualizations
+- Grid attention heatmaps
+- MAD metrics for both attention paths
 
 ```bash
-pytest -q
+python scripts/run_attention_analysis.py \
+  --config configs/cifar100_model_a.yaml \
+  --checkpoint outputs/best_cifar100_model_a.pt \
+  --split val \
+  --output-dir analysis_outputs
 ```
 
-Tests cover:
-- Grid partition/unpartition correctness
-- Outlooker and OutGridBlock wiring
-- Model forward passes for Model A and B
-- Training loop smoke test
+Outputs:
+- `analysis_outputs/outlooker/` (locality overlays + kernels)
+- `analysis_outputs/grid/` (grid attention overlays)
+- `analysis_outputs/mad_metrics.json` and `.csv`
+
+If you want to include figures in this README, generate them with the CLI and move them into a `figures/` folder.
 
 ## Project Structure
 
 ```
-configs/          # YAML configs for datasets and model variants
+configs/          # YAML configs
 scripts/          # CLI entrypoints
-notebooks/        # experiments + logs
-src/              # models, blocks, training, data
+src/              # models, blocks, training, experiments
+training_notebooks/  # ablations + baselines
 tests/            # pytest suite
 ```
 

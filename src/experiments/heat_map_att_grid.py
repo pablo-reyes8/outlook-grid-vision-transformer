@@ -37,7 +37,7 @@ def _choose_random_indices(B, n_images, seed=None):
 
 class GridAttnCapturer:
     """
-    Captura input BHWC y attn [Bgrp, heads, N, N] para LocalAttention2D.
+    Captura input BHWC y attn [Bgrp, heads, N, N] para GridAttention2D.
     Compatible con nombres: stages.<stage>.<block>.grid_attn
     """
     def __init__(self, model: torch.nn.Module):
@@ -46,7 +46,7 @@ class GridAttnCapturer:
         self.found = {}   # (stage, block) -> module_name
 
         for name, m in model.named_modules():
-            if m.__class__.__name__ != "LocalAttention2D":
+            if m.__class__.__name__ not in ("GridAttention2D", "LocalAttention2D"):
                 continue
 
             # parse: stages.<s>.<b>.grid_attn
