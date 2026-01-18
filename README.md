@@ -10,6 +10,7 @@ This repo contains the full training stack, ablations, baseline comparisons, and
 - [Block Forward (tensor form)](#block-forward-tensor-form)
 - [Model Forward (high level)](#model-forward-high-level)
 - [Visual Experiments](#visual-experiments)
+- [MAD Metrics (Grid vs Outlooker)](#mad-metrics-grid-vs-outlooker)
 - [Reported Results](#reported-results-from-notebooks)
 - [Model Comparisons (CIFAR-100, 32x32)](#model-comparisons-cifar-100-32x32)
 - [Baseline Training Recipe](#baseline-training-recipe)
@@ -74,6 +75,26 @@ More Outlooker examples (different stages/blocks):
 Grid attention heatmap (query overlays over the input):
 
 ![Grid attention example](experiments_results/Visual%20Experiments/normal_example_grid/stage_1_block_0.png)
+
+More Grid Attention examples (different stages/blocks):
+
+| Example A | Example B |
+| --- | --- |
+| ![Grid attention stage0](experiments_results/Visual%20Experiments/easy_example_grid/stage_0_block_0.png) | ![Grid attention stage1](experiments_results/Visual%20Experiments/easy_example_grid/stage_1_block_2.png) |
+| ![Grid attention stage2](experiments_results/Visual%20Experiments/normal_example_grid/stage_2_block_1.png) | ![Grid attention stage3](experiments_results/Visual%20Experiments/normal_example_grid/stage_3_block_1.png) |
+
+## MAD Metrics (Grid vs Outlooker)
+
+Quantitative summary (CIFAR-100, Model A). `GRID_abs` is L1 distance in feature-map pixels, with max = `(Hf-1)+(Wf-1)` per stage. `OUT_abs` is L1 distance inside a 3x3 kernel, max = 2.
+
+| Stage | Hf x Wf | GRID_abs | OUT_abs | GRID max | OUT max |
+| --- | --- | --- | --- | --- | --- |
+| 0 | 64 x 64 | 28.49 ± 1.17 | 1.19 ± 0.18 | 126 | 2 |
+| 1 | 32 x 32 | 18.30 ± 0.24 | 1.61 ± 0.13 | 62 | 2 |
+| 2 | 16 x 16 | 9.06 ± 0.21 | 1.62 ± 0.25 | 30 | 2 |
+| 3 | 8 x 8 | 5.41 ± 0.55 | 1.69 ± 0.14 | 14 | 2 |
+
+Interpretation: Outlooker stays strictly local (its absolute range is always limited by the 3x3 kernel), while Grid Attention provides larger effective range per stage through global grid mixing. As resolution shrinks, `GRID_abs` decreases because the feature map becomes smaller, but it still captures broader context than the local kernel.
 
 ## Reported Results (from notebooks)
 
