@@ -45,7 +45,7 @@ def _try_estimate_flops(
 
 
 @torch.no_grad()
-def evaluate_one_epoch(
+def evaluate_one_epoch_logs(
     model: nn.Module,
     dataloader,
     device: str = "cuda",
