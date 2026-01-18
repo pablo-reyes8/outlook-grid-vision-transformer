@@ -45,8 +45,8 @@ def train_model(
     num_classes: int = 100,
     channels_last: bool = False,
     early_stop: bool = True,
-    early_stop_metric: str = "top1",   # <-- default típico
-    early_stop_patience: int = 6,     # <-- para 100 epochs suele ir bien
+    early_stop_metric: str = "top1", 
+    early_stop_patience: int = 6,     
     early_stop_min_delta: float = 0.05,
     early_stop_require_monotonic: bool = False,) -> Tuple[Dict[str, list], nn.Module]:
 
