@@ -83,7 +83,7 @@ All baselines below were trained with the same recipe (see next section). Values
 
 | Model | Top-1 | Params |
 | --- | --- | --- |
-| OutGridViT (Model A) | 78.4 | - |
+| OutGridViT (Model A) | 79.8 | 14.1M |
 | ConvNeXt-Tiny | 72.60 | 27.89M |
 | DeiT-Tiny (patch4) | 63.77 | 5.38M |
 | DeiT-Small (patch4) | 59.00 | 21.38M |
