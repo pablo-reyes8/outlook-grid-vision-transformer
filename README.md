@@ -10,8 +10,8 @@ This repo contains the full training stack, ablations, baseline comparisons, and
 - [Block Forward (tensor form)](#block-forward-tensor-form)
 - [Model Forward (high level)](#model-forward-high-level)
 - [Visual Experiments](#visual-experiments)
+- [Reported Results](#reported-results)
 - [MAD Metrics (Grid vs Outlooker)](#mad-metrics-grid-vs-outlooker)
-- [Reported Results](#reported-results-from-notebooks)
 - [Model Comparisons (CIFAR-100, 32x32)](#model-comparisons-cifar-100-32x32)
 - [Baseline Training Recipe](#baseline-training-recipe)
 - [Configs](#configs)
@@ -83,35 +83,55 @@ More Grid Attention examples (different stages/blocks):
 | ![Grid attention stage0](experiments_results/Visual%20Experiments/easy_example_grid/stage_0_block_0.png) | ![Grid attention stage1](experiments_results/Visual%20Experiments/easy_example_grid/stage_1_block_2.png) |
 | ![Grid attention stage2](experiments_results/Visual%20Experiments/normal_example_grid/stage_2_block_1.png) | ![Grid attention stage3](experiments_results/Visual%20Experiments/normal_example_grid/stage_3_block_1.png) |
 
-## MAD Metrics (Grid vs Outlooker)
 
-Quantitative summary (CIFAR-100, Model A). `GRID_abs` is L1 distance in feature-map pixels, with max = `(Hf-1)+(Wf-1)` per stage. `OUT_abs` is L1 distance inside a 3x3 kernel, max = 2.
+## Reported Results
 
-| Stage | Hf x Wf | GRID_abs | OUT_abs | GRID max | OUT max |
-| --- | --- | --- | --- | --- | --- |
-| 0 | 64 x 64 | 28.49 ± 1.17 | 1.19 ± 0.18 | 126 | 2 |
-| 1 | 32 x 32 | 18.30 ± 0.24 | 1.61 ± 0.13 | 62 | 2 |
-| 2 | 16 x 16 | 9.06 ± 0.21 | 1.62 ± 0.25 | 30 | 2 |
-| 3 | 8 x 8 | 5.41 ± 0.55 | 1.69 ± 0.14 | 14 | 2 |
+<div align="center">
 
-Interpretation: Outlooker stays strictly local (its absolute range is always limited by the 3x3 kernel), while Grid Attention provides larger effective range per stage through global grid mixing. As resolution shrinks, `GRID_abs` decreases because the feature map becomes smaller, but it still captures broader context than the local kernel.
-
-## Reported Results (from notebooks)
 
 | Dataset | Img size | Top-1 (val/test) | Params | Notes |
-| --- | --- | --- | --- | --- |
+| :---: | :---: | :---: | :---: | :---: |
 | CIFAR-100 | 32 | 74.7 / 78.4 | - | Model A, CIFAR-32 |
 | CIFAR-100 | 64 | 78.7 / 81.2 | - | Upsampled CIFAR-100 |
 | Tiny-ImageNet-200 | 64 | 66.5 / 69.8 | 22.5M | Competitive for 22M params |
 | SVHN | 32 | 96.1 / - | - | Val reported in logs |
 
+</div>
+
+<br>
+
+
+## MAD Metrics (Grid vs Outlooker)
+
+<div align="center">
+
+
+Quantitative summary (CIFAR-100, Model A). `GRID_abs` is L1 distance in feature-map pixels, with max = `(Hf-1)+(Wf-1)` per stage. `OUT_abs` is L1 distance inside a 3x3 kernel, max = 2.
+
+| Stage | Hf x Wf | GRID_abs | OUT_abs | GRID max | OUT max |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| 0 | 64 x 64 | 28.49 ± 1.17 | 1.19 ± 0.18 | 126 | 2 |
+| 1 | 32 x 32 | 18.30 ± 0.24 | 1.61 ± 0.13 | 62 | 2 |
+| 2 | 16 x 16 | 9.06 ± 0.21 | 1.62 ± 0.25 | 30 | 2 |
+| 3 | 8 x 8 | 5.41 ± 0.55 | 1.69 ± 0.14 | 14 | 2 |
+
+*Interpretation: Outlooker stays strictly local, while Grid Attention provides larger effective range per stage through global grid mixing.*
+
+</div>
+
+<br>
+
+
 ## Model Comparisons (CIFAR-100, 32x32)
 
-All baselines below were trained with the same recipe (see next section). Values are from `logs/Logs Models Comparisons.txt` (single runs).
+<div align="center">
+
+
+All baselines below were trained with the same recipe. Values are from `logs/Logs Models Comparisons.txt`.
 
 | Model | Top-1 | Params |
-| --- | --- | --- |
-| OutGridViT (Model A) | 79.8 | 14.1M |
+| :--- | :---: | :---: |
+| **OutGridViT (Model A)** | **79.8** | **14.1M** |
 | ConvNeXt-Tiny | 72.60 | 27.89M |
 | DeiT-Tiny (patch4) | 63.77 | 5.38M |
 | DeiT-Small (patch4) | 59.00 | 21.38M |
@@ -121,6 +141,8 @@ All baselines below were trained with the same recipe (see next section). Values
 | ResNet18 (CIFAR stem) | 73.25 | 11.22M |
 | ResNet50 (CIFAR stem) | 77.42 | 23.71M |
 | Swin-Tiny (patch2) | 59.89 | 27.57M |
+
+</div>
 
 ## Baseline Training Recipe
 
