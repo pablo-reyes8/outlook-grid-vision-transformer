@@ -64,6 +64,13 @@ Outlooker locality (kernel weights + center/spread overlays):
 
 ![Outlooker locality example](experiments_results/Visual%20Experiments/normal_example_outlooker/stage1_block_0.png)
 
+More Outlooker examples (different stages/blocks):
+
+| Example A | Example B |
+| --- | --- |
+| ![Outlooker locality stage0](experiments_results/Visual%20Experiments/easy_example_outlooker/stage0_block_0.png) | ![Outlooker locality stage1](experiments_results/Visual%20Experiments/easy_example_outlooker/stage1_block_2.png) |
+| ![Outlooker locality stage2](experiments_results/Visual%20Experiments/normal_example_outlooker/stage2_block_1.png) | ![Outlooker locality stage3](experiments_results/Visual%20Experiments/normal_example_outlooker/stage3_block_1.png) |
+
 Grid attention heatmap (query overlays over the input):
 
 ![Grid attention example](experiments_results/Visual%20Experiments/normal_example_grid/stage_1_block_0.png)
