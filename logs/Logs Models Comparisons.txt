@@ -1,0 +1,283 @@
+ALL THE MODELS ARE TRAINED WITH THIS COFIG: 
+
+history, _ = train_model(
+        model=model,
+        train_loader=train loader,
+        epochs=100,
+        val_loader=val_loader,
+        device=device,
+
+        lr=5e-4,
+        weight_decay=0.05,
+
+        # Mixed Precision
+        autocast_dtype="fp16" if device == "cuda" else "fp32",
+        use_amp=(device == "cuda"),
+        grad_clip_norm=1.0,
+
+        warmup_ratio=0.05,
+        min_lr=1e-6,
+
+        label_smoothing=0.1,
+
+        print_every=400,
+        mix_prob=0.5,
+        mixup_alpha=0.8,
+        cutmix_alpha=1.0,
+
+        num_classes=100,
+        channels_last=True)
+
+
+--------------------------------- CONVEXT ---------------------------------
+
+model_convnext_tiny = timm.create_model(
+    "convnext_tiny",
+    pretrained=False,
+    num_classes=100)
+
+model_convnext_tiny.stem[0] = nn.Conv2d(
+    in_channels=3, 
+    out_channels=96, 
+    kernel_size=2, 
+    stride=2, 
+    padding=0)
+
+
+Trainable parameters: 27,893,572
+
+loss: 1.1613
+top1: 72.60 | top3: 86.71 | top5: 90.92
+throughput: 1832.8 imgs/s | epoch: 5.46s | ms/batch: 34.26
+GPU mem: alloc=956 MiB | reserved=3232 MiB | peak=1125 MiB
+model: params=27,895,012 | param_size=106.4 MiB
+
+
+--------------------------------- Deit_Nano ---------------------------------
+
+Trainable parameters: 5,380,132
+
+model_vit1 = timm.create_model(
+    "deit_tiny_patch16_224",
+    pretrained=False,
+    num_classes=100,
+    img_size=32,
+    patch_size=4).to(device)
+
+loss: 1.4651
+top1: 63.77 | top3: 80.55 | top5: 85.93
+throughput: 5077.2 imgs/s | epoch: 1.97s | ms/batch: 10.60
+GPU mem: alloc=1176 MiB | reserved=2550 MiB | peak=1211 MiB
+model: params=5,380,132 | param_size=20.5 MiB
+
+
+
+--------------------------------- Deit_Tiny ---------------------------------
+
+Trainable parameters: 21,376,996
+
+
+model_vit_small = timm.create_model(
+    "deit_small_patch16_224",
+    pretrained=False,
+    num_classes=100,
+    img_size=32,
+    patch_size=4  
+).to(device)
+
+
+loss: 1.6656
+top1: 59.00 | top3: 76.31 | top5: 82.59
+throughput: 3432.9 imgs/s | epoch: 2.91s | ms/batch: 17.68
+GPU mem: alloc=1094 MiB | reserved=2526 MiB | peak=1187 MiB
+model: params=21,376,996 | param_size=81.5 MiB
+
+
+
+--------------------------------- efficientnetv2_small ---------------------------------
+
+Trainable parameters: 20,305,588
+
+model_v2_s = timm.create_model("efficientnetv2_s", pretrained=False, num_classes=100)
+out_channels = model_v2_s.conv_stem.out_channels
+
+model_v2_s.conv_stem = nn.Conv2d(
+    in_channels=3, 
+    out_channels=out_channels, 
+    kernel_size=3, 
+    stride=1,      
+    padding=1, 
+    bias=False)
+
+
+loss: 1.3438
+top1: 64.62 | top3: 82.81 | top5: 88.10
+throughput: 2099.3 imgs/s | epoch: 4.76s | ms/batch: 28.75
+GPU mem: alloc=956 MiB | reserved=3232 MiB | peak=1006 MiB
+model: params=20,305,588 | param_size=77.5 MiB
+
+
+--------------------------------- MaxVit_Tiny  ---------------------------------
+
+MaxViT-Nano Surgery Successful. Params: 17.38M
+
+model_maxvit_nano = timm.create_model(
+    "maxvit_tiny_tf_224",
+    pretrained=False,
+    num_classes=100,
+    img_size=32,
+    embed_dim=[64, 96, 192, 384] )
+
+model_maxvit_nano.stem.conv1 = nn.Conv2d(
+    in_channels=3, 
+    out_channels=64, 
+    kernel_size=3, 
+    stride=1, 
+    padding=1, 
+    bias=False)
+
+
+model_maxvit_nano.stem.norm1 = nn.BatchNorm2d(
+    num_features=64, 
+    eps=1e-3,    
+    momentum=0.1)
+
+model_maxvit_nano.stem.conv2 = nn.Conv2d(
+    in_channels=64, 
+    out_channels=64, 
+    kernel_size=3, 
+    stride=1, 
+    padding=1, 
+    bias=False)
+
+model_maxvit_nano = model_maxvit_nano.to(device)
+
+loss: 0.9906
+top1: 75.41 | top3: 88.87 | top5: 92.34
+throughput: 1253.9 imgs/s | epoch: 7.97s | ms/batch: 45.15
+GPU mem: alloc=1094 MiB | reserved=2526 MiB | peak=1201 MiB
+model: params=17,379,140 | param_size=66.3 MiB
+
+--------------------------------- MaxVit_Tiny_full  ---------------------------------
+
+MaxViT-Tiny Trainable parameters: 30.43M
+
+model_maxvit = timm.create_model(
+    "maxvit_tiny_tf_224",
+    pretrained=False,
+    num_classes=100,
+    img_size=32)
+
+in_ch_1 = model_maxvit.stem.conv1.in_channels
+out_ch_1 = model_maxvit.stem.conv1.out_channels
+model_maxvit.stem.conv1 = nn.Conv2d(
+    in_ch_1, out_ch_1, kernel_size=3, stride=1, padding=1, bias=False)
+
+in_ch_2 = model_maxvit.stem.conv2.in_channels
+out_ch_2 = model_maxvit.stem.conv2.out_channels
+model_maxvit.stem.conv2 = nn.Conv2d(
+    in_ch_2, out_ch_2, kernel_size=3, stride=1, padding=1, bias=False)
+
+
+model_maxvit = model_maxvit.to('cuda')
+
+
+loss: 0.9566
+top1: 75.90 | top3: 89.50 | top5: 92.78
+throughput: 980.4 imgs/s | epoch: 10.20s | ms/batch: 57.23
+GPU mem: alloc=489 MiB | reserved=2202 MiB | peak=595 MiB
+model: params=30,426,476 | param_size=116.1 MiB
+
+
+--------------------------------- Resnet15  ---------------------------------
+
+
+Trainable parameters: 11,220,132
+
+
+model = timm.create_model("resnet18", pretrained=False, num_classes=100).to(device)
+
+model.conv1 = nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1, bias=False)
+model.maxpool = nn.Identity()
+
+
+top1: 73.25 | top3: 88.25 | top5: 91.96
+throughput: 5393.2 imgs/s | epoch: 1.85s | ms/batch: 8.33
+GPU mem: alloc=1130 MiB | reserved=3232 MiB | peak=1180 MiB
+model: params=11,220,132 | param_size=42.8 MiB
+
+
+
+--------------------------------- Resnet50  ---------------------------------
+
+
+Trainable parameters: 23,712,932
+
+
+
+model_resnet50 = timm.create_model(
+    "resnet50",
+    pretrained=False,
+    num_classes=100).to(device)
+
+model_resnet50.conv1 = nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1, bias=False)
+model_resnet50.maxpool = nn.Identity()
+
+
+
+import timm
+from src.training.train_full_model import * 
+from src.training.metrics import * 
+from src.training.eval_one_epoch_logs import *
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+model_resnet50 = timm.create_model(
+    "resnet50",
+    pretrained=False,
+    num_classes=100).to(device)
+
+n_params = count_trainable_parameters(model_resnet50)
+print(f"Trainable parameters: {n_params:,}")
+
+model_resnet50.conv1 = nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1, bias=False)
+model_resnet50.maxpool = nn.Identity()
+
+
+loss: 0.8587
+top1: 77.42 | top3: 90.70 | top5: 93.94
+throughput: 2253.1 imgs/s | epoch: 4.44s | ms/batch: 27.64
+GPU mem: alloc=1254 MiB | reserved=3232 MiB | peak=1368 MiB
+model: params=23,705,252 | param_size=90.4 MiB
+
+
+
+--------------------------------- SwinVit  ---------------------------------
+
+Trainable parameters: 27,571,054
+
+
+
+model_vit3 = timm.create_model(
+    "swin_tiny_patch4_window7_224",
+    pretrained=False,
+    num_classes=100,
+    img_size=32,
+    window_size=4)
+
+current_dim = model_vit3.patch_embed.proj.out_channels
+
+model_vit3.patch_embed.proj = nn.Conv2d(
+    in_channels=3, 
+    out_channels=current_dim, 
+    kernel_size=2, 
+    stride=2)
+
+model_vit3.patch_embed.patch_size = (2, 2)
+model_vit3 = model_vit3.to(device)
+
+
+loss: 1.5384
+top1: 59.89 | top3: 78.55 | top5: 84.57
+throughput: 3360.6 imgs/s | epoch: 2.98s | ms/batch: 17.50
+GPU mem: alloc=1926 MiB | reserved=3232 MiB | peak=1995 MiB
+model: params=27,571,054 | param_size=105.2 MiB

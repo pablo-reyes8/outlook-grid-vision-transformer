@@ -4,6 +4,23 @@ OutGridViT is a research-focused hybrid vision architecture that fuses **Outlook
 
 This repo contains the full training stack, ablations, baseline comparisons, and analysis tools (MAD metrics + attention visualizations).
 
+## Table of Contents
+
+- [Model A (Main Architecture)](#model-a-main-architecture)
+- [Block Forward (tensor form)](#block-forward-tensor-form)
+- [Model Forward (high level)](#model-forward-high-level)
+- [Visual Experiments](#visual-experiments)
+- [Reported Results](#reported-results-from-notebooks)
+- [Model Comparisons (CIFAR-100, 32x32)](#model-comparisons-cifar-100-32x32)
+- [Baseline Training Recipe](#baseline-training-recipe)
+- [Configs](#configs)
+- [Training (Model A)](#training-model-a)
+- [Baseline Comparisons (CIFAR-32)](#baseline-comparisons-cifar-32)
+- [Attention Analysis and MAD Metrics](#attention-analysis-and-mad-metrics)
+- [Project Structure](#project-structure)
+- [Notes](#notes)
+- [Citation](#citation)
+
 ## Model A (Main Architecture)
 
 **Block composition (OutGridBlock):**
@@ -11,7 +28,7 @@ This repo contains the full training stack, ablations, baseline comparisons, and
 
 Input/output stays in 2D feature maps (NCHW). Only the GridAttn path temporarily uses BHWC and tokenized grids.
 
-### Block Forward (tensor form)
+## Block Forward (tensor form)
 
 Input: `x in R^{B x C x H x W}`
 
@@ -28,7 +45,7 @@ $$
 
 `DP` is stochastic depth. `LN` is LayerNorm in BHWC.
 
-### Model Forward (high level)
+## Model Forward (high level)
 
 $$
 \begin{aligned}
@@ -39,14 +56,76 @@ $$
 \end{aligned}
 $$
 
+## Visual Experiments
+
+Outlooker behaves like a **dynamic 3x3 kernel** per position, while Grid Attention provides more global mixing per block. Below are sample overlays produced by the analysis pipeline.
+
+Outlooker locality (kernel weights + center/spread overlays):
+
+![Outlooker locality example](experiments_results/Visual%20Experiments/normal_example_outlooker/stage1_block_0.png)
+
+Grid attention heatmap (query overlays over the input):
+
+![Grid attention example](experiments_results/Visual%20Experiments/normal_example_grid/stage_1_block_0.png)
+
 ## Reported Results (from notebooks)
 
 | Dataset | Img size | Top-1 (val/test) | Params | Notes |
 | --- | --- | --- | --- | --- |
-| CIFAR-100 | 32 | 74.7 / 78.4 | - | Model A, CIFAR-32
-| CIFAR-100 | 64 | 78.7 / 81.2 | - | Upsampled CIFAR-100
-| Tiny-ImageNet-200 | 64 | 66.5 / 69.8 | 22.5M | Competitive for 22M params
-| SVHN | 32 | 96.1 / - | - | Val reported in logs
+| CIFAR-100 | 32 | 74.7 / 78.4 | - | Model A, CIFAR-32 |
+| CIFAR-100 | 64 | 78.7 / 81.2 | - | Upsampled CIFAR-100 |
+| Tiny-ImageNet-200 | 64 | 66.5 / 69.8 | 22.5M | Competitive for 22M params |
+| SVHN | 32 | 96.1 / - | - | Val reported in logs |
+
+## Model Comparisons (CIFAR-100, 32x32)
+
+All baselines below were trained with the same recipe (see next section). Values are from `logs/Logs Models Comparisons.txt` (single runs).
+
+| Model | Top-1 | Params |
+| --- | --- | --- |
+| OutGridViT (Model A) | 78.4 | - |
+| ConvNeXt-Tiny | 72.60 | 27.89M |
+| DeiT-Tiny (patch4) | 63.77 | 5.38M |
+| DeiT-Small (patch4) | 59.00 | 21.38M |
+| EfficientNetV2-S | 64.62 | 20.31M |
+| MaxViT-Nano (surgery) | 75.41 | 17.38M |
+| MaxViT-Tiny | 75.90 | 30.43M |
+| ResNet18 (CIFAR stem) | 73.25 | 11.22M |
+| ResNet50 (CIFAR stem) | 77.42 | 23.71M |
+| Swin-Tiny (patch2) | 59.89 | 27.57M |
+
+## Baseline Training Recipe
+
+All baseline models use the same training config:
+
+```python
+history, model = train_model(
+    model=model,
+    train_loader=train_loader,
+    epochs=100,
+    val_loader=val_loader,
+    device=device,
+
+    lr=5e-4,
+    weight_decay=0.05,
+
+    autocast_dtype="fp16" if device == "cuda" else "fp32",
+    use_amp=(device == "cuda"),
+    grad_clip_norm=1.0,
+
+    warmup_ratio=0.05,
+    min_lr=1e-6,
+
+    label_smoothing=0.1,
+
+    print_every=400,
+    mix_prob=0.5,
+    mixup_alpha=0.8,
+    cutmix_alpha=1.0,
+
+    num_classes=100,
+    channels_last=True)
+```
 
 ## Configs
 
@@ -79,6 +158,7 @@ Baselines included:
 - Swin Tiny (patch2)
 - MaxViT Tiny
 - MaxViT Nano (surgery)
+- ResNet18 (CIFAR stem)
 
 ## Attention Analysis and MAD Metrics
 
@@ -100,7 +180,7 @@ Outputs:
 - `analysis_outputs/grid/` (grid attention overlays)
 - `analysis_outputs/mad_metrics.json` and `.csv`
 
-If you want to include figures in this README, generate them with the CLI and move them into a `figures/` folder.
+Additional figures can be generated with the CLI and added to `experiments_results/` or a dedicated `figures/` folder.
 
 ## Project Structure
 
