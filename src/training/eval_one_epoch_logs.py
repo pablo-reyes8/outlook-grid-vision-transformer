@@ -8,41 +8,51 @@ import torch.nn.functional as F
 from src.training.metrics import * 
 from src.training.autocast import *
 
+import copy
+
+def format_ops(x: float, kind: str = "FLOPs") -> str:
+    if not (x > 0):
+        return "N/A"
+
+    if x >= 1e12:
+        return f"{x/1e12:.2f} T{kind}"
+    elif x >= 1e9:
+        return f"{x/1e9:.2f} G{kind}"
+    elif x >= 1e6:
+        return f"{x/1e6:.2f} M{kind}"
+    else:
+        return f"{x:.2e} {kind}"
+
+
+
 def _count_params_and_size_mib(model: nn.Module) -> Tuple[int, float]:
     n_params = sum(p.numel() for p in model.parameters())
     # parámetros únicamente (sin buffers). Asume p.element_size() correcto.
     n_bytes = sum(p.numel() * p.element_size() for p in model.parameters())
     return n_params, n_bytes / (1024**2)
 
-def _try_estimate_flops(
-    model: nn.Module,
-    example_inputs: torch.Tensor) -> Dict[str, Optional[float]]:
-    """
-    Intenta estimar FLOPs/MACs con librerías comunes.
-    Retorna {"flops": ..., "macs": ...} (valores por forward) o None si no disponible.
-    """
-    # fvcore (preciso para muchos modelos, pero no para todo)
+def _try_estimate_flops(model: nn.Module, example_inputs: torch.Tensor):
     try:
-        from fvcore.nn import FlopCountAnalysis  # type: ignore
+        from fvcore.nn import FlopCountAnalysis
         model.eval()
         with torch.no_grad():
-            flops = FlopCountAnalysis(model, example_inputs).total()
-        return {"flops": float(flops), "macs": None}
+            flops = float(FlopCountAnalysis(model, example_inputs).total())
+        # Convención común: FLOPs ≈ 2 * MACs
+        macs = flops / 2.0
+        return {"flops": flops, "macs": macs}
     except Exception:
         pass
 
-    # thop (rápido, a veces falla con ops raras)
     try:
-        from thop import profile  # type: ignore
+        from thop import profile
         model.eval()
         with torch.no_grad():
-            macs, params = profile(model, inputs=(example_inputs,), verbose=False)
+            macs, _params = profile(model, inputs=(example_inputs,), verbose=False)
         return {"flops": float(macs) * 2.0, "macs": float(macs)}
     except Exception:
         pass
 
     return {"flops": None, "macs": None}
-
 
 @torch.no_grad()
 def evaluate_one_epoch_logs(
@@ -72,10 +82,10 @@ def evaluate_one_epoch_logs(
     """
     model.eval().to(device)
 
-    # Model size stats 
+    # --- Model size stats ---
     model_params, model_param_size_mib = _count_params_and_size_mib(model)
 
-    # GPU memory baseline / peak 
+    # --- GPU memory baseline / peak ---
     is_cuda = (device.startswith("cuda") and torch.cuda.is_available())
     if is_cuda:
         torch.cuda.reset_peak_memory_stats()
@@ -93,7 +103,7 @@ def evaluate_one_epoch_logs(
     n_batches = 0
     total_batch_time = 0.0  # seconds, measured with sync for CUDA
 
-    # FLOPs estimate (optional; computed once on first real batch) ---
+    # --- FLOPs estimate (optional; computed once on first real batch) ---
     flops_info = {"flops": None, "macs": None}
     flops_done = False
 
@@ -105,6 +115,7 @@ def evaluate_one_epoch_logs(
     for b, (images, targets) in enumerate(dataloader):
         n_batches += 1
 
+        # Warmup timing (optional): skip a few batches to avoid first-iteration overhead
         do_time = True
         if b < flops_warmup_batches:
             do_time = False
@@ -134,10 +145,12 @@ def evaluate_one_epoch_logs(
         c3 += accs[3] * B / 100.0
         c5 += accs[5] * B / 100.0
 
+        # FLOPs/MACs estimate using this batch (once)
         if measure_flops and (not flops_done):
             try:
-                ex = images[:1].detach()
-                flops_info = _try_estimate_flops(model, ex)
+                model_cpu = copy.deepcopy(model).eval().cpu()
+                ex = images[:1].detach().float().cpu()
+                flops_info = _try_estimate_flops(model_cpu, ex)
             finally:
                 flops_done = True
 
@@ -158,7 +171,8 @@ def evaluate_one_epoch_logs(
         "top3": 100.0 * c3 / max(1, total),
         "top5": 100.0 * c5 / max(1, total),}
 
-    # Throughput 
+    # --- Throughput ---
+    # imgs/sec: usa tiempo total del epoch 
     epoch_time = max(1e-12, (t_epoch1 - t_epoch0))
     imgs_per_sec = float(total) / epoch_time
 
@@ -168,7 +182,6 @@ def evaluate_one_epoch_logs(
     else:
         ms_per_batch = None
 
-    # GPU memory stats 
     if is_cuda:
         mem_alloc_end = torch.cuda.memory_allocated()
         mem_reserved_end = torch.cuda.memory_reserved()
@@ -182,7 +195,6 @@ def evaluate_one_epoch_logs(
         gpu_mem_allocated_mib = gpu_mem_reserved_mib = gpu_mem_peak_allocated_mib = 0.0
         gpu_mem_alloc_delta_mib = gpu_mem_reserved_delta_mib = 0.0
 
-    # Attach perf metrics 
     metrics.update({
         "imgs_per_sec": imgs_per_sec,
         "epoch_time_sec": float(epoch_time),
@@ -198,6 +210,7 @@ def evaluate_one_epoch_logs(
         "gpu_mem_reserved_delta_mib": float(gpu_mem_reserved_delta_mib),
 
         "flops_per_forward": float(flops_info["flops"]) if flops_info["flops"] is not None else float("nan"),
-        "macs_per_forward": float(flops_info["macs"]) if flops_info["macs"] is not None else float("nan"),})
+        "macs_per_forward": float(flops_info["macs"]) if flops_info["macs"] is not None else float("nan"),
+    })
 
     return avg_loss, metrics

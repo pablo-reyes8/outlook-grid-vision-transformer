@@ -29,6 +29,20 @@ history, _ = train_model(
         channels_last=True)
 
 
+--------------------------------- OutGrid (OURS) ---------------------------------
+
+Trainable parameters: 14,599,198
+
+
+loss: 0.7299
+top1: 80.85 | top3: 92.60 | top5: 95.51
+throughput: 673.0 imgs/s | epoch: 14.86s | ms/batch: 88.77
+model: params=14,599,198 | param_size=55.7 MiB
+Compute (per forward): 915.15 MFLOPs | 457.58 MMACs
+
+
+
+
 --------------------------------- CONVEXT ---------------------------------
 
 model_convnext_tiny = timm.create_model(
@@ -49,8 +63,8 @@ Trainable parameters: 27,893,572
 loss: 1.1613
 top1: 72.60 | top3: 86.71 | top5: 90.92
 throughput: 1832.8 imgs/s | epoch: 5.46s | ms/batch: 34.26
-GPU mem: alloc=956 MiB | reserved=3232 MiB | peak=1125 MiB
 model: params=27,895,012 | param_size=106.4 MiB
+Compute (per forward): 364.07 MFLOPs | 182.03 MMACs
 
 
 --------------------------------- Deit_Nano ---------------------------------
@@ -67,9 +81,8 @@ model_vit1 = timm.create_model(
 loss: 1.4651
 top1: 63.77 | top3: 80.55 | top5: 85.93
 throughput: 5077.2 imgs/s | epoch: 1.97s | ms/batch: 10.60
-GPU mem: alloc=1176 MiB | reserved=2550 MiB | peak=1211 MiB
 model: params=5,380,132 | param_size=20.5 MiB
-
+Compute (per forward): 347.22 MFLOPs | 173.61 MMACs
 
 
 --------------------------------- Deit_Tiny ---------------------------------
@@ -89,9 +102,8 @@ model_vit_small = timm.create_model(
 loss: 1.6656
 top1: 59.00 | top3: 76.31 | top5: 82.59
 throughput: 3432.9 imgs/s | epoch: 2.91s | ms/batch: 17.68
-GPU mem: alloc=1094 MiB | reserved=2526 MiB | peak=1187 MiB
 model: params=21,376,996 | param_size=81.5 MiB
-
+Compute (per forward): 1.38 GFLOPs | 692.26 MMACs
 
 
 --------------------------------- efficientnetv2_small ---------------------------------
@@ -113,8 +125,8 @@ model_v2_s.conv_stem = nn.Conv2d(
 loss: 1.3438
 top1: 64.62 | top3: 82.81 | top5: 88.10
 throughput: 2099.3 imgs/s | epoch: 4.76s | ms/batch: 28.75
-GPU mem: alloc=956 MiB | reserved=3232 MiB | peak=1006 MiB
 model: params=20,305,588 | param_size=77.5 MiB
+Compute (per forward): 238.02 MFLOPs | 119.01 MMACs
 
 
 --------------------------------- MaxVit_Tiny  ---------------------------------
@@ -155,8 +167,9 @@ model_maxvit_nano = model_maxvit_nano.to(device)
 loss: 0.9906
 top1: 75.41 | top3: 88.87 | top5: 92.34
 throughput: 1253.9 imgs/s | epoch: 7.97s | ms/batch: 45.15
-GPU mem: alloc=1094 MiB | reserved=2526 MiB | peak=1201 MiB
 model: params=17,379,140 | param_size=66.3 MiB
+Compute (per forward): 305.58 MFLOPs | 152.79 MMACs
+
 
 --------------------------------- MaxVit_Tiny_full  ---------------------------------
 
@@ -185,11 +198,11 @@ model_maxvit = model_maxvit.to('cuda')
 loss: 0.9566
 top1: 75.90 | top3: 89.50 | top5: 92.78
 throughput: 980.4 imgs/s | epoch: 10.20s | ms/batch: 57.23
-GPU mem: alloc=489 MiB | reserved=2202 MiB | peak=595 MiB
 model: params=30,426,476 | param_size=116.1 MiB
+Compute (per forward): 443.91 MFLOPs | 221.96 MMACs
 
 
---------------------------------- Resnet15  ---------------------------------
+--------------------------------- Resnet18  ---------------------------------
 
 
 Trainable parameters: 11,220,132
@@ -203,9 +216,8 @@ model.maxpool = nn.Identity()
 
 top1: 73.25 | top3: 88.25 | top5: 91.96
 throughput: 5393.2 imgs/s | epoch: 1.85s | ms/batch: 8.33
-GPU mem: alloc=1130 MiB | reserved=3232 MiB | peak=1180 MiB
 model: params=11,220,132 | param_size=42.8 MiB
-
+Compute (per forward): 556.71 MFLOPs | 278.35 MMACs
 
 
 --------------------------------- Resnet50  ---------------------------------
@@ -224,31 +236,11 @@ model_resnet50.conv1 = nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1, bias
 model_resnet50.maxpool = nn.Identity()
 
 
-
-import timm
-from src.training.train_full_model import * 
-from src.training.metrics import * 
-from src.training.eval_one_epoch_logs import *
-
-device = "cuda" if torch.cuda.is_available() else "cpu"
-model_resnet50 = timm.create_model(
-    "resnet50",
-    pretrained=False,
-    num_classes=100).to(device)
-
-n_params = count_trainable_parameters(model_resnet50)
-print(f"Trainable parameters: {n_params:,}")
-
-model_resnet50.conv1 = nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1, bias=False)
-model_resnet50.maxpool = nn.Identity()
-
-
 loss: 0.8587
 top1: 77.42 | top3: 90.70 | top5: 93.94
-throughput: 2253.1 imgs/s | epoch: 4.44s | ms/batch: 27.64
-GPU mem: alloc=1254 MiB | reserved=3232 MiB | peak=1368 MiB
+throughput: 1918.7 imgs/s | epoch: 5.21s | ms/batch: 29.72
 model: params=23,705,252 | param_size=90.4 MiB
-
+Compute (per forward): 1.30 GFLOPs | 652.46 MMACs
 
 
 --------------------------------- SwinVit  ---------------------------------
@@ -279,5 +271,5 @@ model_vit3 = model_vit3.to(device)
 loss: 1.5384
 top1: 59.89 | top3: 78.55 | top5: 84.57
 throughput: 3360.6 imgs/s | epoch: 2.98s | ms/batch: 17.50
-GPU mem: alloc=1926 MiB | reserved=3232 MiB | peak=1995 MiB
 model: params=27,571,054 | param_size=105.2 MiB
+Compute (per forward): 358.45 MFLOPs | 179.23 MMACs
