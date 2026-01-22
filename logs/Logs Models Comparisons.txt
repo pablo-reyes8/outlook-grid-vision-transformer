@@ -1,5 +1,14 @@
 ALL THE MODELS ARE TRAINED WITH THIS COFIG: 
 
+
+=== Run config ===
+device=cuda | amp=True | autocast_dtype=fp16 | channels_last=True
+epochs=100 | steps/epoch=704 | total_steps=70400 | warmup_steps=3520
+batch_size=64 | input_shape=(64, 3, 32, 32) | num_classes=100
+opt=AdamW | lr=0.0005 | wd=0.05 | grad_clip_norm=1.0
+aug: mix_prob=0.5 | mixup_alpha=0.8 | cutmix_alpha=1.0 | label_smoothing=0.1
+
+
 history, _ = train_model(
         model=model,
         train_loader=train loader,
