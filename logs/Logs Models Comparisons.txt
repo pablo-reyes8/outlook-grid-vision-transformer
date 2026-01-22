@@ -40,14 +40,15 @@ history, _ = train_model(
 
 --------------------------------- OutGrid (OURS) ---------------------------------
 
-Trainable parameters: 14,599,198
+Trainable parameters: 7,518,102
 
 
-loss: 0.7299
-top1: 80.85 | top3: 92.60 | top5: 95.51
-throughput: 673.0 imgs/s | epoch: 14.86s | ms/batch: 88.77
-model: params=14,599,198 | param_size=55.7 MiB
-Compute (per forward): 915.15 MFLOPs | 457.58 MMACs
+loss: 0.75493
+top1: 79.72 | top3: 92.29 | top5: 95.1
+throughput: 1131.8 imgs/s | epoch: 8.84s | ms/batch: 49.98
+GPU mem: alloc=281 MiB | reserved=2228 MiB | peak=485 MiB
+model: params=7,518,102 | param_size=28.7 MiB
+Compute (per forward): 448.02 MFLOPs | 224.01 MMACs
 
 
 
