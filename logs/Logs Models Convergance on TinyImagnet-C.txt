@@ -1,0 +1,106 @@
+# RESULTS OF CONVERGANCE IN TINYIMAGNET-C 
+
+
+OUTGRID: 
+
+throughput: 1265.0 imgs/s | epoch: 7.91s | ms/batch: 37.39
+GPU mem: alloc=169 MiB | reserved=404 MiB | peak=1180 MiB
+model: params=6,264,452 | param_size=23.9 MiB
+Compute (per forward): 1.56 GFLOPs | 780.54 MMACs
+
+
+clean_182: 1.8020548181219416 {'top1': 57.81318681318681, 'top3': 74.98901098901099, 'top5': 80.54945054945055}
+
+
+gaussian_noise | s=1 | n=9100 | loss=3.0035 | top1=37.71 | top5=62.01
+    gaussian_noise | s=3 | n=9100 | loss=5.3872 | top1=12.32 | top5=28.45
+    gaussian_noise | s=5 | n=9100 | loss=6.2998 | top1=5.85 | top5=15.42
+       motion_blur | s=1 | n=9100 | loss=3.4641 | top1=30.25 | top5=53.67
+       motion_blur | s=3 | n=9100 | loss=4.3718 | top1=18.90 | top5=39.91
+       motion_blur | s=5 | n=9100 | loss=5.0769 | top1=12.04 | top5=29.65
+  jpeg_compression | s=1 | n=9100 | loss=3.0186 | top1=36.64 | top5=61.35
+  jpeg_compression | s=3 | n=9100 | loss=3.1698 | top1=34.31 | top5=58.35
+  jpeg_compression | s=5 | n=9100 | loss=3.7408 | top1=26.00 | top5=48.84
+               fog | s=1 | n=9100 | loss=2.8811 | top1=38.58 | top5=63.35
+               fog | s=3 | n=9100 | loss=3.5111 | top1=28.91 | top5=53.58
+               fog | s=5 | n=9100 | loss=5.1007 | top1=11.45 | top5=28.81
+          pixelate | s=1 | n=9100 | loss=2.6787 | top1=41.92 | top5=67.31
+          pixelate | s=3 | n=9100 | loss=3.0037 | top1=37.12 | top5=61.52
+          pixelate | s=5 | n=9100 | loss=3.6750 | top1=26.91 | top5=50.66
+
+Done. 15 runs in 23.05 min
+{'metric_key': 'top1', 'overall_mean': 26.594871794871793, 'by_severity_mean': {1: 37.02197802197802, 3: 26.31208791208791, 5: 16.450549450549453},'by_corruption_mean': {'fog': 26.315018315018317, 'gaussian_noise': 18.626373626373628, 'jpeg_compression': 32.315018315018314, 'motion_blur': 20.399267399267398, 'pixelate': 35.31868131868132}}
+
+
+{'metric_key': 'top5', 'overall_mean': 48.1919413919414, 'by_severity_mean': {1: 61.53846153846153, 3: 48.36263736263736, 5: 34.674725274725276}, 'by_corruption_mean': {'fog': 48.582417582417584, 'gaussian_noise': 35.29304029304029, 'jpeg_compression': 56.17948717948718, 'motion_blur': 41.07692307692307, 'pixelate': 59.82783882783883}}
+
+
+#############################################################
+
+ResNet50 
+
+throughput: 1906.5 imgs/s | epoch: 5.25s | ms/batch: 29.17
+GPU mem: alloc=415 MiB | reserved=1886 MiB | peak=647 MiB
+model: params=23,910,152 | param_size=91.2 MiB
+Compute (per forward): 1.31 GFLOPs | 655.41 MMACs
+
+
+clean_182: 2.43132882809901 {'top1': 45.30769230769231, 'top3': 62.73626373626374, 'top5': 70.0989010989011}
+
+
+gaussian_noise | s=1 | n=9100 | loss=3.5604 | top1=26.67 | top5=50.23
+    gaussian_noise | s=3 | n=9100 | loss=5.1375 | top1=10.46 | top5=25.14
+    gaussian_noise | s=5 | n=9100 | loss=5.9490 | top1=5.03 | top5=13.03
+       motion_blur | s=1 | n=9100 | loss=4.3270 | top1=16.97 | top5=37.56
+       motion_blur | s=3 | n=9100 | loss=5.0130 | top1=10.37 | top5=26.62
+       motion_blur | s=5 | n=9100 | loss=5.3968 | top1=7.47 | top5=21.25
+  jpeg_compression | s=1 | n=9100 | loss=3.8163 | top1=23.11 | top5=45.95
+  jpeg_compression | s=3 | n=9100 | loss=3.9119 | top1=21.92 | top5=43.87
+  jpeg_compression | s=5 | n=9100 | loss=4.2069 | top1=18.05 | top5=38.47
+               fog | s=1 | n=9100 | loss=3.8369 | top1=22.89 | top5=45.22
+               fog | s=3 | n=9100 | loss=4.6181 | top1=13.11 | top5=31.81
+               fog | s=5 | n=9100 | loss=5.8847 | top1=4.88 | top5=15.18
+          pixelate | s=1 | n=9100 | loss=3.4289 | top1=28.12 | top5=52.80
+          pixelate | s=3 | n=9100 | loss=3.6975 | top1=24.18 | top5=47.92
+          pixelate | s=5 | n=9100 | loss=4.5758 | top1=14.54 | top5=33.32
+
+
+Done. 15 runs in 47.44 min
+{'metric_key': 'top1', 'overall_mean': 16.51868131868132, 'by_severity_mean': {1: 23.55164835164835, 3: 16.00879120879121, 5: 9.995604395604396}, by_corruption_mean': {'fog': 13.626373626373626, 'gaussian_noise': 14.054945054945057, 'jpeg_compression': 21.02930402930403, 'motion_blur': 11.604395604395606, 'pixelate': 22.278388278388277}}
+
+
+{'metric_key': 'top5', 'overall_mean': 35.22490842490843, 'by_severity_mean': {1: 46.35164835164835, 3: 35.072527472527476, 5: 24.25054945054945}, 'by_corruption_mean': {'fog': 30.736263736263737, 'gaussian_noise': 29.468864468864467, 'jpeg_compression': 42.76190476190476, 'motion_blur': 28.476190476190478, 'pixelate': 44.68131868131868}}
+
+#############################################################
+
+SwinViT
+
+throughput: 1232.2 imgs/s | epoch: 8.12s | ms/batch: 46.99
+GPU mem: alloc=533 MiB | reserved=1232 MiB | peak=800 MiB
+model: params=27,654,386 | param_size=105.5 MiB
+Compute (per forward): 1.47 GFLOPs | 732.83 MMACs
+
+clean_182: 2.7890094387138284 {'top1': 35.0, 'top3': 53.68131868131868, 'top5': 62.42857142857143}
+
+gaussian_noise | s=1 | n=9100 | loss=3.7703 | top1=20.99 | top5=44.34
+    gaussian_noise | s=3 | n=9100 | loss=4.8885 | top1=11.08 | top5=27.27
+    gaussian_noise | s=5 | n=9100 | loss=6.0427 | top1=6.15 | top5=15.65
+       motion_blur | s=1 | n=9100 | loss=4.7080 | top1=12.99 | top5=30.54
+       motion_blur | s=3 | n=9100 | loss=5.5223 | top1=8.52 | top5=21.60
+       motion_blur | s=5 | n=9100 | loss=5.9662 | top1=6.49 | top5=17.51
+  jpeg_compression | s=1 | n=9100 | loss=4.0999 | top1=17.40 | top5=38.42
+  jpeg_compression | s=3 | n=9100 | loss=4.2179 | top1=16.43 | top5=36.87
+  jpeg_compression | s=5 | n=9100 | loss=4.6845 | top1=12.33 | top5=29.47
+               fog | s=1 | n=9100 | loss=4.1125 | top1=16.26 | top5=37.16
+               fog | s=3 | n=9100 | loss=4.8782 | top1=8.65 | top5=23.74
+               fog | s=5 | n=9100 | loss=6.1996 | top1=2.89 | top5=10.14
+          pixelate | s=1 | n=9100 | loss=3.7577 | top1=20.98 | top5=44.53
+          pixelate | s=3 | n=9100 | loss=3.9727 | top1=18.12 | top5=39.99
+          pixelate | s=5 | n=9100 | loss=6.5879 | top1=4.73 | top5=12.64
+
+Done. 15 runs in 7.24 min
+{'metric_key': 'top1', 'overall_mean': 12.266666666666667, 'by_severity_mean': {1: 17.723076923076924, 3: 12.558241758241758, 5: 6.518681318681319}, 'by_corruption_mean': {'fog': 9.267399267399266, 'gaussian_noise': 12.739926739926739, 'jpeg_compression': 15.384615384615385, 'motion_blur': 9.333333333333334, 'pixelate': 14.608058608058608}}
+
+{'metric_key': 'top5', 'overall_mean': 28.657875457875456, 'by_severity_mean': {1: 38.997802197802194, 3: 29.894505494505495, 5: 17.08131868131868}, 'by_corruption_mean': {'fog': 23.681318681318682, 'gaussian_noise': 29.087912087912088, 'jpeg_compression': 34.91941391941392, 'motion_blur': 23.216117216117215, 'pixelate': 32.38461538461538}}
+
+
