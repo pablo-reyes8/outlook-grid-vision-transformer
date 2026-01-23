@@ -9,9 +9,8 @@ from torchvision.transforms import RandAugment
 from datasets import load_dataset
 from PIL import Image
 
-from src.data.load_tinyimagenet_C import *
-import numpy as np 
-import random 
+import numpy as np
+import random
 
 IMAGENET_MEAN = (0.485, 0.456, 0.406)
 IMAGENET_STD  = (0.229, 0.224, 0.225)
@@ -81,8 +80,7 @@ def get_tinyimagenet200_hf_datasets(
     erasing_scale=(0.02, 0.20),
     erasing_ratio=(0.3, 3.3),
     img_size: int = 64,
-    seed: int = 7,   
-):
+    seed: int = 7):
     """
     Tiny ImageNet-200 desde HuggingFace.
     Retorna: train_dataset, val_dataset, test_dataset
@@ -105,19 +103,10 @@ def get_tinyimagenet200_hf_datasets(
     train_ops = []
     if img_size != 64:
         train_ops.append(transforms.Resize(img_size, interpolation=transforms.InterpolationMode.BICUBIC))
-    train_ops += [
-        transforms.RandomCrop(img_size, padding=crop_padding),
-        transforms.RandomHorizontalFlip(),
-        RandAugment(num_ops=ra_num_ops, magnitude=ra_magnitude),
-        transforms.ToTensor(),
-        transforms.Normalize(IMAGENET_MEAN, IMAGENET_STD),
-        transforms.RandomErasing(
-            p=random_erasing_p,
-            scale=erasing_scale,
-            ratio=erasing_ratio,
-            value="random",
-        ),]
-    
+
+    train_ops += [transforms.ToTensor(),
+    transforms.Normalize(IMAGENET_MEAN, IMAGENET_STD)]
+
     train_transform = transforms.Compose(train_ops)
 
     test_ops = []
@@ -136,7 +125,7 @@ def get_tinyimagenet200_hf_datasets(
         n_val = int(n_total * val_split)
         n_train = n_total - n_val
 
-        g_split = torch.Generator().manual_seed(seed) 
+        g_split = torch.Generator().manual_seed(seed)
 
         train_ds, val_ds = random_split(
             train_full,
@@ -170,7 +159,7 @@ def get_tinyimagenet200_hf_dataloaders(
     img_size: int = 64,
     drop_last: bool = True,
     seed: int = 7,):
-  
+
     train_ds, val_ds, test_ds = get_tinyimagenet200_hf_datasets(
         data_dir=data_dir,
         hf_name=hf_name,
@@ -181,13 +170,13 @@ def get_tinyimagenet200_hf_dataloaders(
         img_size=img_size,
         seed=seed)
 
-    g_loader = torch.Generator().manual_seed(seed + 1) 
+    g_loader = torch.Generator().manual_seed(seed + 1)
 
     common_loader_kwargs = dict(
         num_workers=num_workers,
         pin_memory=pin_memory,
         persistent_workers=(num_workers > 0),
-        worker_init_fn=seed_worker,  
+        worker_init_fn=seed_worker,
         generator=g_loader,)
 
     train_loader = DataLoader(
@@ -214,8 +203,5 @@ def get_tinyimagenet200_hf_dataloaders(
             **common_loader_kwargs,)
 
     return train_loader, val_loader, test_loader
-
-
-
 
 
