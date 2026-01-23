@@ -30,9 +30,8 @@ gaussian_noise | s=1 | n=9100 | loss=3.0035 | top1=37.71 | top5=62.01
 
 Done. 15 runs in 23.05 min
 {'metric_key': 'top1', 'overall_mean': 26.594871794871793, 'by_severity_mean': {1: 37.02197802197802, 3: 26.31208791208791, 5: 16.450549450549453},'by_corruption_mean': {'fog': 26.315018315018317, 'gaussian_noise': 18.626373626373628, 'jpeg_compression': 32.315018315018314, 'motion_blur': 20.399267399267398, 'pixelate': 35.31868131868132}}
-
-
 {'metric_key': 'top5', 'overall_mean': 48.1919413919414, 'by_severity_mean': {1: 61.53846153846153, 3: 48.36263736263736, 5: 34.674725274725276}, 'by_corruption_mean': {'fog': 48.582417582417584, 'gaussian_noise': 35.29304029304029, 'jpeg_compression': 56.17948717948718, 'motion_blur': 41.07692307692307, 'pixelate': 59.82783882783883}}
+
 
 
 #############################################################
@@ -116,6 +115,8 @@ GPU mem: alloc=129 MiB | reserved=880 MiB | peak=556 MiB
 model: params=30,479,120 | param_size=116.3 MiB
 Compute (per forward): 1.77 GFLOPs | 884.70 MMACs
 
+
+clean_182: 2.0522524265666586 {'top1': 53.10989010989011, 'top3': 70.5934065934066, 'top5': 76.84615384615384}
 
 
     gaussian_noise | s=1 | n=9100 | loss=3.2811 | top1=32.79 | top5=56.84

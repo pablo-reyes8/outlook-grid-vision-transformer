@@ -139,7 +139,7 @@ model: params=20,305,588 | param_size=77.5 MiB
 Compute (per forward): 238.02 MFLOPs | 119.01 MMACs
 
 
---------------------------------- MaxVit_Tiny  ---------------------------------
+--------------------------------- MaxVit_Nano  ---------------------------------
 
 MaxViT-Nano Surgery Successful. Params: 17.38M
 
@@ -181,7 +181,7 @@ model: params=17,379,140 | param_size=66.3 MiB
 Compute (per forward): 305.58 MFLOPs | 152.79 MMACs
 
 
---------------------------------- MaxVit_Tiny_full  ---------------------------------
+--------------------------------- MaxVit_Tiny ---------------------------------
 
 MaxViT-Tiny Trainable parameters: 30.43M
 
