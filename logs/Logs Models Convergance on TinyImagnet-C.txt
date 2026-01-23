@@ -3,8 +3,8 @@
 
 OUTGRID: 
 
-throughput: 1265.0 imgs/s | epoch: 7.91s | ms/batch: 37.39
-GPU mem: alloc=169 MiB | reserved=404 MiB | peak=1180 MiB
+throughput: 306.4 imgs/s | epoch: 32.63s | ms/batch: 176.01
+GPU mem: alloc=34 MiB | reserved=1148 MiB | peak=846 MiB
 model: params=6,264,452 | param_size=23.9 MiB
 Compute (per forward): 1.56 GFLOPs | 780.54 MMACs
 
