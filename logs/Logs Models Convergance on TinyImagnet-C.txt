@@ -115,3 +115,25 @@ throughput: 426.4 imgs/s | epoch: 23.45s | ms/batch: 113.50
 GPU mem: alloc=129 MiB | reserved=880 MiB | peak=556 MiB
 model: params=30,479,120 | param_size=116.3 MiB
 Compute (per forward): 1.77 GFLOPs | 884.70 MMACs
+
+
+
+    gaussian_noise | s=1 | n=9100 | loss=3.2811 | top1=32.79 | top5=56.84
+    gaussian_noise | s=3 | n=9100 | loss=5.2282 | top1=11.77 | top5=26.33
+    gaussian_noise | s=5 | n=9100 | loss=6.0534 | top1=5.64 | top5=14.88
+       motion_blur | s=1 | n=9100 | loss=3.8954 | top1=23.56 | top5=46.62
+       motion_blur | s=3 | n=9100 | loss=4.5906 | top1=15.35 | top5=35.07
+       motion_blur | s=5 | n=9100 | loss=5.0327 | top1=10.92 | top5=27.52
+  jpeg_compression | s=1 | n=9100 | loss=3.4409 | top1=29.91 | top5=54.60
+  jpeg_compression | s=3 | n=9100 | loss=3.5581 | top1=27.88 | top5=52.29
+  jpeg_compression | s=5 | n=9100 | loss=3.9979 | top1=22.23 | top5=44.69
+               fog | s=1 | n=9100 | loss=3.3279 | top1=31.36 | top5=56.60
+               fog | s=3 | n=9100 | loss=3.9778 | top1=21.31 | top5=44.52
+               fog | s=5 | n=9100 | loss=5.2529 | top1=8.40 | top5=23.20
+          pixelate | s=1 | n=9100 | loss=3.0684 | top1=35.69 | top5=61.24
+          pixelate | s=3 | n=9100 | loss=3.3513 | top1=30.75 | top5=55.93
+          pixelate | s=5 | n=9100 | loss=3.9129 | top1=22.93 | top5=46.49
+
+Done. 15 runs in 8.59 min
+{'metric_key': 'top1', 'overall_mean': 22.032967032967033, 'by_severity_mean': {1: 30.66373626373626, 3: 21.41098901098901, 5: 14.024175824175824}, 'by_corruption_mean': {'fog': 20.355311355311354, 'gaussian_noise': 16.732600732600734, 'jpeg_compression': 26.67399267399267, 'motion_blur': 16.611721611721613, 'pixelate': 29.791208791208792}}
+{'metric_key': 'top5', 'overall_mean': 43.12087912087912, 'by_severity_mean': {1: 55.18021978021979, 3: 42.82637362637363, 5: 31.35604395604396}, 'by_corruption_mean': {'fog': 41.43956043956044, 'gaussian_noise': 32.68131868131868, 'jpeg_compression': 50.527472527472526, 'motion_blur': 36.399267399267394, 'pixelate': 54.556776556776555}}
