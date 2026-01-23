@@ -104,3 +104,14 @@ Done. 15 runs in 7.24 min
 {'metric_key': 'top5', 'overall_mean': 28.657875457875456, 'by_severity_mean': {1: 38.997802197802194, 3: 29.894505494505495, 5: 17.08131868131868}, 'by_corruption_mean': {'fog': 23.681318681318682, 'gaussian_noise': 29.087912087912088, 'jpeg_compression': 34.91941391941392, 'motion_blur': 23.216117216117215, 'pixelate': 32.38461538461538}}
 
 
+
+
+#############################################################
+
+MaxViT
+
+
+throughput: 426.4 imgs/s | epoch: 23.45s | ms/batch: 113.50
+GPU mem: alloc=129 MiB | reserved=880 MiB | peak=556 MiB
+model: params=30,479,120 | param_size=116.3 MiB
+Compute (per forward): 1.77 GFLOPs | 884.70 MMACs
