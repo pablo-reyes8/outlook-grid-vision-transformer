@@ -6,6 +6,7 @@ from torchvision import transforms
 from datasets import load_dataset
 import datasets
 
+
 def _seed_worker_factory(seed: int):
     def seed_worker(worker_id: int):
         worker_seed = torch.initial_seed() % 2**32
@@ -203,3 +204,7 @@ def verify_cifar100c_matches_torchvision(base_ds, data_dir="./data", corruption=
         print("Ejemplos mismatch idx:", idx.tolist())
         print("HF:", y_hf[idx].tolist())
         print("TV:", y_tv[idx].tolist())
+
+
+
+
