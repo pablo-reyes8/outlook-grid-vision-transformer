@@ -111,17 +111,12 @@ More Grid Attention examples (different stages/blocks):
 <br>
 
 
-## Convergence Curves (CIFAR-100, 32x32)
+## Convergence Curves 
 
 <div align="center">
-
-![Convergence curves](graphs/outputs/convergence_2x2_paper.png)
-
-![Validation loss](graphs/outputs/convergence_2x2_val_loss.png)
-
+  <img src="graphs/outputs/convergence_2x2_paper.png" width="45%" />
+  <img src="graphs/outputs/convergence_2x2_val_loss.png" width="45%" />
 </div>
-
-<br>
 
 ## Model Comparisons (CIFAR-100, 32x32)
 
