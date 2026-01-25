@@ -29,6 +29,7 @@ This repo contains the full training stack, ablations, baseline comparisons, and
 - [Baseline Comparisons (CIFAR-32)](#baseline-comparisons-cifar-32)
 - [Attention Analysis and MAD Metrics](#attention-analysis-and-mad-metrics)
 - [Project Structure](#project-structure)
+- [Conclusion](#conclusion)
 - [Notes](#notes)
 - [Citation](#citation)
 
@@ -282,6 +283,14 @@ src/              # models, blocks, training, experiments
 training_notebooks/  # ablations + baselines
 tests/            # pytest suite
 ```
+
+## Conclusion
+
+OutGridViT shows that injecting **local dynamic aggregation (Outlooker)** inside every block, followed by **MBConv** and **Grid Attention**, yields a strong accuracy/compute trade-off. On CIFAR-100 (32x32), the 7.5M-parameter variant reaches **79.72 Top-1** while keeping FLOPs competitive with larger baselines. The convergence plots indicate stable training, and TinyImageNet-C results suggest better robustness than heavier transformer baselines at similar or higher compute.
+
+The MAD + entropy analysis supports the architectural intent: **Outlooker remains highly local**, while **Grid attention spreads broader mixing**, especially in mid stages. This hybrid behavior is consistent with the qualitative attention maps and explains why the model captures both local texture and global structure without a full ViT token pipeline.
+
+Overall, the model provides a **practical hybrid inductive bias** that is competitive under limited compute and should serve as a solid base for further scaling or low-GPU research settings.
 
 ## Notes
 
