@@ -1,34 +1,33 @@
 model:
-  type: model_b
+  type: model_a
   num_classes: 100
   in_ch: 3
   stem_dim: 64
-  outlooker_front_depth: 3
-  dpr_max: 0.1
+  dpr_max: 0.07
   stages:
-    - dim: 64
-      depth: 2
+    - dim: 48
+      depth: 1
       num_heads: 2
       grid_size: 8
       outlook_heads: 2
-    - dim: 128
+    - dim: 96
       depth: 2
-      num_heads: 4
+      num_heads: 3
       grid_size: 8
-      outlook_heads: 4
-    - dim: 256
+      outlook_heads: 3
+    - dim: 192
       depth: 3
-      num_heads: 8
-      grid_size: 4
-      outlook_heads: 8
-    - dim: 384
-      depth: 1
       num_heads: 6
-      grid_size: 2
+      grid_size: 4
       outlook_heads: 6
+    - dim: 256
+      depth: 1
+      num_heads: 8
+      grid_size: 2
+      outlook_heads: 8
 
 training:
-  epochs: 50
+  epochs: 100
   lr: 0.0005
   weight_decay: 0.05
   autocast_dtype: fp16
@@ -36,16 +35,16 @@ training:
   grad_clip_norm: 1.0
   warmup_ratio: 0.05
   min_lr: 0.000001
-  label_smoothing: 0.0
-  print_every: 100
-  save_path: best_cifar100_model_b.pt
-  last_path: last_cifar100_model_b.pt
+  label_smoothing: 0.1
+  print_every: 400
+  save_path: best_cifar100_model_a_7m.pt
+  last_path: last_cifar100_model_a_7m.pt
   resume_path: null
-  mixup_alpha: 0.0
+  mixup_alpha: 0.8
   cutmix_alpha: 1.0
   mix_prob: 0.5
   channels_last: true
-  early_stop: true
+  early_stop: false
   early_stop_metric: top1
   early_stop_patience: 10
   early_stop_min_delta: 0.0

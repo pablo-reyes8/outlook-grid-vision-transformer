@@ -60,11 +60,15 @@ def build_model(model_cfg: dict) -> torch.nn.Module:
     )
 
 
-def build_dataloaders(data_cfg: dict, num_classes: int):
+def build_dataloaders(data_cfg: dict, num_classes: int, seed: int | None = None):
     dataset = str(data_cfg.get("dataset", "cifar100")).lower()
     batch_size = int(data_cfg.get("batch_size", 128))
     num_workers = int(data_cfg.get("num_workers", 2))
     pin_memory = bool(data_cfg.get("pin_memory", True))
+    data_seed = data_cfg.get("seed", seed if seed is not None else 7)
+    if data_seed is None:
+        data_seed = seed if seed is not None else 7
+    data_seed = int(data_seed)
 
     if dataset == "cifar100":
         return get_cifar100_dataloaders(
@@ -77,6 +81,7 @@ def build_dataloaders(data_cfg: dict, num_classes: int):
             ra_magnitude=int(data_cfg.get("ra_magnitude", 7)),
             random_erasing_p=float(data_cfg.get("random_erasing_p", 0.25)),
             img_size=int(data_cfg.get("img_size", 32)),
+            seed=data_seed,
         )
 
     if dataset == "svhn":
@@ -90,6 +95,7 @@ def build_dataloaders(data_cfg: dict, num_classes: int):
             ra_magnitude=int(data_cfg.get("ra_magnitude", 7)),
             random_erasing_p=float(data_cfg.get("random_erasing_p", 0.25)),
             img_size=int(data_cfg.get("img_size", 32)),
+            seed=data_seed,
         )
 
     if dataset in ("tinyimagenet200", "tinyimagenet", "tiny-imagenet"):
@@ -105,6 +111,7 @@ def build_dataloaders(data_cfg: dict, num_classes: int):
             random_erasing_p=float(data_cfg.get("random_erasing_p", 0.25)),
             img_size=int(data_cfg.get("img_size", 64)),
             drop_last=bool(data_cfg.get("drop_last", True)),
+            seed=data_seed,
         )
 
     if dataset == "synthetic":
@@ -191,7 +198,11 @@ def main() -> int:
     model = build_model(model_cfg)
     num_classes = int(model_cfg.get("num_classes", 100))
 
-    train_loader, val_loader, _ = build_dataloaders(data_cfg, num_classes)
+    train_loader, val_loader, _ = build_dataloaders(
+        data_cfg,
+        num_classes,
+        seed=int(runtime_cfg.get("seed", 7)),
+    )
 
     save_path = Path(train_cfg.get("save_path", "best_model.pt"))
     last_path = Path(train_cfg.get("last_path", "last_model.pt"))

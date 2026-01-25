@@ -56,6 +56,7 @@ data:
   batch_size: 64
   num_workers: 4
   val_split: 0.1
+  seed: 7
   pin_memory: true
   ra_num_ops: 2
   ra_magnitude: 7

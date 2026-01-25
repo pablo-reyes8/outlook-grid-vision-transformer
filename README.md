@@ -19,8 +19,10 @@ This repo contains the full training stack, ablations, baseline comparisons, and
 - [Model Forward (high level)](#model-forward-high-level)
 - [Visual Experiments](#visual-experiments)
 - [Reported Results](#reported-results)
-- [MAD Metrics (Grid vs Outlooker)](#mad-metrics-grid-vs-outlooker)
+- [Convergence Curves (CIFAR-100, 32x32)](#convergence-curves-cifar-100-32x32)
 - [Model Comparisons (CIFAR-100, 32x32)](#model-comparisons-cifar-100-32x32)
+- [Robustness on TinyImageNet-C](#robustness-on-tinyimagenet-c)
+- [MAD + Entropy Metrics (Grid vs Outlooker)](#mad--entropy-metrics-grid-vs-outlooker)
 - [Baseline Training Recipe](#baseline-training-recipe)
 - [Configs](#configs)
 - [Training (Model A)](#training-model-a)
@@ -99,56 +101,81 @@ More Grid Attention examples (different stages/blocks):
 
 | Dataset | Img size | Top-1 (val/test) | Params | Notes |
 | :---: | :---: | :---: | :---: | :---: |
-| CIFAR-100 | 32 | 74.7 / 78.4 | - | Model A, CIFAR-32 |
-| CIFAR-100 | 64 | 78.7 / 81.2 | - | Upsampled CIFAR-100 |
+| CIFAR-100 | 32 | - / 79.72 | 7.5M | Model A (7M), 100 epochs |
+| CIFAR-100 | 64 | 78.7 / 81.2 | ~14M | Upsampled CIFAR-100 |
 | Tiny-ImageNet-200 | 64 | 66.5 / 69.8 | 22.5M | Competitive for 22M params |
-| SVHN | 32 | 96.1 / - | - | Val reported in logs |
+| SVHN | 32 | 96.1 / - | ~14M | Val reported in logs |
 
 </div>
 
 <br>
 
 
-## MAD Metrics (Grid vs Outlooker)
+## Convergence Curves (CIFAR-100, 32x32)
 
 <div align="center">
 
+![Convergence curves](graphs/outputs/convergence_2x2_paper.png)
 
-Quantitative summary (CIFAR-100, Model A). `GRID_abs` is L1 distance in feature-map pixels, with max = `(Hf-1)+(Wf-1)` per stage. `OUT_abs` is L1 distance inside a 3x3 kernel, max = 2.
-
-| Stage | Hf x Wf | GRID_abs | OUT_abs | GRID max | OUT max |
-| :---: | :---: | :---: | :---: | :---: | :---: |
-| 0 | 64 x 64 | 28.49 ± 1.17 | 1.19 ± 0.18 | 126 | 2 |
-| 1 | 32 x 32 | 18.30 ± 0.24 | 1.61 ± 0.13 | 62 | 2 |
-| 2 | 16 x 16 | 9.06 ± 0.21 | 1.62 ± 0.25 | 30 | 2 |
-| 3 | 8 x 8 | 5.41 ± 0.55 | 1.69 ± 0.14 | 14 | 2 |
-
-*Interpretation: Outlooker stays strictly local, while Grid Attention provides larger effective range per stage through global grid mixing.*
+![Validation loss](graphs/outputs/convergence_2x2_val_loss.png)
 
 </div>
 
 <br>
-
 
 ## Model Comparisons (CIFAR-100, 32x32)
 
 <div align="center">
 
+All baselines below were trained with the same recipe. Values are from `logs/Logs Models Comparisons Cifrar100 100epocs.txt`.
 
-All baselines below were trained with the same recipe. Values are from `logs/Logs Models Comparisons.txt`.
+| Model | Top-1 | Params | FLOPs (per forward) | Throughput (imgs/s) |
+| :--- | :---: | :---: | :---: | :---: |
+| **OutGridViT (Model A, 7M)** | **79.72** | **7.52M** | **448 MFLOPs** | **1131.8** |
+| ConvNeXt-Tiny | 72.60 | 27.89M | 364 MFLOPs | 1832.8 |
+| DeiT-Tiny (patch4) | 63.77 | 5.38M | 347 MFLOPs | 5077.2 |
+| DeiT-Small (patch4) | 59.00 | 21.38M | 1.38 GFLOPs | 3432.9 |
+| EfficientNetV2-S | 64.62 | 20.31M | 238 MFLOPs | 2099.3 |
+| MaxViT-Nano (surgery) | 75.41 | 17.38M | 305 MFLOPs | 1253.9 |
+| MaxViT-Tiny | 75.90 | 30.43M | 444 MFLOPs | 980.4 |
+| ResNet18 (CIFAR stem) | 73.25 | 11.22M | 557 MFLOPs | 5393.2 |
+| ResNet50 (CIFAR stem) | 77.42 | 23.71M | 1.30 GFLOPs | 1918.7 |
+| Swin-Tiny (patch2) | 59.89 | 27.57M | 358 MFLOPs | 3360.6 |
 
-| Model | Top-1 | Params |
-| :--- | :---: | :---: |
-| **OutGridViT (Model A)** | **79.8** | **14.1M** |
-| ConvNeXt-Tiny | 72.60 | 27.89M |
-| DeiT-Tiny (patch4) | 63.77 | 5.38M |
-| DeiT-Small (patch4) | 59.00 | 21.38M |
-| EfficientNetV2-S | 64.62 | 20.31M |
-| MaxViT-Nano (surgery) | 75.41 | 17.38M |
-| MaxViT-Tiny | 75.90 | 30.43M |
-| ResNet18 (CIFAR stem) | 73.25 | 11.22M |
-| ResNet50 (CIFAR stem) | 77.42 | 23.71M |
-| Swin-Tiny (patch2) | 59.89 | 27.57M |
+*Throughput is hardware-dependent; use it for relative comparison only.*
+
+</div>
+
+## Robustness on TinyImageNet-C
+
+<div align="center">
+
+Robustness evaluation (mean top-1 across corruptions; higher is better). Full logs in `logs/Logs Models Convergance on TinyImagnet-C.txt`.
+
+| Model | Params | GFLOPs | Clean Top-1 | Overall Mean Top-1 |
+| :--- | :---: | :---: | :---: | :---: |
+| **OutGridViT (Model A)** | **6.26M** | **1.56** | **57.81** | **26.59** |
+| ResNet50 | 23.91M | 1.31 | 45.31 | 16.52 |
+| Swin-Tiny | 27.65M | 1.47 | 35.00 | 12.27 |
+| MaxViT-Tiny | 30.48M | 1.77 | 53.11 | 22.03 |
+
+</div>
+
+## MAD + Entropy Metrics (Grid vs Outlooker)
+
+<div align="center">
+
+Quantitative summary (CIFAR-100, Model A). `GRID_abs` is L1 distance in feature-map pixels, max `(Hf-1)+(Wf-1)` per stage. `OUT_abs` is L1 distance inside a 3x3 kernel, max = 2. `Hn` is normalized entropy in [0, 1].
+
+| Stage | Hf x Wf | GRID_abs | OUT_abs | GRID_Hn | OUT_Hn |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| 0 | 64 x 64 | 31.79 ± 1.13 | 1.33 ± 0.13 | 0.818 ± 0.037 | 0.894 ± 0.005 |
+| 1 | 32 x 32 | 15.41 ± 0.15 | 1.66 ± 0.12 | 0.915 ± 0.013 | 0.868 ± 0.042 |
+| 2 | 16 x 16 | 7.89 ± 0.18 | 1.67 ± 0.24 | 0.943 ± 0.011 | 0.850 ± 0.046 |
+| 3 | 8 x 8 | 4.48 ± 0.33 | 1.73 ± 0.14 | 0.801 ± 0.054 | 0.814 ± 0.076 |
+
+*Interpretation: Outlooker stays strictly local, while Grid attention spreads wider and is more entropic in mid stages (1-2).*
+*Numbers from `experiments_results/Cuantitaive Experiments/mad_entropy.ipynb`.*
 
 </div>
 
@@ -188,8 +215,11 @@ history, model = train_model(
 ## Configs
 
 Prebuilt configs:
-- `configs/cifar100_model_a.yaml`
+- `configs/cifar100_model_a_7m.yaml` (7.5M, 100 epochs)
+- `configs/cifar100_model_a_14m.yaml` (14M, 100 epochs)
+- `configs/cifar100_model_a.yaml` (larger variant)
 - `configs/cifar100_64_model_a.yaml`
+- `configs/cifar100_model_b.yaml`
 - `configs/svhn_model_a.yaml`
 - `configs/tinyimagenet200_model_a.yaml`
 
@@ -199,7 +229,9 @@ Prebuilt configs:
 
 ```bash
 pip install -r requirements.txt
-python scripts/train.py --config configs/cifar100_model_a.yaml
+python scripts/train.py --config configs/cifar100_model_a_7m.yaml
+# or
+python scripts/train.py --config configs/cifar100_model_a_14m.yaml
 ```
 
 ## Baseline Comparisons (CIFAR-32)
@@ -239,6 +271,7 @@ Outputs:
 - `analysis_outputs/mad_metrics.json` and `.csv`
 
 Additional figures can be generated with the CLI and added to `experiments_results/` or a dedicated `figures/` folder.
+Entropy metrics are computed in `src/experiments/entropy_metrics.py` and summarized in `experiments_results/Cuantitaive Experiments/mad_entropy.ipynb`.
 
 ## Project Structure
 

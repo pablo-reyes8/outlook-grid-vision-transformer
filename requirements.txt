@@ -7,3 +7,5 @@ matplotlib>=3.7
 datasets>=2.14
 Pillow>=9.0
 timm>=0.9
+fvcore>=0.1.5
+thop>=0.1.1
