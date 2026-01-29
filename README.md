@@ -33,7 +33,7 @@ This repo contains the full training stack, ablations, baseline comparisons, and
 - [Notes](#notes)
 - [Citation](#citation)
 
-## Model A (Main Architecture)
+## Model (Main Architecture)
 
 **Block composition (OutGridBlock):**
 `Outlooker -> MBConv -> GridAttn -> MLP`
