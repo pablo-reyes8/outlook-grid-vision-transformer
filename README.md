@@ -296,3 +296,6 @@ Overall, the model provides a **practical hybrid inductive bias** that is compet
 ## Citation
 
 If you use this code or ideas, cite VOLO and MaxViT.
+
+## License
+This project is distributed under the [MIT License](LICENSE). Feel free to use it in research or production with attribution.
